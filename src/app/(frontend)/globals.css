@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* Faixa de marcas: a trilha aparece duas vezes e desliza metade da largura,
+   então o fim de um ciclo coincide exatamente com o começo do outro. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-trilha {
+    animation: marquee var(--marquee-duracao, 40s) linear infinite;
+  }
+
+  .marquee:hover .marquee-trilha {
+    animation-play-state: paused;
+  }
+}
+
+/* Sem animação, a faixa vira uma lista rolável à mão em vez de cortar as marcas. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee > div {
+    overflow-x: auto;
+  }
+}
