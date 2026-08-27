@@ -1,189 +1,394 @@
 'use client'
 
 import Fuse from 'fuse.js'
-import React, { useMemo, useState } from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 
-import { GradeDeProdutos } from '@/components/ProdutoCard'
-import type { CategoriaItem, ProdutoItem } from '@/lib/produtos'
+import {
+  catalogCategories,
+  catalogUnits,
+  type CatalogCategory,
+  type CatalogProduct,
+  type CatalogUnit,
+} from '@/lib/catalogo-design'
 
-type Ordenacao = 'relevancia' | 'nome' | 'menor-preco' | 'maior-preco'
-
-const ORDENACOES: { valor: Ordenacao; rotulo: string }[] = [
-  { valor: 'relevancia', rotulo: 'Relevância' },
-  { valor: 'nome', rotulo: 'Nome (A–Z)' },
-  { valor: 'menor-preco', rotulo: 'Menor preço' },
-  { valor: 'maior-preco', rotulo: 'Maior preço' },
-]
-
-// Tolerante a erro de digitação sem virar bagunça: 0.35 ainda casa "cadeira"/"cadera".
-const opcoesFuse = {
-  threshold: 0.35,
+const fuseOptions = {
+  threshold: 0.32,
   ignoreLocation: true,
   minMatchCharLength: 2,
   keys: [
-    { name: 'nome', weight: 0.5 },
+    { name: 'name', weight: 0.42 },
     { name: 'tags', weight: 0.2 },
-    { name: 'categoriaNome', weight: 0.15 },
-    { name: 'descricao', weight: 0.15 },
+    { name: 'category', weight: 0.15 },
+    { name: 'unit', weight: 0.08 },
+    { name: 'description', weight: 0.15 },
   ],
 }
 
-// Sem preço vai para o fim em qualquer direção — "sob consulta" não é nem barato nem caro.
-const porPreco = (direcao: 1 | -1) => (a: ProdutoItem, b: ProdutoItem) => {
-  if (a.preco === null) return 1
-  if (b.preco === null) return -1
-  return (a.preco - b.preco) * direcao
+const searchIcon = (
+  <svg viewBox="0 0 24 24" aria-hidden>
+    <circle cx="11" cy="11" r="6" />
+    <path d="m16 16 4 4" />
+  </svg>
+)
+
+const filtersIcon = (
+  <svg viewBox="0 0 24 24" aria-hidden>
+    <path d="M4 7h10M18 7h2M4 17h2M10 17h10" />
+    <circle cx="16" cy="7" r="2" />
+    <circle cx="8" cy="17" r="2" />
+  </svg>
+)
+
+function labelCount(count: number) {
+  return `${count} ${count === 1 ? 'item' : 'itens'}`
 }
 
 export function CatalogoBusca({
-  produtos,
-  categorias,
-  termoInicial = '',
-  categoriaInicial = 'todas',
+  products,
+  initialTerm = '',
+  initialUnit = 'Todas',
+  initialCategory = 'Todas',
+  initialService = '',
 }: {
-  produtos: ProdutoItem[]
-  categorias: CategoriaItem[]
-  termoInicial?: string
-  categoriaInicial?: string
+  products: CatalogProduct[]
+  initialTerm?: string
+  initialUnit?: CatalogUnit
+  initialCategory?: CatalogCategory
+  initialService?: string
 }) {
-  const [termo, setTermo] = useState(termoInicial)
-  const [categoria, setCategoria] = useState(categoriaInicial)
-  const [ordenacao, setOrdenacao] = useState<Ordenacao>('relevancia')
+  const router = useRouter()
+  const [term, setTerm] = useState(initialTerm)
+  const [unit, setUnit] = useState<CatalogUnit>(initialUnit)
+  const [category, setCategory] = useState<CatalogCategory>(initialCategory)
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  const [activeService, setActiveService] = useState<CatalogProduct | null>(() => products.find((item) => item.slug === initialService) ?? null)
+  const [galleryIndex, setGalleryIndex] = useState(0)
+  const filterSheetRef = useRef<HTMLDivElement>(null)
+  const detailRef = useRef<HTMLDivElement>(null)
+  const filterButtonRef = useRef<HTMLButtonElement>(null)
+  const filterCloseRef = useRef<HTMLButtonElement>(null)
+  const detailMobileCloseRef = useRef<HTMLButtonElement>(null)
+  const detailCloseRef = useRef<HTMLButtonElement>(null)
+  const openedFromCatalogRef = useRef(false)
+  const fuse = useMemo(() => new Fuse(products, fuseOptions), [products])
 
-  const fuse = useMemo(() => new Fuse(produtos, opcoesFuse), [produtos])
+  const results = useMemo(() => {
+    const query = term.trim()
+    const searched = query.length >= 2 ? fuse.search(query).map((entry) => entry.item) : products
 
-  const resultados = useMemo(() => {
-    const busca = termo.trim()
-    // Fuse já devolve por relevância; só reordenamos quando o usuário pede outra coisa.
-    const encontrados = busca.length >= 2 ? fuse.search(busca).map((r) => r.item) : produtos
-    const filtrados =
-      categoria === 'todas'
-        ? encontrados
-        : encontrados.filter((p) => p.categoriaId === categoria)
+    return searched.filter((item) => {
+      const matchesUnit = unit === 'Todas' || item.unit === unit
+      const matchesCategory = category === 'Todas' || item.category === category
+      return matchesUnit && matchesCategory
+    })
+  }, [category, fuse, products, term, unit])
 
-    if (ordenacao === 'nome') {
-      return [...filtrados].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+  const detailImages = useMemo(() => {
+    if (!activeService) return []
+    const contextual = products.filter((item) => item.slug !== activeService.slug && (item.category === activeService.category || item.unit === activeService.unit))
+    return [activeService, ...contextual].slice(0, 3)
+  }, [activeService, products])
+
+  const normalizedTerm = term.trim()
+  const activeFilterTags = [
+    ...(normalizedTerm.length >= 2 ? [`Busca: “${normalizedTerm}”`] : []),
+    ...(unit !== 'Todas' ? [unit] : []),
+    ...(category !== 'Todas' ? [category] : []),
+  ]
+  const hasActiveFilters = activeFilterTags.length > 0
+
+  const countForUnit = (candidate: CatalogUnit) => candidate === 'Todas' ? products.length : products.filter((item) => item.unit === candidate).length
+  const countForCategory = (candidate: CatalogCategory) => candidate === 'Todas' ? products.length : products.filter((item) => item.category === candidate).length
+
+  const openFilters = () => setFiltersOpen(true)
+  const closeFilters = () => {
+    setFiltersOpen(false)
+    window.setTimeout(() => filterButtonRef.current?.focus(), 0)
+  }
+
+  const clearFilters = () => {
+    setTerm('')
+    setUnit('Todas')
+    setCategory('Todas')
+  }
+
+  const openDetail = (item: CatalogProduct) => {
+    openedFromCatalogRef.current = true
+    setActiveService(item)
+    setGalleryIndex(0)
+    const url = new URL(window.location.href)
+    url.searchParams.set('servico', item.slug)
+    router.push(`${url.pathname}${url.search}`, { scroll: false })
+  }
+
+  const closeDetail = () => {
+    setActiveService(null)
+    setGalleryIndex(0)
+    if (openedFromCatalogRef.current) {
+      openedFromCatalogRef.current = false
+      router.back()
+      return
     }
-    if (ordenacao === 'menor-preco') return [...filtrados].sort(porPreco(1))
-    if (ordenacao === 'maior-preco') return [...filtrados].sort(porPreco(-1))
-    return filtrados
-  }, [termo, categoria, ordenacao, fuse, produtos])
 
-  const filtrando = termo.trim().length > 0 || categoria !== 'todas'
-  const nomeDaCategoria = categorias.find((c) => c.id === categoria)?.nome
+    const url = new URL(window.location.href)
+    url.searchParams.delete('servico')
+    router.replace(`${url.pathname}${url.search}`, { scroll: false })
+  }
 
-  const limpar = () => {
-    setTermo('')
-    setCategoria('todas')
+  useEffect(() => {
+    const syncDetailWithUrl = () => {
+      const slug = new URL(window.location.href).searchParams.get('servico')
+      setActiveService(products.find((item) => item.slug === slug) ?? null)
+      setGalleryIndex(0)
+    }
+
+    window.addEventListener('popstate', syncDetailWithUrl)
+    return () => window.removeEventListener('popstate', syncDetailWithUrl)
+  }, [products])
+
+  useEffect(() => {
+    filterSheetRef.current?.toggleAttribute('inert', !filtersOpen)
+    detailRef.current?.toggleAttribute('inert', !activeService)
+    if (!filtersOpen && !activeService) return
+
+    const previousOverflow = document.body.style.overflow
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        if (filtersOpen) closeFilters()
+        else if (activeService) closeDetail()
+        return
+      }
+
+      if (event.key !== 'Tab') return
+      const activeRoot = filtersOpen ? filterSheetRef.current : detailRef.current
+      const focusable = Array.from(
+        activeRoot?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])') ?? [],
+      ).filter((element) => element.offsetParent !== null)
+      const first = focusable[0]
+      const last = focusable.at(-1)
+      if (!first || !last) return
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+    if (filtersOpen) filterCloseRef.current?.focus()
+    if (activeService) {
+      const mobile = window.matchMedia('(max-width: 800px)').matches
+      ;(mobile ? detailMobileCloseRef : detailCloseRef).current?.focus()
+    }
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  // The callbacks intentionally close the state captured by this effect.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeService, filtersOpen])
+
+  const submitMobileSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    document.querySelector<HTMLElement>('.catalog-page__results')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <header className="mb-8 border-b border-neutral-200 pb-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Todos os produtos</h1>
-        <p className="mt-1 text-sm text-neutral-500">
-          {produtos.length} {produtos.length === 1 ? 'produto' : 'produtos'} no catálogo
-        </p>
-      </header>
+    <>
+      <section className="catalog-page__catalog" aria-labelledby="catalog-results-title">
+        <div className="lm-container catalog-page__layout">
+          <aside className="catalog-sidebar" aria-label="Filtros do catálogo">
+            <label className="catalog-search">
+              {searchIcon}
+              <span className="sr-only">Buscar no catálogo</span>
+              <input type="search" value={term} onChange={(event) => setTerm(event.target.value)} placeholder="Buscar no catálogo" />
+            </label>
 
-      <div className="mb-8 flex flex-col gap-4">
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <input
-            type="search"
-            value={termo}
-            onChange={(e) => setTermo(e.target.value)}
-            placeholder="Buscar por nome, categoria ou descrição…"
-            aria-label="Buscar no catálogo"
-            className="flex-1 rounded-lg border border-neutral-300 px-4 py-3 text-base outline-none placeholder:text-neutral-400 focus:border-neutral-900"
-          />
-          <label className="flex items-center gap-2 text-sm text-neutral-500">
-            <span className="whitespace-nowrap">Ordenar por</span>
-            <select
-              value={ordenacao}
-              onChange={(e) => setOrdenacao(e.target.value as Ordenacao)}
-              className="rounded-lg border border-neutral-300 px-3 py-2.5 text-sm text-neutral-900 outline-none focus:border-neutral-900"
-            >
-              {ORDENACOES.map((o) => (
-                <option key={o.valor} value={o.valor}>
-                  {o.rotulo}
-                </option>
+            <FilterState tags={activeFilterTags} hasActiveFilters={hasActiveFilters} onReset={clearFilters} />
+
+            <FilterGroup title="Unidades">
+              {catalogUnits.map((candidate) => (
+                <FilterButton key={candidate} active={unit === candidate} count={countForUnit(candidate)} onClick={() => setUnit(candidate)}>
+                  {candidate === 'Todas' ? 'Todas as unidades' : candidate}
+                </FilterButton>
               ))}
-            </select>
-          </label>
-        </div>
+            </FilterGroup>
 
-        {categorias.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            <Chip ativo={categoria === 'todas'} onClick={() => setCategoria('todas')}>
-              Todas
-            </Chip>
-            {categorias.map((c) => (
-              <Chip key={c.id} ativo={categoria === c.id} onClick={() => setCategoria(c.id)}>
-                {c.nome}
-              </Chip>
-            ))}
+            <FilterGroup title="Categorias">
+              {catalogCategories.map((candidate) => (
+                <FilterButton key={candidate} active={category === candidate} count={countForCategory(candidate)} onClick={() => setCategory(candidate)}>
+                  {candidate === 'Todas' ? 'Todas as categorias' : candidate}
+                </FilterButton>
+              ))}
+            </FilterGroup>
+          </aside>
+
+          <div className="catalog-page__results">
+            <div className="catalog-page__results-head">
+              <h2 id="catalog-results-title">Catálogo completo</h2>
+              <span aria-live="polite">{labelCount(results.length)}</span>
+            </div>
+
+            <div className="catalog-page__mobile-tools">
+              <form role="search" className="catalog-page__mobile-search" onSubmit={submitMobileSearch}>
+                <button type="submit" aria-label="Pesquisar no catálogo">{searchIcon}</button>
+                <input type="search" value={term} onChange={(event) => setTerm(event.target.value)} placeholder="Buscar no catálogo" aria-label="Buscar no catálogo" />
+              </form>
+              <button ref={filterButtonRef} type="button" className="catalog-page__filter-trigger" aria-label="Abrir filtros do catálogo" aria-expanded={filtersOpen} onClick={openFilters}>{filtersIcon}</button>
+            </div>
+
+            <div className="catalog-page__active-filters" aria-live="polite">
+              <div>
+                <small>Filtros ativos</small>
+                <div className="catalog-filter-tags">
+                  {(hasActiveFilters ? activeFilterTags : ['Todos os itens']).map((tag) => <span className={!hasActiveFilters ? 'is-default' : ''} key={tag}>{tag}</span>)}
+                </div>
+              </div>
+              <button type="button" disabled={!hasActiveFilters} onClick={clearFilters}>Redefinir filtros</button>
+            </div>
+
+            {results.length > 0 ? (
+              <ul className="catalog-page__grid">
+                {results.map((item) => <CatalogCard item={item} onOpen={() => openDetail(item)} key={item.id} />)}
+              </ul>
+            ) : (
+              <div className="catalog-page__empty">
+                <p>Nenhum serviço encontrado com esses filtros.</p>
+                <button type="button" className="button button--dark" onClick={clearFilters}>Limpar filtros</button>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2 text-sm text-neutral-500">
-        <p aria-live="polite">
-          {resultados.length} {resultados.length === 1 ? 'resultado' : 'resultados'}
-          {nomeDaCategoria && ` em ${nomeDaCategoria}`}
-          {termo.trim() && ` para "${termo.trim()}"`}
-        </p>
-        {filtrando && (
-          <button
-            type="button"
-            onClick={limpar}
-            className="underline underline-offset-4 hover:text-neutral-900"
-          >
-            Limpar filtros
-          </button>
-        )}
-      </div>
-
-      {resultados.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-neutral-300 px-4 py-16 text-center">
-          <p className="text-neutral-500">Nenhum produto encontrado.</p>
-          {filtrando && (
-            <button
-              type="button"
-              onClick={limpar}
-              className="mt-3 text-sm font-medium underline underline-offset-4"
-            >
-              Limpar filtros
-            </button>
-          )}
         </div>
-      ) : (
-        <GradeDeProdutos produtos={resultados} />
-      )}
+      </section>
+
+      <div ref={filterSheetRef} className={`mobile-filter-sheet catalog-filter-sheet ${filtersOpen ? 'is-open' : ''}`} aria-hidden={!filtersOpen}>
+        <button type="button" className="mobile-filter-sheet__backdrop" aria-label="Fechar filtros" onClick={closeFilters} />
+        <div className="mobile-filter-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="catalog-filter-title">
+          <div className="mobile-filter-sheet__handle" aria-hidden />
+          <div className="mobile-filter-sheet__header">
+            <h3 id="catalog-filter-title">Filtrar catálogo</h3>
+            <button ref={filterCloseRef} type="button" onClick={closeFilters} aria-label="Fechar filtros">×</button>
+          </div>
+          <fieldset>
+            <legend><i aria-hidden />Unidade</legend>
+            <div className="mobile-filter-sheet__chips">
+              {catalogUnits.map((candidate) => <button type="button" className={unit === candidate ? 'is-active' : ''} aria-pressed={unit === candidate} onClick={() => setUnit(candidate)} key={candidate}>{candidate}</button>)}
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend><i aria-hidden />Categoria</legend>
+            <div className="mobile-filter-sheet__chips">
+              {catalogCategories.map((candidate) => <button type="button" className={category === candidate ? 'is-active' : ''} aria-pressed={category === candidate} onClick={() => setCategory(candidate)} key={candidate}>{candidate}</button>)}
+            </div>
+          </fieldset>
+          <div className="mobile-filter-sheet__actions">
+            <button type="button" className="button mobile-filter-sheet__clear" disabled={!hasActiveFilters} onClick={clearFilters}>Redefinir</button>
+            <button type="button" className="button button--dark" onClick={closeFilters}>Ver {labelCount(results.length)}</button>
+          </div>
+        </div>
+      </div>
+
+      <div ref={detailRef} className={`service-detail ${activeService ? 'is-open' : ''}`} aria-hidden={!activeService}>
+        <button type="button" className="service-detail__backdrop" aria-label="Voltar ao catálogo" onClick={closeDetail} />
+        {activeService && (
+          <article className="service-detail__panel" role="dialog" aria-modal="true" aria-labelledby="service-detail-title">
+            <header className="service-detail__mobile-header">
+              <button ref={detailMobileCloseRef} type="button" onClick={closeDetail} aria-label="Voltar ao catálogo"><span aria-hidden>←</span> Catálogo</button>
+              <span>{activeService.category}</span>
+            </header>
+            <button ref={detailCloseRef} className="service-detail__close" type="button" onClick={closeDetail} aria-label="Fechar detalhes"><span aria-hidden>×</span></button>
+
+            <div className="service-detail__media">
+              <div className="service-detail__main-image">
+                <Image src={detailImages[galleryIndex]?.image ?? activeService.image} alt={detailImages[galleryIndex]?.imageAlt ?? activeService.imageAlt} fill sizes="(max-width: 800px) 100vw, 54vw" />
+              </div>
+              {detailImages.length > 1 && (
+                <div className="service-detail__thumbs" aria-label="Imagens relacionadas">
+                  {detailImages.map((image, index) => (
+                    <button type="button" className={galleryIndex === index ? 'is-active' : ''} onClick={() => setGalleryIndex(index)} aria-label={`Ver imagem ${index + 1}`} aria-pressed={galleryIndex === index} key={image.slug}>
+                      <Image src={image.image} alt="" fill sizes="96px" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="service-detail__content">
+              <p className="eyebrow"><i aria-hidden />{activeService.unit} · {activeService.category}</p>
+              <h2 id="service-detail-title">{activeService.name}</h2>
+              <p className="service-detail__lead">{activeService.description}</p>
+              <div className="service-detail__tags">{activeService.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+
+              <div className="service-detail__scope">
+                <h3>Do projeto à instalação</h3>
+                <ul>
+                  <li><span>01</span><p><strong>Medição precisa</strong>Levantamento no local e definição técnica para o seu ambiente.</p></li>
+                  <li><span>02</span><p><strong>Fabricação sob medida</strong>Produção pela equipe LM com materiais e acabamento especificados.</p></li>
+                  <li><span>03</span><p><strong>Instalação completa</strong>Montagem, regulagem e conferência final antes da entrega.</p></li>
+                </ul>
+              </div>
+
+              <a
+                href="#orcamento"
+                className="button button--gold"
+                onClick={(event) => {
+                  event.preventDefault()
+                  setActiveService(null)
+                  setGalleryIndex(0)
+                  openedFromCatalogRef.current = false
+                  router.push('/catalogo#orcamento')
+                }}
+              >Solicitar orçamento <span aria-hidden>→</span></a>
+              <small>Atendimento em toda a Chapada Diamantina.</small>
+            </div>
+          </article>
+        )}
+      </div>
+    </>
+  )
+}
+
+function FilterGroup({ title, children }: { title: string; children: ReactNode }) {
+  return <fieldset className="catalog-sidebar__group"><legend>{title}</legend><div>{children}</div></fieldset>
+}
+
+function FilterState({ tags, hasActiveFilters, onReset }: { tags: string[]; hasActiveFilters: boolean; onReset: () => void }) {
+  return (
+    <div className="catalog-filter-state" aria-live="polite">
+      <small>Filtros ativos</small>
+      <div className="catalog-filter-tags">
+        {(hasActiveFilters ? tags : ['Todos os itens']).map((tag) => <span className={!hasActiveFilters ? 'is-default' : ''} key={tag}>{tag}</span>)}
+      </div>
+      <button type="button" disabled={!hasActiveFilters} onClick={onReset}><span aria-hidden>↺</span> Redefinir filtros</button>
     </div>
   )
 }
 
-function Chip({
-  ativo,
-  onClick,
-  children,
-}: {
-  ativo: boolean
-  onClick: () => void
-  children: React.ReactNode
-}) {
+function FilterButton({ active, count, onClick, children }: { active: boolean; count: number; onClick: () => void; children: ReactNode }) {
+  return <button type="button" className={active ? 'is-active' : ''} aria-pressed={active} onClick={onClick}><span>{children}</span><small>{count}</small></button>
+}
+
+function CatalogCard({ item, onOpen }: { item: CatalogProduct; onOpen: () => void }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={ativo}
-      className={
-        ativo
-          ? 'rounded-full bg-neutral-900 px-3 py-1.5 text-sm text-white'
-          : 'rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-neutral-900'
-      }
-    >
-      {children}
-    </button>
+    <li>
+      <button type="button" className="catalog-product-card" onClick={onOpen} aria-label={`Conhecer ${item.name}`}>
+        <div className="catalog-product-card__image">
+          <Image src={item.image} alt={item.imageAlt} fill sizes="(max-width: 800px) calc(100vw - 40px), (max-width: 1200px) 33vw, 276px" />
+          <span>{item.unit} · {item.category}</span>
+        </div>
+        <div className="catalog-product-card__body">
+          <h3>{item.name}</h3>
+          <p>{item.description}</p>
+          <div className="catalog-product-card__tags">{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+          <div className="catalog-product-card__footer"><small>Sob orçamento</small><strong>Ver detalhes <span aria-hidden>→</span></strong></div>
+        </div>
+      </button>
+    </li>
   )
 }

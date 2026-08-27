@@ -42,6 +42,9 @@ next-env.d.ts
 
 /media
 
+# Caixa de entrada e backup local de imagens de handoff (nunca versionar)
+/_handoff/
+
 # Playwright
 node_modules/
 /test-results/

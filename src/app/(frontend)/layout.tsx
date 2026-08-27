@@ -1,10 +1,11 @@
 import './globals.css'
 
-import Link from 'next/link'
+import { Instrument_Serif, Space_Grotesk } from 'next/font/google'
 import { getPayload } from 'payload'
 import React, { Suspense } from 'react'
 
 import { Header } from '@/components/Header'
+import { SiteFooter } from '@/components/SiteFooter'
 import type { CategoriaItem } from '@/lib/produtos'
 import config from '@/payload.config'
 
@@ -14,8 +15,21 @@ export const metadata = {
     template: '%s · LM',
   },
   description:
-    'Móveis, iluminação e decoração de linhas modernas, escolhidos para valorizar o ambiente. Veja o catálogo e os trabalhos executados pela LM.',
+    'Esquadrias de alumínio, vidros e construção sob medida na Chapada Diamantina.',
 }
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+})
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-instrument-serif',
+  display: 'swap',
+})
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
   const payload = await getPayload({ config: await config })
@@ -35,7 +49,7 @@ export default async function FrontendLayout({ children }: { children: React.Rea
   }))
 
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={`${spaceGrotesk.variable} ${instrumentSerif.variable}`}>
       <body className="flex min-h-screen flex-col bg-white text-neutral-900 antialiased">
         {/* Suspense porque o Header lê searchParams; sem isso o Next reclama nas rotas estáticas. */}
         <Suspense fallback={<div className="h-14.25 border-b border-neutral-200" />}>
@@ -44,25 +58,7 @@ export default async function FrontendLayout({ children }: { children: React.Rea
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-neutral-200">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-8 text-sm text-neutral-500">
-            <span>
-              <span className="font-semibold text-neutral-900">LM</span> — design moderno para
-              ambientes reais
-            </span>
-            <nav className="flex flex-wrap gap-5">
-              <Link href="/catalogo" className="hover:text-neutral-900">
-                Catálogo
-              </Link>
-              <Link href="/solucoes" className="hover:text-neutral-900">
-                Soluções
-              </Link>
-              <Link href="/trabalhos" className="hover:text-neutral-900">
-                Trabalhos
-              </Link>
-            </nav>
-          </div>
-        </footer>
+        <SiteFooter />
       </body>
     </html>
   )
