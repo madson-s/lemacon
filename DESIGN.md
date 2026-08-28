@@ -14,6 +14,57 @@ colors:
   gold-light: "#e6c76f"
   gold-cream: "#ead38a"
   gold-ink: "#9d7521"
+  ink-raised: "#302e29"
+  ink-panel: "#37332d"
+  ink-warm: "#3b3428"
+  ink-stone: "#42382b"
+  ink-mute: "#4a463f"
+  text-strong: "#4f4b44"
+  text-link: "#4e4b46"
+  text-body: "#5f5a52"
+  text-soft: "#655f56"
+  text-mute: "#6f6960"
+  text-quiet: "#716a61"
+  text-faint: "#756f65"
+  label: "#777168"
+  label-soft: "#7d776c"
+  label-warm: "#7d7669"
+  label-quiet: "#8a8378"
+  label-faint: "#8b857c"
+  label-mute: "#8c857a"
+  meta: "#888279"
+  meta-soft: "#918a80"
+  meta-quiet: "#9a9287"
+  meta-faint: "#9b958a"
+  edge-dark: "#a99e8c"
+  edge-warm: "#a78d72"
+  line-soft: "#ddd6ca"
+  line-warm: "#d2c9bb"
+  line-sheet: "#d8d3ca"
+  line-tag: "#e2d9ca"
+  line-tag-soft: "#dfd7c8"
+  line-rule: "#e8e1d6"
+  line-rule-soft: "#e4ddd1"
+  surface-photo: "#ddd6cb"
+  surface-photo-alt: "#ddd7cd"
+  surface-photo-cool: "#d9d4ca"
+  surface-tag: "#eee8de"
+  surface-tag-alt: "#eee8dc"
+  surface-tag-warm: "#eee7dc"
+  surface-sunk: "#f0eade"
+  surface-empty: "#f0ebe1"
+  surface-chip: "#f1ebe0"
+  gold-deep: "#6d4a08"
+  gold-dark: "#866619"
+  gold-text: "#8a8173"
+  gold-icon: "#a17d1c"
+  gold-number: "#aa7f24"
+  gold-hover: "#d6ae4d"
+  gold-cream-hover: "#f1dda1"
+  gold-tint: "#f0e5cf"
+  gold-tint-warm: "#f3e8d7"
+  gold-footer: "#a78b48"
+  on-gold: "#191711"
 typography:
   display:
     fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
@@ -63,13 +114,116 @@ typography:
     fontWeight: 750
     lineHeight: 1.2
     letterSpacing: "0.1em"
+  micro-lg:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "10px"
+    fontWeight: 700
+    letterSpacing: "0.12em"
+  label-lg:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "12px"
+    fontWeight: 700
+    letterSpacing: "0.13em"
+  control:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "14px"
+    fontWeight: 650
+    lineHeight: 1
+  body-md:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "15px"
+    lineHeight: 1.6
+  body-lg:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "17px"
+    lineHeight: 1.62
+  title-sm:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "19px"
+    fontWeight: 650
+    letterSpacing: "-0.025em"
+  title-lg:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "21px"
+    fontWeight: 650
+    letterSpacing: "-0.028em"
+  title-xl:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "22px"
+    fontWeight: 600
+    letterSpacing: "-0.03em"
+  heading-sm:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "26px"
+    fontWeight: 650
+    letterSpacing: "-0.035em"
+  heading-md:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "28px"
+    fontWeight: 650
+    letterSpacing: "-0.035em"
+  heading-lg:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "30px"
+    fontWeight: 650
+    letterSpacing: "-0.035em"
+  heading-xl:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "34px"
+    fontWeight: 600
+    letterSpacing: "-0.04em"
+  numeral:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "35px"
+    fontWeight: 700
+    letterSpacing: "-0.04em"
+  display-sm:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "36px"
+    fontWeight: 600
+    letterSpacing: "-0.04em"
+  display-38:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "38px"
+    fontWeight: 600
+    letterSpacing: "-0.04em"
+  display-md:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "40px"
+    fontWeight: 600
+    letterSpacing: "-0.04em"
+  display-42:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "42px"
+    fontWeight: 600
+    letterSpacing: "-0.04em"
+  display-lg:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "44px"
+    fontWeight: 600
+    letterSpacing: "-0.04em"
+  display-xl:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "56px"
+    fontWeight: 650
+    letterSpacing: "-0.045em"
 rounded:
+  xs: "7px"
+  chip: "9px"
+  control: "10px"
   sm: "8px"
   field: "12px"
+  thumb: "14px"
   md: "16px"
+  media: "18px"
   panel: "20px"
+  panel-lg: "22px"
   lg: "24px"
+  sheet-sm: "28px"
   sheet: "32px"
+  sheet-lg: "34px"
+  hero: "38px"
+  hero-lg: "40px"
   pill: "999px"
 spacing:
   xs: "8px"
