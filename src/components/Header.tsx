@@ -13,6 +13,8 @@ const navigation = [
   { label: 'Catálogo', href: '/catalogo' },
   { label: 'Linhas', href: '/#grupo-lm' },
   { label: 'Processo', href: '/#processo' },
+  { label: 'Sobre', href: '/sobre' },
+  { label: 'Localização', href: '/localizacao' },
 ]
 
 export function Header({ categorias: _categorias }: { categorias: CategoriaItem[] }) {
@@ -42,7 +44,12 @@ export function Header({ categorias: _categorias }: { categorias: CategoriaItem[
 
         <nav id="site-navigation" className={`site-header__nav ${open ? 'is-open' : ''}`} aria-label="Navegação principal">
           {navigation.map((item) => (
-            <Link key={item.label} href={item.href} onClick={() => setOpen(false)}>
+            <Link
+              key={item.label}
+              href={item.href}
+              aria-current={pathname === item.href ? 'page' : undefined}
+              onClick={() => setOpen(false)}
+            >
               {item.label}
             </Link>
           ))}

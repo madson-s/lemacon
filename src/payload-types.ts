@@ -97,9 +97,13 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     home: Home;
+    sobre: Sobre;
+    localizacao: Localizacao;
   };
   globalsSelect: {
     home: HomeSelect<false> | HomeSelect<true>;
+    sobre: SobreSelect<false> | SobreSelect<true>;
+    localizacao: LocalizacaoSelect<false> | LocalizacaoSelect<true>;
   };
   locale: null;
   widgets: {
@@ -749,6 +753,168 @@ export interface Home {
   createdAt?: string | null;
 }
 /**
+ * Página "Sobre" do site. O que estiver vazio aqui simplesmente não aparece lá. FALTAM DOIS BLOCOS: "História e origem" e "Equipe" — enquanto não forem preenchidos, a página mostra só o que a LM executa.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sobre".
+ */
+export interface Sobre {
+  id: number;
+  /**
+   * Linha curta acima do título.
+   */
+  chapeu?: string | null;
+  titulo: string;
+  lead?: string | null;
+  /**
+   * Opcional. Uma foto da equipe, do galpão ou de uma obra entregue.
+   */
+  imagem?: (number | null) | Media;
+  /**
+   * Os dados objetivos da LM, na mesma leitura de uma ficha técnica de produto. Preencha só o que for verdade — linha sem valor não aparece no site.
+   */
+  ficha?:
+    | {
+        rotulo: string;
+        valor?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  capacidadesTitulo?: string | null;
+  /**
+   * O que a LM executa de ponta a ponta. Deixe vazio para esconder a seção.
+   */
+  capacidades?:
+    | {
+        titulo: string;
+        texto?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * PENDENTE — como a LM começou: de onde veio, há quanto tempo está na estrada, o que mudou. Sem texto aqui, a seção inteira não aparece no site.
+   */
+  historia?: {
+    titulo?: string | null;
+    /**
+     * Só o ano. Aparece em destaque ao lado do texto.
+     */
+    desde?: string | null;
+    texto?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    imagem?: (number | null) | Media;
+  };
+  equipeTitulo?: string | null;
+  equipeTexto?: string | null;
+  /**
+   * PENDENTE — cadastre só pessoas reais, com o nome como elas querem ser chamadas. Enquanto estiver vazio, a seção não aparece no site.
+   */
+  equipe?:
+    | {
+        nome: string;
+        funcao?: string | null;
+        /**
+         * Opcional. Sem foto, aparecem as iniciais do nome.
+         */
+        foto?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bloco final da página, que leva para o orçamento.
+   */
+  fechamento?: {
+    titulo?: string | null;
+    texto?: string | null;
+    ctaTexto?: string | null;
+    ctaLink?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Página "Localização" do site. Preencha só o que for verdade — o que ficar vazio some da página.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "localizacao".
+ */
+export interface Localizacao {
+  id: number;
+  chapeu?: string | null;
+  /**
+   * Depois de preencher o endereço, vale reescrever este título falando da visita — algo como "Do asfalto da BR até a nossa porta".
+   */
+  titulo: string;
+  /**
+   * Com o endereço e os horários publicados, troque por um texto que convide o cliente a vir até a base.
+   */
+  lead?: string | null;
+  /**
+   * Primeira etapa do roteiro. Onde a LM atende, mesmo longe da sede.
+   */
+  regiao?: string | null;
+  /**
+   * O endereço da sede. Sem logradouro e cidade preenchidos, o mapa e a rota não aparecem no site.
+   */
+  endereco?: {
+    logradouro?: string | null;
+    numero?: string | null;
+    complemento?: string | null;
+    bairro?: string | null;
+    cidade?: string | null;
+    estado?: string | null;
+    cep?: string | null;
+  };
+  /**
+   * Como quem nunca veio reconhece o lugar: o que tem na esquina, de que lado da pista, o que aparece antes.
+   */
+  referencia?: string | null;
+  /**
+   * Opcional. Cole o link do Google Maps da LM se quiser fixar o ponto exato. Vazio, o mapa é montado a partir do endereço acima.
+   */
+  mapaUrl?: string | null;
+  /**
+   * Deixe vazio se ainda não quiser publicar horário.
+   */
+  horarios?:
+    | {
+        dias: string;
+        horario: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Cada canal preenchido vira um botão na página. Vazio, o botão não aparece.
+   */
+  contato?: {
+    /**
+     * Só os números, com DDD e o 55 na frente. Ex.: 5575900000000
+     */
+    whatsapp?: string | null;
+    telefone?: string | null;
+    email?: string | null;
+  };
+  /**
+   * Opcional, mas ajuda muito: é por ela que o cliente reconhece o lugar na rua.
+   */
+  imagem?: (number | null) | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home_select".
  */
@@ -775,6 +941,101 @@ export interface HomeSelect<T extends boolean = true> {
         texto?: T;
         ctaTexto?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sobre_select".
+ */
+export interface SobreSelect<T extends boolean = true> {
+  chapeu?: T;
+  titulo?: T;
+  lead?: T;
+  imagem?: T;
+  ficha?:
+    | T
+    | {
+        rotulo?: T;
+        valor?: T;
+        id?: T;
+      };
+  capacidadesTitulo?: T;
+  capacidades?:
+    | T
+    | {
+        titulo?: T;
+        texto?: T;
+        id?: T;
+      };
+  historia?:
+    | T
+    | {
+        titulo?: T;
+        desde?: T;
+        texto?: T;
+        imagem?: T;
+      };
+  equipeTitulo?: T;
+  equipeTexto?: T;
+  equipe?:
+    | T
+    | {
+        nome?: T;
+        funcao?: T;
+        foto?: T;
+        id?: T;
+      };
+  fechamento?:
+    | T
+    | {
+        titulo?: T;
+        texto?: T;
+        ctaTexto?: T;
+        ctaLink?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "localizacao_select".
+ */
+export interface LocalizacaoSelect<T extends boolean = true> {
+  chapeu?: T;
+  titulo?: T;
+  lead?: T;
+  regiao?: T;
+  endereco?:
+    | T
+    | {
+        logradouro?: T;
+        numero?: T;
+        complemento?: T;
+        bairro?: T;
+        cidade?: T;
+        estado?: T;
+        cep?: T;
+      };
+  referencia?: T;
+  mapaUrl?: T;
+  horarios?:
+    | T
+    | {
+        dias?: T;
+        horario?: T;
+        id?: T;
+      };
+  contato?:
+    | T
+    | {
+        whatsapp?: T;
+        telefone?: T;
+        email?: T;
+      };
+  imagem?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
