@@ -3,6 +3,7 @@ import * as migration_20260811_162645_galeria_detalhes_home from './20260811_162
 import * as migration_20260812_024221_marcas from './20260812_024221_marcas';
 import * as migration_20260812_031415_projetos from './20260812_031415_projetos';
 import * as migration_20260812_032218_solucoes from './20260812_032218_solucoes';
+import * as migration_20260828_171345_sobre_localizacao from './20260828_171345_sobre_localizacao';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20260812_032218_solucoes.up,
     down: migration_20260812_032218_solucoes.down,
-    name: '20260812_032218_solucoes'
+    name: '20260812_032218_solucoes',
+  },
+  {
+    up: migration_20260828_171345_sobre_localizacao.up,
+    down: migration_20260828_171345_sobre_localizacao.down,
+    name: '20260828_171345_sobre_localizacao'
   },
 ];

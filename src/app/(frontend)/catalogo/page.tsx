@@ -26,9 +26,9 @@ const isCategory = (value: string | undefined): value is CatalogCategory => cata
 export default async function CatalogoPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; unidade?: string; categoria?: string; servico?: string }>
+  searchParams: Promise<{ q?: string; unidade?: string; categoria?: string }>
 }) {
-  const { q, unidade, categoria, servico } = await searchParams
+  const { q, unidade, categoria } = await searchParams
   const payload = await getPayload({ config: await config })
   const { docs } = await payload.find({
     collection: 'produtos',
@@ -61,7 +61,6 @@ export default async function CatalogoPage({
         initialTerm={q ?? ''}
         initialUnit={isUnit(unidade) ? unidade : 'Todas'}
         initialCategory={isCategory(categoria) ? categoria : 'Todas'}
-        initialService={servico ?? ''}
       />
 
       <section className="contact-section catalog-page__contact" id="orcamento">

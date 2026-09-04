@@ -1,0 +1,516 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-28T00:00:00.000Z",
+  "title": "Design System: LM · Esquadrias, Vidros e Construção",
+  "extensions": {
+    "colorMeta": {
+      "gold": {
+        "role": "primary",
+        "displayName": "Ouro LM",
+        "canonical": "oklch(69% 0.115 85)",
+        "tonalRamp": [
+          "oklch(15% 0.115 85)",
+          "oklch(26% 0.115 85)",
+          "oklch(37% 0.115 85)",
+          "oklch(48% 0.115 85)",
+          "oklch(59% 0.115 85)",
+          "oklch(70% 0.115 85)",
+          "oklch(81% 0.115 85)",
+          "oklch(92% 0.115 85)"
+        ]
+      },
+      "gold-light": {
+        "role": "primary",
+        "displayName": "Ouro Claro",
+        "canonical": "oklch(83% 0.09 88)",
+        "tonalRamp": [
+          "oklch(15% 0.09 88)",
+          "oklch(26% 0.09 88)",
+          "oklch(37% 0.09 88)",
+          "oklch(48% 0.09 88)",
+          "oklch(59% 0.09 88)",
+          "oklch(70% 0.09 88)",
+          "oklch(81% 0.09 88)",
+          "oklch(92% 0.09 88)"
+        ]
+      },
+      "gold-cream": {
+        "role": "primary",
+        "displayName": "Creme",
+        "canonical": "oklch(87% 0.085 90)",
+        "tonalRamp": [
+          "oklch(15% 0.085 90)",
+          "oklch(26% 0.085 90)",
+          "oklch(37% 0.085 90)",
+          "oklch(48% 0.085 90)",
+          "oklch(59% 0.085 90)",
+          "oklch(70% 0.085 90)",
+          "oklch(81% 0.085 90)",
+          "oklch(92% 0.085 90)"
+        ]
+      },
+      "gold-ink": {
+        "role": "primary",
+        "displayName": "Ouro Tinta",
+        "canonical": "oklch(57% 0.10 78)",
+        "tonalRamp": [
+          "oklch(15% 0.10 78)",
+          "oklch(26% 0.10 78)",
+          "oklch(37% 0.10 78)",
+          "oklch(48% 0.10 78)",
+          "oklch(59% 0.10 78)",
+          "oklch(70% 0.10 78)",
+          "oklch(81% 0.10 78)",
+          "oklch(92% 0.10 78)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "oklch(19% 0.006 70)",
+        "tonalRamp": [
+          "oklch(15% 0.006 70)",
+          "oklch(26% 0.006 70)",
+          "oklch(37% 0.006 70)",
+          "oklch(48% 0.006 70)",
+          "oklch(59% 0.006 70)",
+          "oklch(70% 0.006 70)",
+          "oklch(81% 0.006 70)",
+          "oklch(92% 0.006 70)"
+        ]
+      },
+      "ink-deep": {
+        "role": "neutral",
+        "displayName": "Tinta Profunda",
+        "canonical": "oklch(18% 0.005 70)",
+        "tonalRamp": [
+          "oklch(15% 0.005 70)",
+          "oklch(26% 0.005 70)",
+          "oklch(37% 0.005 70)",
+          "oklch(48% 0.005 70)",
+          "oklch(59% 0.005 70)",
+          "oklch(70% 0.005 70)",
+          "oklch(81% 0.005 70)",
+          "oklch(92% 0.005 70)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Papel",
+        "canonical": "oklch(97% 0.008 85)",
+        "tonalRamp": [
+          "oklch(15% 0.008 85)",
+          "oklch(26% 0.008 85)",
+          "oklch(37% 0.008 85)",
+          "oklch(48% 0.008 85)",
+          "oklch(59% 0.008 85)",
+          "oklch(70% 0.008 85)",
+          "oklch(81% 0.008 85)",
+          "oklch(95% 0.008 85)"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "Papel 2",
+        "canonical": "oklch(94% 0.012 85)",
+        "tonalRamp": [
+          "oklch(15% 0.012 85)",
+          "oklch(26% 0.012 85)",
+          "oklch(37% 0.012 85)",
+          "oklch(48% 0.012 85)",
+          "oklch(59% 0.012 85)",
+          "oklch(70% 0.012 85)",
+          "oklch(81% 0.012 85)",
+          "oklch(94% 0.012 85)"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Cartão",
+        "canonical": "oklch(98% 0.008 85)",
+        "tonalRamp": [
+          "oklch(15% 0.008 85)",
+          "oklch(26% 0.008 85)",
+          "oklch(37% 0.008 85)",
+          "oklch(48% 0.008 85)",
+          "oklch(59% 0.008 85)",
+          "oklch(70% 0.008 85)",
+          "oklch(81% 0.008 85)",
+          "oklch(96% 0.008 85)"
+        ]
+      },
+      "field": {
+        "role": "neutral",
+        "displayName": "Campo",
+        "canonical": "oklch(98% 0.006 85)",
+        "tonalRamp": [
+          "oklch(15% 0.006 85)",
+          "oklch(26% 0.006 85)",
+          "oklch(37% 0.006 85)",
+          "oklch(48% 0.006 85)",
+          "oklch(59% 0.006 85)",
+          "oklch(70% 0.006 85)",
+          "oklch(81% 0.006 85)",
+          "oklch(96% 0.006 85)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Filete",
+        "canonical": "oklch(88% 0.014 85)",
+        "tonalRamp": [
+          "oklch(15% 0.014 85)",
+          "oklch(26% 0.014 85)",
+          "oklch(37% 0.014 85)",
+          "oklch(48% 0.014 85)",
+          "oklch(59% 0.014 85)",
+          "oklch(70% 0.014 85)",
+          "oklch(81% 0.014 85)",
+          "oklch(92% 0.014 85)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Cinza Texto",
+        "canonical": "oklch(50% 0.008 80)",
+        "tonalRamp": [
+          "oklch(15% 0.008 80)",
+          "oklch(26% 0.008 80)",
+          "oklch(37% 0.008 80)",
+          "oklch(48% 0.008 80)",
+          "oklch(59% 0.008 80)",
+          "oklch(70% 0.008 80)",
+          "oklch(81% 0.008 80)",
+          "oklch(92% 0.008 80)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page h1 only, one per surface. Capped at 15–16ch, always text-wrap: balance."
+      },
+      "display-serif": {
+        "displayName": "Display Serif",
+        "purpose": "Instrument Serif 400. The system's only ornament — at most one per page, on a number or a date. Currently the founding year on the história band."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Band titles (h2). Capped at 14–17ch. Older home bands pin 44/42/40px; new surfaces clamp."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card names, capability rows, list-item headings (19–21px, weight 650)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Leads and prose, 15–17px, in Cinza Texto on paper or white at 70% on ink. Always capped 52–68ch."
+      },
+      "body-sm": {
+        "displayName": "Body Small",
+        "purpose": "Card descriptions, notes, footnotes (12–14px, line-height 1.42–1.56)."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Eyebrows, dt in every data sheet, sidebar legends, footer group titles. 11–12px uppercase, .11–.14em."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "Card footers, result counts, badges. 9–10px uppercase; never carries information required to act."
+      }
+    },
+    "shadows": [
+      {
+        "name": "hairline-ring",
+        "value": "inset 0 0 0 1px #ded8cc, 0 1px 2px rgb(28 25 20 / 3%)",
+        "purpose": "Resting state of every card on paper. A seat, not a lift."
+      },
+      {
+        "name": "card-lift",
+        "value": "inset 0 0 0 1px rgb(155 119 37 / 38%), 0 18px 42px rgb(39 31 21 / 12%)",
+        "purpose": "Hover on a catalogue card, paired with translateY(-5px). The ring warms to gold as it lifts."
+      },
+      {
+        "name": "tile-lift",
+        "value": "0 20px 45px rgb(0 0 0 / 38%)",
+        "purpose": "Hover on a dark photographic tile, paired with translateY(-6px) scale(1.035)."
+      },
+      {
+        "name": "glass-panel",
+        "value": "inset 0 1px rgb(255 255 255 / 28%), inset 0 -1px rgb(255 255 255 / 8%), 0 0 0 1px rgb(255 255 255 / 34%), 0 18px 40px rgb(0 0 0 / 18%)",
+        "purpose": "Cards over photography, with backdrop-filter: blur(18px). Never on a paper band."
+      },
+      {
+        "name": "glass-chrome",
+        "value": "inset 0 1px rgb(255 255 255 / 18%), inset 0 -1px rgb(255 255 255 / 10%), 0 12px 34px rgb(10 7 5 / 18%)",
+        "purpose": "The fixed header over the home hero, with backdrop-filter: blur(28px)."
+      },
+      {
+        "name": "ink-panel-ring",
+        "value": "inset 0 0 0 1px rgb(255 255 255 / 13%)",
+        "purpose": "The ink equivalent of the hairline: a lit edge over a 4–5% white fill. Data sheet and channel rows."
+      },
+      {
+        "name": "modal",
+        "value": "0 34px 100px rgb(0 0 0 / 38%)",
+        "purpose": "The detail panel — the only element allowed a shadow this large."
+      },
+      {
+        "name": "bottom-sheet",
+        "value": "0 -18px 60px rgb(0 0 0 / 24%)",
+        "purpose": "The mobile filter sheet. Cast upward, because the sheet comes from below."
+      },
+      {
+        "name": "field-focus-glow",
+        "value": "0 0 0 3px rgb(197 154 50 / 12%)",
+        "purpose": "The only diffuse gold in the system, at 12% opacity, blooming outside a focused field."
+      }
+    ],
+    "motion": [
+      {
+        "name": "press",
+        "value": "transform 100ms ease",
+        "purpose": "The Press Rule: every pressable thing scales to .96 on :active. The system's tactile signature."
+      },
+      {
+        "name": "state",
+        "value": "180ms ease",
+        "purpose": "Colour, border and background state changes on buttons, links and chips (150–180ms)."
+      },
+      {
+        "name": "lift",
+        "value": "220ms cubic-bezier(.2, .65, .3, 1)",
+        "purpose": "Hover lift on cards and tiles, carousel motion, bottom-sheet slide."
+      },
+      {
+        "name": "panel",
+        "value": "260ms cubic-bezier(.2, .75, .3, 1)",
+        "purpose": "The detail modal rising into place; 280ms for the mobile slide-in."
+      },
+      {
+        "name": "image-scale",
+        "value": "500ms cubic-bezier(.2, .65, .3, 1)",
+        "purpose": "Image scaling inside a fixed frame on hover, ≤ 1.075."
+      },
+      {
+        "name": "entrance",
+        "value": "620ms cubic-bezier(.16, .84, .44, 1)",
+        "purpose": "The one animated moment per page (lm-sobe, 14px rise + fade), staggered 80ms to a 480ms ceiling, inside prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "spine-draw",
+        "value": "880ms cubic-bezier(.16, .84, .44, 1)",
+        "purpose": "The route spine drawing downward (lm-desenha-linha, scaleY from 0, transform-origin top)."
+      },
+      {
+        "name": "marquee",
+        "value": "40s linear infinite",
+        "purpose": "The brand strip: a doubled track translated -50%, paused on hover, replaced by a hand-scrollable row under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      { "name": "desktop-tight", "value": "1100px" },
+      { "name": "mobile", "value": "800px" },
+      { "name": "mobile-sm", "value": "520px" },
+      { "name": "no-hover", "value": "(hover: none)" },
+      { "name": "reduced-motion", "value": "(prefers-reduced-motion: reduce)" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Gold Button",
+      "kind": "button",
+      "refersTo": "button-gold",
+      "description": "The primary action on both substances. Full pill, 44px minimum, label plus optional trailing arrow.",
+      "html": "<a class=\"ds-btn ds-btn-gold\" href=\"#\">Solicitar orçamento <span class=\"ds-btn-arrow\" aria-hidden=\"true\">→</span></a>",
+      "css": ".ds-btn { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 12px; border: 1px solid transparent; border-radius: 999px; padding: 0 22px; font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 650; line-height: 1; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 100ms ease; } .ds-btn-arrow { font-size: 14px; line-height: 1; } .ds-btn:active { transform: scale(.96); } .ds-btn:focus-visible { outline: 2px solid var(--lm-gold-light, #e6c76f); outline-offset: 3px; } .ds-btn-gold { background: var(--lm-gold, #c59a32); color: #191711; } .ds-btn-gold:hover { background: #d6ae4d; }"
+    },
+    {
+      "name": "Dark Button",
+      "kind": "button",
+      "refersTo": "button-dark",
+      "description": "The secondary action. Ink fill with a translucent white border so it survives on paper and on ink alike.",
+      "html": "<a class=\"ds-btn ds-btn-dark\" href=\"#\">Falar no WhatsApp <span class=\"ds-btn-arrow\" aria-hidden=\"true\">→</span></a>",
+      "css": ".ds-btn { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 12px; border: 1px solid transparent; border-radius: 999px; padding: 0 22px; font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 650; line-height: 1; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 100ms ease; } .ds-btn-arrow { font-size: 14px; line-height: 1; } .ds-btn:active { transform: scale(.96); } .ds-btn:focus-visible { outline: 2px solid var(--lm-gold-light, #e6c76f); outline-offset: 3px; } .ds-btn-dark { background: #1c1b18; color: #fff; border-color: rgb(255 255 255 / 18%); } .ds-btn-dark:hover { background: #302e29; }"
+    },
+    {
+      "name": "Eyebrow",
+      "kind": "custom",
+      "refersTo": "eyebrow",
+      "description": "A 5px gold dot and an 11px uppercase gold label at .2em tracking, opening a band above its heading.",
+      "html": "<p class=\"ds-eyebrow\"><i aria-hidden=\"true\"></i>Catálogo LM · sob medida</p>",
+      "css": ".ds-eyebrow { display: flex; align-items: center; gap: 9px; margin: 0; color: var(--lm-gold, #c59a32); font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; } .ds-eyebrow i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }"
+    },
+    {
+      "name": "Catalogue Product Card",
+      "kind": "card",
+      "refersTo": "card-product",
+      "description": "The canonical card. Fixed-height zones so a row aligns regardless of copy length; the ring warms to gold on hover as the card lifts 5px.",
+      "html": "<button class=\"ds-card\" type=\"button\"><span class=\"ds-card-image\"><span class=\"ds-card-badge\">Esquadrias · Portas</span></span><span class=\"ds-card-body\"><span class=\"ds-card-title\">Porta de correr em alumínio</span><span class=\"ds-card-desc\">Folhas amplas que abrem o ambiente para a vista, com perfil reforçado e rolamento suave.</span><span class=\"ds-card-tags\"><span>Perfil reforçado</span><span>Vidro laminado</span><span>Sob medida</span></span><span class=\"ds-card-footer\"><small>Sob medida</small><strong>Ver detalhes <span aria-hidden=\"true\">→</span></strong></span></span></button>",
+      "css": ".ds-card { display: flex; width: 320px; min-height: 476px; flex-direction: column; overflow: hidden; border: 0; border-radius: 16px; padding: 0; color: var(--lm-ink, #1c1b18); background: #fbf8f2; box-shadow: inset 0 0 0 1px #ded8cc, 0 1px 2px rgb(28 25 20 / 3%); font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif; text-align: left; cursor: pointer; transform: translateY(0); transition: transform 200ms cubic-bezier(.2,.7,.3,1), box-shadow 200ms ease; } .ds-card:hover { box-shadow: inset 0 0 0 1px rgb(155 119 37 / 38%), 0 18px 42px rgb(39 31 21 / 12%); transform: translateY(-5px); } .ds-card:active { transform: translateY(-2px) scale(.99); } .ds-card:focus-visible { outline: 3px solid var(--lm-gold, #c59a32); outline-offset: 4px; } .ds-card-image { position: relative; display: block; height: 210px; flex: 0 0 210px; background: #ddd7cd; } .ds-card-badge { position: absolute; top: 13px; left: 13px; border-radius: 999px; padding: 7px 10px 6px; color: #9d7521; background: rgb(251 249 244 / 91%); box-shadow: 0 2px 12px rgb(0 0 0 / 8%); font-size: 9px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; backdrop-filter: blur(8px); } .ds-card-body { display: flex; flex: 1; flex-direction: column; padding: 20px 20px 17px; } .ds-card-title { min-height: 48px; font-size: 19px; font-weight: 650; letter-spacing: -.025em; line-height: 1.2; text-wrap: balance; } .ds-card-desc { min-height: 58px; margin-top: 8px; color: #756f65; font-size: 12px; line-height: 1.45; text-wrap: pretty; } .ds-card-tags { display: flex; min-height: 48px; align-content: flex-start; flex-wrap: wrap; gap: 5px; margin-top: 12px; } .ds-card-tags span { height: fit-content; border-radius: 999px; padding: 5px 8px 4px; color: #8a8173; background: #eee8dc; box-shadow: inset 0 0 0 1px #dfd7c8; font-size: 9px; line-height: 1; } .ds-card-footer { display: flex; min-height: 40px; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 13px; border-top: 1px solid #ded8cc; } .ds-card-footer small { color: #9a9287; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; } .ds-card-footer strong { display: flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 700; } .ds-card-footer strong span { font-size: 15px; transition: transform 180ms ease; } .ds-card:hover .ds-card-footer strong span { transform: translateX(3px); }"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "The catalogue search. Inset ring instead of a border; on focus the ring turns gold and a 12% gold glow blooms outside it.",
+      "html": "<div class=\"ds-search\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"m16 16 4 4\"/></svg><input type=\"search\" placeholder=\"Buscar porta, janela, box…\" aria-label=\"Buscar no catálogo\"></div>",
+      "css": ".ds-search { display: grid; width: 250px; height: 45px; grid-template-columns: 19px minmax(0, 1fr); align-items: center; gap: 10px; border-radius: 12px; padding: 0 14px; background: #fbf9f4; box-shadow: inset 0 0 0 1px #ded8cc; transition: box-shadow 180ms ease, background-color 180ms ease; } .ds-search:focus-within { background: #fff; box-shadow: inset 0 0 0 1px var(--lm-gold, #c59a32), 0 0 0 3px rgb(197 154 50 / 11%); } .ds-search svg { width: 18px; height: 18px; fill: none; stroke: #777168; stroke-linecap: round; stroke-width: 1.7; } .ds-search input { min-width: 0; height: 100%; border: 0; outline: none; color: var(--lm-ink, #1c1b18); background: transparent; font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif; font-size: 13px; } .ds-search input::placeholder { color: #8b857c; opacity: 1; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip-filter-active",
+      "description": "Pill filter. Transparent with a hairline border at rest; the active state inverts to ink fill and white text — never a colour-only change.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip ds-chip-active\" type=\"button\" aria-pressed=\"true\">Todos</button><button class=\"ds-chip\" type=\"button\" aria-pressed=\"false\">Esquadrias</button><button class=\"ds-chip\" type=\"button\" aria-pressed=\"false\">Vidros</button></div>",
+      "css": ".ds-chips { display: flex; align-items: center; gap: 8px; } .ds-chip { min-height: 40px; border: 1px solid #ded8cc; border-radius: 999px; padding: 0 20px; color: #6f6b63; background: transparent; font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif; font-size: 13px; cursor: pointer; transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 100ms ease; } .ds-chip:hover { color: var(--lm-ink, #1c1b18); border-color: #cfc6b6; } .ds-chip:active { transform: scale(.96); } .ds-chip:focus-visible { outline: 2px solid var(--lm-gold-light, #e6c76f); outline-offset: 3px; } .ds-chip-active { color: #fff; border-color: var(--lm-ink, #1c1b18); background: var(--lm-ink, #1c1b18); }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "The solid sticky header used off the home page. The active page is marked with aria-current and rendered as a 2px gold underline — a shape change, not only a colour change.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Navegação principal\"><a href=\"#\">Categorias</a><a href=\"#\" aria-current=\"page\">Catálogo</a><a href=\"#\">Sobre</a><a href=\"#\">Localização</a><a class=\"ds-nav-cta\" href=\"#\">Solicitar orçamento</a></nav>",
+      "css": ".ds-nav { display: flex; height: 68px; align-items: center; gap: 32px; padding: 0 24px; background: rgb(28 27 24 / 96%); font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500; backdrop-filter: blur(12px); } .ds-nav > a:not(.ds-nav-cta) { color: rgb(255 255 255 / 76%); text-decoration: none; transition: color 180ms ease; } .ds-nav > a:not(.ds-nav-cta):hover { color: #fff; } .ds-nav > a[aria-current='page'] { color: #fff; text-decoration: underline; text-decoration-color: var(--lm-gold, #c59a32); text-decoration-thickness: 2px; text-underline-offset: 7px; } .ds-nav a:focus-visible { outline: 2px solid var(--lm-gold-light, #e6c76f); outline-offset: 3px; } .ds-nav-cta { display: inline-flex; min-height: 40px; align-items: center; border-radius: 999px; padding: 0 24px; color: #191711; background: var(--lm-gold, #c59a32); font-size: 14px; font-weight: 650; text-decoration: none; transition: background-color 180ms ease, transform 100ms ease; } .ds-nav-cta:hover { background: #d6ae4d; } .ds-nav-cta:active { transform: scale(.96); }"
+    },
+    {
+      "name": "Data Sheet",
+      "kind": "custom",
+      "refersTo": "data-sheet",
+      "description": "The system's signature: label/value rows on an ink panel, divided by 10%-white rules, values right-aligned in tabular numerals. The one place the page's entrance animation plays.",
+      "html": "<div class=\"ds-sheet\"><p class=\"ds-sheet-title\">Ficha da empresa</p><dl><div><dt>Fundação</dt><dd>2014</dd></div><div><dt>Atuação</dt><dd>Chapada Diamantina · BA</dd></div><div><dt>Fabricação</dt><dd>Galpão próprio</dd></div><div><dt>Instalação</dt><dd>Equipe própria</dd></div></dl></div>",
+      "css": ".ds-sheet { width: 430px; border-radius: 20px; padding: 26px 28px 22px; color: #fff; background: rgb(255 255 255 / 4%); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 13%); font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif; } .ds-sheet-title { margin: 0; color: var(--lm-gold-light, #e6c76f); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; } .ds-sheet dl { margin: 16px 0 0; } .ds-sheet dl div { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; padding: 14px 0; border-top: 1px solid rgb(255 255 255 / 10%); } .ds-sheet dl div:first-child { padding-top: 4px; border-top: 0; } .ds-sheet dt { color: rgb(255 255 255 / 58%); font-size: 11px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; } .ds-sheet dd { margin: 0; color: #fff; font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; text-wrap: pretty; }"
+    },
+    {
+      "name": "Channel Row",
+      "kind": "custom",
+      "refersTo": "channel-row",
+      "description": "The contact affordance on ink: traced icon, label over uppercase caption, arrow disc. Hover raises the fill and inverts the disc.",
+      "html": "<a class=\"ds-channel\" href=\"#\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 11.6a7.7 7.7 0 0 1-11.2 6.9L4 19.6l1.2-4.6A7.7 7.7 0 1 1 20 11.6Z\"/><path d=\"M9.4 10.1c.3 1.6 1.6 3 3.3 3.5l.9-1.2 2 .7-.3 1.6c-2.9.5-6.2-2.4-6.5-5.3l1.6-.4.7 2-1.7-.9Z\"/></svg><span class=\"ds-channel-text\"><small>WhatsApp</small>(75) 0 0000-0000</span><span class=\"ds-channel-arrow\" aria-hidden=\"true\">→</span></a>",
+      "css": ".ds-channel { display: grid; width: 430px; grid-template-columns: 44px minmax(0, 1fr) 34px; align-items: center; gap: 16px; border-radius: 16px; padding: 17px 20px; color: #fff; background: rgb(255 255 255 / 5%); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 13%); font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif; text-decoration: none; transition: background-color 180ms ease, box-shadow 180ms ease, transform 100ms ease; } .ds-channel:hover { background: rgb(255 255 255 / 9%); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 28%); } .ds-channel:active { transform: scale(.99); } .ds-channel:focus-visible { outline: 2px solid var(--lm-gold-light, #e6c76f); outline-offset: 3px; } .ds-channel svg { width: 26px; height: 26px; justify-self: center; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; color: var(--lm-gold-light, #e6c76f); } .ds-channel-text { display: grid; min-width: 0; gap: 3px; font-size: 16px; font-weight: 600; letter-spacing: -.012em; overflow-wrap: anywhere; } .ds-channel-text small { color: rgb(255 255 255 / 62%); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; } .ds-channel-arrow { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 28%); font-size: 14px; line-height: 1; transition: color 180ms ease, background-color 180ms ease; } .ds-channel:hover .ds-channel-arrow { color: var(--lm-ink, #1c1b18); background: rgb(255 255 255 / 92%); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A Ficha Técnica",
+    "overview": "LM sells things that are measured, fabricated and installed — a window profile, a tempered pane, a pergola span. The site is built in that same grammar. Information is set the way a spec sheet is set: ruled rows, a label on the left, a value on the right, numbers in tabular figures. Nothing is presented as a claim when it can be presented as a measurement. The visitor is meant to read the company the way they'd read the section drawing of an aluminium frame.\n\nMaterially the world is two substances. Paper — a warm off-white with a second, slightly deeper tone under it — carries everything that must be read: catalogue, prose, tables, forms. Ink — a near-black warm brown — carries everything that must be felt: the hero, the closing call, the footer, the section that shows work. Photography lives only on ink or behind glass, never floating on paper. Gold is the third material and it is used like brass hardware: a 5px dot, a 2px underline, a filled marker, one button. It is never a surface.\n\nDensity is editorial, not dashboard. Bands run 56–88px of vertical air; prose is capped by a ch measure so a line never outruns the eye; headings carry hard negative tracking while uppercase labels open wide. The build refuses two things by construction: the institutional timeline page with cards of \"values\" (Sobre answers with a spec sheet instead), and the address-left/map-right business card (Localização answers with a numbered route to the door).",
+    "keyCharacteristics": [
+      "Two substances only — warm paper for reading, warm ink for feeling — alternating as full-bleed bands.",
+      "Gold as hardware: dots, underlines, markers, one button. Never a field.",
+      "Data set as ruled lists with tabular numerals, not as cards.",
+      "Hairlines at rest; shadow and lift are responses to the pointer, never a resting state.",
+      "Glass (blur + inset highlight) exists, but only over photography or ink.",
+      "One serif moment and one animated moment per page. Both are ceilings."
+    ],
+    "rules": [
+      {
+        "name": "The Hardware Rule",
+        "body": "Gold is hardware, not paint. It may be a dot, a rule, a marker, an icon, an underline or one button — it may not be a background wider than a button. If a comp has a gold panel, the panel is wrong.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Substances Rule",
+        "body": "A surface is paper or it is ink. There is no third background colour and no gradient between them. Paper 2 and Tinta Profunda are not new substances; they are the same two materials one step apart, used only to keep two same-substance bands from fusing.",
+        "section": "colors"
+      },
+      {
+        "name": "The Warm Neutral Rule",
+        "body": "Every neutral in this system is warm. If a new value reads cool or grey next to #f8f5ef, it is not from this world — including Tailwind's neutral-* scale, which is the legacy register.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tracking Follows Size Rule",
+        "body": "Tracking is a function of size and runs monotonically: -.045em at display, -.04em at headline, -.025em at title, normal at body, then positive — .08em to .2em — the moment type goes uppercase and under 12px. A 44px heading at normal tracking, or an 11px uppercase label at normal tracking, are both immediately wrong.",
+        "section": "typography"
+      },
+      {
+        "name": "The Measure Rule",
+        "body": "Every text block declares a cap in ch, not in pixels: 14–17ch for headings, 52–68ch for prose. A paragraph without a measure cap is unfinished.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Serif Rule",
+        "body": "Instrument Serif appears at most once per page, on a number or a date. It never sets a heading, never sets prose, and never appears twice on one surface.",
+        "section": "typography"
+      },
+      {
+        "name": "The Balance/Pretty Rule",
+        "body": "Headings take text-wrap: balance; prose takes text-wrap: pretty. Both are applied on every heading and paragraph in the system, without exception.",
+        "section": "typography"
+      },
+      {
+        "name": "The Band Rule",
+        "body": "A page is a stack of full-bleed bands, each one substance, and the container never carries a background of its own. If you need a colour change, you need a new band.",
+        "section": "layout"
+      },
+      {
+        "name": "The Closing Ink Rule",
+        "body": "Every page ends on an ink band carrying the primary action, immediately above the ink footer. A new surface that ends on paper is unfinished.",
+        "section": "layout"
+      },
+      {
+        "name": "The No Empty Half Rule",
+        "body": "When a two-column band loses its evidence half — no map, no photo, no image in the CMS — the band collapses to one column and the reading column widens (the is-solo modifier). It never ships with half a section blank.",
+        "section": "layout"
+      },
+      {
+        "name": "The Hairline-At-Rest Rule",
+        "body": "On paper, a surface at rest is separated by a 1px line and a half-step of tone. Shadow is reserved for pointer response and for things that genuinely float (modal, sheet). A resting drop shadow on a paper card is out of world.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Glass Needs Ground Rule",
+        "body": "backdrop-filter is only legitimate where there is something to blur: over photography or over ink. Glass on a paper band is a defect, not a variant.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Radius Follows Area Rule",
+        "body": "A 16px radius on a 48px control, or a 9px radius on a 500px panel, both read as mistakes. Pick from the ladder by the size of the thing.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Pill For Words Rule",
+        "body": "Anything that contains a word and can be pressed is a pill (999px). Anything that contains only a mark is a circle. There is no in-between rounded rectangle for actions.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Press Rule",
+        "body": "Every pressable thing scales to .96 on :active over 100ms — buttons, filter chips, cards, thumbnails, sheet controls. It is the system's single tactile signature and it is applied without exception.",
+        "section": "components"
+      },
+      {
+        "name": "The One Animated Moment Rule",
+        "body": "A page gets one entrance animation and no more. Sobre's is the spec sheet filling in row by row; Localização's is the route line drawing downward. Both are lm-sobe (14px rise + fade, 620ms) staggered in 80ms steps to a 480ms ceiling, and both live inside @media (prefers-reduced-motion: no-preference) — opt-in, so motion is never the default.",
+        "section": "components"
+      },
+      {
+        "name": "The Hover Is A Bonus Rule",
+        "body": "@media (hover: none) strips every hover transform and shadow. Any state that only exists on hover must have a rest state that already reads — which is why active filters invert their fill, badges are always visible, and arrow discs are drawn at rest.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do compose a new page as a stack of full-bleed bands, alternating substance, and end it on an ink band carrying the primary action.",
+      "Do wrap every band's content in .lm-container and let the band's background run full-bleed. One container, no nested max-widths.",
+      "Do cap every text block with a ch measure — 14–17ch headings, 52–68ch prose — and set text-wrap: balance on headings, pretty on paragraphs.",
+      "Do set anything with a label and a value as a ruled list with tabular numerals: dt uppercase and muted, dd full-contrast and right-aligned, rows divided by 1px solid var(--lm-line).",
+      "Do use .button plus a variant for every action, and pick the variant by ground: gold on paper or ink, creme over photography, dark for the secondary.",
+      "Do draw new icons as 24-box SVG at stroke-width: 1.7 with round caps and joins, fill: none, stroke: currentColor.",
+      "Do give a two-column band an is-solo collapse for when its evidence half has no CMS content.",
+      "Do hold hover lift within translateY(-4px … -6px) and scale ≤ 1.035, and make sure the rest state still reads when @media (hover: none) strips it.",
+      "Do put every entrance animation behind @media (prefers-reduced-motion: no-preference), and keep it to one moment per page.",
+      "Do give every new interactive element a ≥44px target and the Ouro Claro focus ring."
+    ],
+    "donts": [
+      "Don't introduce a colour outside the palette. If a comp needs a new hue, it needs a new argument first.",
+      "Don't fill a surface with gold. Gold is a dot, a rule, a marker, an icon or one button; the only diffuse gold in the system is a 12%-opacity focus glow.",
+      "Don't write a new surface in Tailwind's neutral-* utilities. /solucoes, /trabalhos and /catalogo/[slug] are still in that generic register and read as a different product — that is legacy drift to be migrated onto the design system, not a second sanctioned style.",
+      "Don't put glass on a paper band, or a resting drop shadow under a paper card. On paper, rest is a hairline.",
+      "Don't reach for Instrument Serif more than once on a page, and never for a heading or for prose.",
+      "Don't add a fourth breakpoint. The system is 1100 / 800 / 520 plus the two behavioural queries.",
+      "Don't add an eyebrow to a band that already carries a categorising label. It is an existing device in this build, not a required section-opener — a heading that stands alone is finished.",
+      "Don't signal state with colour alone; add a fill inversion, an underline or a shape change.",
+      "Don't reference a custom property that isn't declared in :root. The 800px block currently calls var(--lm-gray-600) and var(--lm-gold-500), neither of which exists — the mobile search clear button therefore loses its colour and its focus ring. That is a bug in the build, not a token.",
+      "Don't let a card's height float with its copy in a grid. The catalogue card fixes each zone's height so a row aligns; a new card in a grid must do the same."
+    ]
+  }
+}

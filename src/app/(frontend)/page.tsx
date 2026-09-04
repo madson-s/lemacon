@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import { HomeCatalog, type HomeProduct } from '@/components/HomeCatalog'
 import { HorizontalCarousel } from '@/components/HorizontalCarousel'
+import { PromotionBanner } from '@/components/PromotionBanner'
 
 const products: HomeProduct[] = [
   {
@@ -71,11 +72,66 @@ const products: HomeProduct[] = [
   },
 ]
 
-const categories = [
-  { title: 'Fachadas de vidro', image: '/images/home/category-facades.png', href: '/catalogo?q=fachada' },
-  { title: 'Portas & janelas', image: '/images/home/category-doors.png', href: '/catalogo?q=porta%20janela' },
-  { title: 'Box & espelhos', image: '/images/home/category-box.png', href: '/catalogo?q=box%20espelho' },
-  { title: 'Guarda-corpo', image: '/images/home/category-railings.png', href: '/catalogo?q=guarda-corpo' },
+const units = [
+  {
+    title: 'Esquadrias',
+    description: 'Portas, janelas, fachadas e coberturas em alumínio.',
+    image: '/images/home/category-doors.png',
+    href: '/catalogo?unidade=Esquadrias',
+  },
+  {
+    title: 'Vidros',
+    description: 'Box, guarda-corpo, espelhos e coberturas de vidro.',
+    image: '/images/home/category-box.png',
+    href: '/catalogo?unidade=Vidros',
+  },
+  {
+    title: 'Construção',
+    description: 'Projeto, execução, reforma e ampliação com equipe própria.',
+    image: '/images/catalog/ampliacao-area-externa.png',
+    href: '/catalogo?unidade=Constru%C3%A7%C3%A3o',
+  },
+]
+
+const promotions = [
+  {
+    eyebrow: 'Seleção LM · Esquadrias',
+    title: 'Esquadrias sob medida para valorizar o seu projeto',
+    description: 'Portas, janelas, fachadas e coberturas fabricadas com precisão para integrar estética, conforto e durabilidade.',
+    image: '/images/home/group-house-background.png',
+    imageAlt: 'Residência contemporânea com grandes esquadrias de alumínio iluminadas ao entardecer',
+    href: '/catalogo?unidade=Esquadrias',
+    cta: 'Explorar esquadrias',
+    align: 'right' as const,
+  },
+  {
+    eyebrow: 'Seleção LM · Vidros',
+    title: 'Transparência, segurança e acabamento',
+    description: 'Box, guarda-corpo, espelhos e coberturas produzidos sob medida para trazer leveza visual, proteção e sofisticação ao ambiente.',
+    image: '/images/catalog/guarda-corpo-escada.png',
+    imageAlt: 'Escada contemporânea protegida por guarda-corpo de vidro',
+    href: '/catalogo?unidade=Vidros',
+    cta: 'Explorar vidros',
+    align: 'right' as const,
+  },
+]
+
+const heroPromotions = [
+  {
+    eyebrow: 'Promoção do mês',
+    title: 'Fachadas que transformam a chegada',
+    support: 'Consulte as condições e a disponibilidade para o seu projeto.',
+    image: '/images/home/product-glass-facade.png',
+    href: '/catalogo?q=fachada%20pele%20de%20vidro',
+    featured: true,
+  },
+  {
+    eyebrow: 'Seleção especial',
+    title: 'Mais abertura para integrar ambientes',
+    image: '/images/home/product-folding-door.png',
+    href: '/catalogo?q=porta-balc%C3%A3o%20sanfonada',
+    featured: false,
+  },
 ]
 
 const process = [
@@ -117,6 +173,29 @@ export default function HomePage() {
               <Arrow diagonal />
             </Link>
           </div>
+          <aside className="hero-promotions" aria-label="Promoções em destaque">
+            {heroPromotions.map((promotion) => (
+              <Link
+                href={promotion.href}
+                className={`hero-promotion-card${promotion.featured ? ' is-featured' : ''}`}
+                key={promotion.title}
+              >
+                <Image src={promotion.image} alt="" fill sizes="(max-width: 1100px) 22vw, 286px" />
+                <span className="hero-promotion-card__shade" aria-hidden />
+                {promotion.featured && (
+                  <span className="hero-promotion-card__badge">
+                    <i aria-hidden /> Condição especial
+                  </span>
+                )}
+                <span className="hero-promotion-card__copy">
+                  <small>{promotion.eyebrow}</small>
+                  <strong>{promotion.title}</strong>
+                  {'support' in promotion && promotion.support && <span>{promotion.support}</span>}
+                  <em>{promotion.featured ? 'Quero conhecer' : 'Ver seleção'} <Arrow /></em>
+                </span>
+              </Link>
+            ))}
+          </aside>
         </div>
       </section>
 
@@ -126,24 +205,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="category-section" id="categorias">
-        <div className="category-section__monogram" aria-hidden>
+      <section className="unit-section" id="unidades">
+        <div className="unit-section__monogram" aria-hidden>
           <Image src="/images/home/category-monogram.png" alt="" width={884} height={884} />
         </div>
-        <div className="lm-container category-section__inner">
-          <div className="category-section__intro">
+        <div className="lm-container unit-section__inner">
+          <div className="unit-section__intro">
             <Eyebrow>Explore</Eyebrow>
-            <h2>Comece por<br />categoria</h2>
+            <h2>Comece por<br />unidade</h2>
             <Link href="/catalogo" className="button button--gold">Ver catálogo completo <Arrow /></Link>
           </div>
-          <HorizontalCarousel trackClassName="category-grid" label="Categorias do catálogo">
-            {categories.map((category) => (
-              <Link href={category.href} key={category.title} className="category-card" aria-label={`Abrir ${category.title} no catálogo`}>
-                <Image src={category.image} alt={category.title} fill sizes="(max-width: 800px) 50vw, 196px" />
-                <span className="category-card__label">{category.title}</span><Arrow />
+          <HorizontalCarousel trackClassName="unit-grid" label="Unidades do catálogo">
+            {units.map((unit) => (
+              <Link href={unit.href} key={unit.title} className="unit-card" aria-label={`Abrir a unidade ${unit.title} no catálogo`}>
+                <Image src={unit.image} alt={unit.title} fill sizes="(max-width: 800px) 74vw, 270px" />
+                <span className="unit-card__copy">
+                  <strong>{unit.title}</strong>
+                  <small>{unit.description}</small>
+                </span>
+                <Arrow />
               </Link>
             ))}
           </HorizontalCarousel>
+        </div>
+      </section>
+
+      <section className="promotion-section" aria-label="Destaque de produtos">
+        <div className="lm-container">
+          <PromotionBanner {...promotions[0]} />
         </div>
       </section>
 
@@ -190,6 +279,12 @@ export default function HomePage() {
           <HorizontalCarousel trackClassName="process-grid" label="Etapas do processo">
             {process.map((step) => <article key={step.number}><div><strong>{step.number}</strong><Arrow diagonal /></div><h3>{step.title}</h3><p>{step.text}</p></article>)}
           </HorizontalCarousel>
+        </div>
+      </section>
+
+      <section className="promotion-section" aria-label="Destaque de produtos">
+        <div className="lm-container">
+          <PromotionBanner {...promotions[1]} />
         </div>
       </section>
 

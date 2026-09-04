@@ -2,7 +2,7 @@
 
 import Fuse from 'fuse.js'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 
 import {
@@ -50,28 +50,19 @@ export function CatalogoBusca({
   initialTerm = '',
   initialUnit = 'Todas',
   initialCategory = 'Todas',
-  initialService = '',
 }: {
   products: CatalogProduct[]
   initialTerm?: string
   initialUnit?: CatalogUnit
   initialCategory?: CatalogCategory
-  initialService?: string
 }) {
-  const router = useRouter()
   const [term, setTerm] = useState(initialTerm)
   const [unit, setUnit] = useState<CatalogUnit>(initialUnit)
   const [category, setCategory] = useState<CatalogCategory>(initialCategory)
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [activeService, setActiveService] = useState<CatalogProduct | null>(() => products.find((item) => item.slug === initialService) ?? null)
-  const [galleryIndex, setGalleryIndex] = useState(0)
   const filterSheetRef = useRef<HTMLDivElement>(null)
-  const detailRef = useRef<HTMLDivElement>(null)
   const filterButtonRef = useRef<HTMLButtonElement>(null)
   const filterCloseRef = useRef<HTMLButtonElement>(null)
-  const detailMobileCloseRef = useRef<HTMLButtonElement>(null)
-  const detailCloseRef = useRef<HTMLButtonElement>(null)
-  const openedFromCatalogRef = useRef(false)
   const fuse = useMemo(() => new Fuse(products, fuseOptions), [products])
 
   const results = useMemo(() => {
@@ -85,12 +76,6 @@ export function CatalogoBusca({
     })
   }, [category, fuse, products, term, unit])
 
-  const detailImages = useMemo(() => {
-    if (!activeService) return []
-    const contextual = products.filter((item) => item.slug !== activeService.slug && (item.category === activeService.category || item.unit === activeService.unit))
-    return [activeService, ...contextual].slice(0, 3)
-  }, [activeService, products])
-
   const normalizedTerm = term.trim()
   const activeFilterTags = [
     ...(normalizedTerm.length >= 2 ? [`Busca: “${normalizedTerm}”`] : []),
@@ -98,6 +83,11 @@ export function CatalogoBusca({
     ...(category !== 'Todas' ? [category] : []),
   ]
   const hasActiveFilters = activeFilterTags.length > 0
+  const returnParams = new URLSearchParams()
+  if (normalizedTerm.length >= 2) returnParams.set('q', normalizedTerm)
+  if (unit !== 'Todas') returnParams.set('unidade', unit)
+  if (category !== 'Todas') returnParams.set('categoria', category)
+  const catalogReturnPath = `/catalogo${returnParams.size ? `?${returnParams.toString()}` : ''}`
 
   const countForUnit = (candidate: CatalogUnit) => candidate === 'Todas' ? products.length : products.filter((item) => item.unit === candidate).length
   const countForCategory = (candidate: CatalogCategory) => candidate === 'Todas' ? products.length : products.filter((item) => item.category === candidate).length
@@ -114,55 +104,19 @@ export function CatalogoBusca({
     setCategory('Todas')
   }
 
-  const openDetail = (item: CatalogProduct) => {
-    openedFromCatalogRef.current = true
-    setActiveService(item)
-    setGalleryIndex(0)
-    const url = new URL(window.location.href)
-    url.searchParams.set('servico', item.slug)
-    router.push(`${url.pathname}${url.search}`, { scroll: false })
-  }
-
-  const closeDetail = () => {
-    setActiveService(null)
-    setGalleryIndex(0)
-    if (openedFromCatalogRef.current) {
-      openedFromCatalogRef.current = false
-      router.back()
-      return
-    }
-
-    const url = new URL(window.location.href)
-    url.searchParams.delete('servico')
-    router.replace(`${url.pathname}${url.search}`, { scroll: false })
-  }
-
-  useEffect(() => {
-    const syncDetailWithUrl = () => {
-      const slug = new URL(window.location.href).searchParams.get('servico')
-      setActiveService(products.find((item) => item.slug === slug) ?? null)
-      setGalleryIndex(0)
-    }
-
-    window.addEventListener('popstate', syncDetailWithUrl)
-    return () => window.removeEventListener('popstate', syncDetailWithUrl)
-  }, [products])
-
   useEffect(() => {
     filterSheetRef.current?.toggleAttribute('inert', !filtersOpen)
-    detailRef.current?.toggleAttribute('inert', !activeService)
-    if (!filtersOpen && !activeService) return
+    if (!filtersOpen) return
 
     const previousOverflow = document.body.style.overflow
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        if (filtersOpen) closeFilters()
-        else if (activeService) closeDetail()
+        closeFilters()
         return
       }
 
       if (event.key !== 'Tab') return
-      const activeRoot = filtersOpen ? filterSheetRef.current : detailRef.current
+      const activeRoot = filterSheetRef.current
       const focusable = Array.from(
         activeRoot?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])') ?? [],
       ).filter((element) => element.offsetParent !== null)
@@ -180,19 +134,13 @@ export function CatalogoBusca({
 
     document.body.style.overflow = 'hidden'
     window.addEventListener('keydown', onKeyDown)
-    if (filtersOpen) filterCloseRef.current?.focus()
-    if (activeService) {
-      const mobile = window.matchMedia('(max-width: 800px)').matches
-      ;(mobile ? detailMobileCloseRef : detailCloseRef).current?.focus()
-    }
+    filterCloseRef.current?.focus()
 
     return () => {
       document.body.style.overflow = previousOverflow
       window.removeEventListener('keydown', onKeyDown)
     }
-  // The callbacks intentionally close the state captured by this effect.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeService, filtersOpen])
+  }, [filtersOpen])
 
   const submitMobileSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -255,7 +203,7 @@ export function CatalogoBusca({
 
             {results.length > 0 ? (
               <ul className="catalog-page__grid">
-                {results.map((item) => <CatalogCard item={item} onOpen={() => openDetail(item)} key={item.id} />)}
+                {results.map((item) => <CatalogCard item={item} returnPath={catalogReturnPath} key={item.id} />)}
               </ul>
             ) : (
               <div className="catalog-page__empty">
@@ -293,63 +241,6 @@ export function CatalogoBusca({
           </div>
         </div>
       </div>
-
-      <div ref={detailRef} className={`service-detail ${activeService ? 'is-open' : ''}`} aria-hidden={!activeService}>
-        <button type="button" className="service-detail__backdrop" aria-label="Voltar ao catálogo" onClick={closeDetail} />
-        {activeService && (
-          <article className="service-detail__panel" role="dialog" aria-modal="true" aria-labelledby="service-detail-title">
-            <header className="service-detail__mobile-header">
-              <button ref={detailMobileCloseRef} type="button" onClick={closeDetail} aria-label="Voltar ao catálogo"><span aria-hidden>←</span> Catálogo</button>
-              <span>{activeService.category}</span>
-            </header>
-            <button ref={detailCloseRef} className="service-detail__close" type="button" onClick={closeDetail} aria-label="Fechar detalhes"><span aria-hidden>×</span></button>
-
-            <div className="service-detail__media">
-              <div className="service-detail__main-image">
-                <Image src={detailImages[galleryIndex]?.image ?? activeService.image} alt={detailImages[galleryIndex]?.imageAlt ?? activeService.imageAlt} fill sizes="(max-width: 800px) 100vw, 54vw" />
-              </div>
-              {detailImages.length > 1 && (
-                <div className="service-detail__thumbs" aria-label="Imagens relacionadas">
-                  {detailImages.map((image, index) => (
-                    <button type="button" className={galleryIndex === index ? 'is-active' : ''} onClick={() => setGalleryIndex(index)} aria-label={`Ver imagem ${index + 1}`} aria-pressed={galleryIndex === index} key={image.slug}>
-                      <Image src={image.image} alt="" fill sizes="96px" />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="service-detail__content">
-              <p className="eyebrow"><i aria-hidden />{activeService.unit} · {activeService.category}</p>
-              <h2 id="service-detail-title">{activeService.name}</h2>
-              <p className="service-detail__lead">{activeService.description}</p>
-              <div className="service-detail__tags">{activeService.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-
-              <div className="service-detail__scope">
-                <h3>Do projeto à instalação</h3>
-                <ul>
-                  <li><span>01</span><p><strong>Medição precisa</strong>Levantamento no local e definição técnica para o seu ambiente.</p></li>
-                  <li><span>02</span><p><strong>Fabricação sob medida</strong>Produção pela equipe LM com materiais e acabamento especificados.</p></li>
-                  <li><span>03</span><p><strong>Instalação completa</strong>Montagem, regulagem e conferência final antes da entrega.</p></li>
-                </ul>
-              </div>
-
-              <a
-                href="#orcamento"
-                className="button button--gold"
-                onClick={(event) => {
-                  event.preventDefault()
-                  setActiveService(null)
-                  setGalleryIndex(0)
-                  openedFromCatalogRef.current = false
-                  router.push('/catalogo#orcamento')
-                }}
-              >Solicitar orçamento <span aria-hidden>→</span></a>
-              <small>Atendimento em toda a Chapada Diamantina.</small>
-            </div>
-          </article>
-        )}
-      </div>
     </>
   )
 }
@@ -374,10 +265,14 @@ function FilterButton({ active, count, onClick, children }: { active: boolean; c
   return <button type="button" className={active ? 'is-active' : ''} aria-pressed={active} onClick={onClick}><span>{children}</span><small>{count}</small></button>
 }
 
-function CatalogCard({ item, onOpen }: { item: CatalogProduct; onOpen: () => void }) {
+function CatalogCard({ item, returnPath }: { item: CatalogProduct; returnPath: string }) {
   return (
     <li>
-      <button type="button" className="catalog-product-card" onClick={onOpen} aria-label={`Conhecer ${item.name}`}>
+      <Link
+        href={`/catalogo/${item.slug}?voltar=${encodeURIComponent(returnPath)}`}
+        className="catalog-product-card"
+        aria-label={`Conhecer ${item.name}`}
+      >
         <div className="catalog-product-card__image">
           <Image src={item.image} alt={item.imageAlt} fill sizes="(max-width: 800px) calc(100vw - 40px), (max-width: 1200px) 33vw, 276px" />
           <span>{item.unit} · {item.category}</span>
@@ -388,7 +283,7 @@ function CatalogCard({ item, onOpen }: { item: CatalogProduct; onOpen: () => voi
           <div className="catalog-product-card__tags">{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
           <div className="catalog-product-card__footer"><small>Sob orçamento</small><strong>Ver detalhes <span aria-hidden>→</span></strong></div>
         </div>
-      </button>
+      </Link>
     </li>
   )
 }

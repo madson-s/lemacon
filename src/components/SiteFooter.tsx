@@ -2,10 +2,32 @@ import Link from 'next/link'
 
 import { BrandLogo } from './BrandLogo'
 
-const footerGroups = [
-  { title: 'Unidades', links: ['Esquadrias de alumínio', 'Vidros temperados', 'Tec Construção'] },
-  { title: 'Catálogo', links: ['Portas & janelas', 'Fachadas de vidro', 'Box & guarda-corpo', 'Espelhos & coberturas'] },
-  { title: 'Contato', links: ['WhatsApp', 'Chapada Diamantina — BA'] },
+const footerGroups: { title: string; links: { label: string; href: string }[] }[] = [
+  {
+    title: 'Unidades',
+    links: [
+      { label: 'Esquadrias de alumínio', href: '/catalogo?unidade=Esquadrias' },
+      { label: 'Vidros temperados', href: '/catalogo?unidade=Vidros' },
+      { label: 'Tec Construção', href: '/catalogo?unidade=Constru%C3%A7%C3%A3o' },
+    ],
+  },
+  {
+    title: 'Catálogo',
+    links: [
+      { label: 'Portas & janelas', href: '/catalogo?q=porta%20janela' },
+      { label: 'Fachadas de vidro', href: '/catalogo?q=fachada' },
+      { label: 'Box & guarda-corpo', href: '/catalogo?q=box%20guarda-corpo' },
+      { label: 'Espelhos & coberturas', href: '/catalogo?q=espelho%20cobertura' },
+    ],
+  },
+  {
+    title: 'A LM',
+    links: [
+      { label: 'Sobre a LM', href: '/sobre' },
+      { label: 'Onde estamos', href: '/localizacao' },
+      { label: 'Solicitar orçamento', href: '/#orcamento' },
+    ],
+  },
 ]
 
 export function SiteFooter() {
@@ -21,9 +43,9 @@ export function SiteFooter() {
           <div key={group.title} className="site-footer__group">
             <p className="site-footer__eyebrow">{group.title}</p>
             <ul>
-              {group.links.map((label) => (
-                <li key={label}>
-                  <Link href={label === 'WhatsApp' ? '/#orcamento' : '/catalogo'}>{label}</Link>
+              {group.links.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href}>{link.label}</Link>
                 </li>
               ))}
             </ul>
