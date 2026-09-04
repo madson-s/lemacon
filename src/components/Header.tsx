@@ -9,7 +9,7 @@ import type { CategoriaItem } from '@/lib/produtos'
 import { BrandLogo } from './BrandLogo'
 
 const navigation = [
-  { label: 'Categorias', href: '/#categorias' },
+  { label: 'Unidades', href: '/#unidades' },
   { label: 'Catálogo', href: '/catalogo' },
   { label: 'Linhas', href: '/#grupo-lm' },
   { label: 'Processo', href: '/#processo' },

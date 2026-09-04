@@ -6,9 +6,9 @@ const footerGroups: { title: string; links: { label: string; href: string }[] }[
   {
     title: 'Unidades',
     links: [
-      { label: 'Esquadrias de alumínio', href: '/catalogo' },
-      { label: 'Vidros temperados', href: '/catalogo' },
-      { label: 'Tec Construção', href: '/catalogo' },
+      { label: 'Esquadrias de alumínio', href: '/catalogo?unidade=Esquadrias' },
+      { label: 'Vidros temperados', href: '/catalogo?unidade=Vidros' },
+      { label: 'Tec Construção', href: '/catalogo?unidade=Constru%C3%A7%C3%A3o' },
     ],
   },
   {

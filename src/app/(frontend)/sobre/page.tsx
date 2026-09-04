@@ -57,6 +57,39 @@ const iniciais = (nome: string): string =>
     .map((parte) => parte[0]?.toUpperCase() ?? '')
     .join('')
 
+const projetos = [
+  {
+    title: 'Fachadas de vidro',
+    unit: 'Vidros',
+    image: '/images/catalog/fachada-pele-vidro.png',
+    href: '/catalogo?unidade=Vidros&categoria=Fachadas',
+  },
+  {
+    title: 'Portas e grandes vãos',
+    unit: 'Esquadrias',
+    image: '/images/catalog/porta-sanfonada.png',
+    href: '/catalogo?unidade=Esquadrias&categoria=Portas',
+  },
+  {
+    title: 'Guarda-corpos sob medida',
+    unit: 'Vidros',
+    image: '/images/catalog/guarda-corpo-escada.png',
+    href: '/catalogo?unidade=Vidros&categoria=Guarda-corpo',
+  },
+  {
+    title: 'Reforma e ampliação',
+    unit: 'Construção',
+    image: '/images/catalog/ampliacao-area-externa.png',
+    href: '/catalogo?unidade=Constru%C3%A7%C3%A3o',
+  },
+]
+
+const metodo = [
+  ['01', 'Projeto conectado à execução', 'Quem mede e especifica acompanha o que será produzido.'],
+  ['02', 'Fabricação própria', 'Perfis, vidros e acabamentos passam pela mesma coordenação.'],
+  ['03', 'Instalação e pós-entrega', 'A equipe instala, ajusta e responde por cada detalhe entregue.'],
+]
+
 export default async function SobrePage() {
   const sobre = await carregar()
 
@@ -69,7 +102,7 @@ export default async function SobrePage() {
 
   // Sem upload, a faixa cai numa foto do acervo próprio que já está no repositório:
   // a página fica no mesmo material da home em vez de virar uma ilha só de tipografia.
-  const abertura = urlDaMedia(sobre.imagem, 'card') ?? '/images/home/aluminium-detail.png'
+  const abertura = urlDaMedia(sobre.imagem, 'card') ?? '/images/home/group-house-background.png'
   const aberturaAlt =
     altDaMedia(sobre.imagem) ||
     'Residência com fechamento em alumínio e madeira executado pela LM, com a entrada iluminada'
@@ -77,9 +110,9 @@ export default async function SobrePage() {
 
   return (
     <>
-      <section className="sobre-sheet">
-        <div className="lm-container sobre-sheet__inner">
-          <div className="sobre-sheet__copy">
+      <section className="sobre-hero">
+        <div className="lm-container sobre-hero__grid">
+          <div className="sobre-hero__copy">
             {sobre.chapeu && (
               <p className="eyebrow">
                 <i aria-hidden />
@@ -87,47 +120,76 @@ export default async function SobrePage() {
               </p>
             )}
             <h1>{sobre.titulo}</h1>
-            {sobre.lead && <p className="sobre-sheet__lead">{sobre.lead}</p>}
-          </div>
+            {sobre.lead && <p className="sobre-hero__lead">{sobre.lead}</p>}
+            <Link className="button button--dark" href="/#orcamento">
+              Conheça o seu projeto com a LM <span aria-hidden>→</span>
+            </Link>
 
-          {ficha.length > 0 && (
-            <div className="sobre-sheet__ficha">
-              <p className="sobre-sheet__ficha-titulo">A LM em números e fatos</p>
-              <dl>
-                {ficha.map((linha) => (
+            {ficha.length > 0 && (
+              <dl className="sobre-hero__stats">
+                {ficha.slice(0, 3).map((linha) => (
                   <div key={linha.id ?? linha.rotulo}>
                     <dt>{linha.rotulo}</dt>
                     <dd>{linha.valor}</dd>
                   </div>
                 ))}
               </dl>
-            </div>
-          )}
+            )}
+          </div>
+
+          <div className="sobre-hero__visual">
+            <Image src={abertura} alt={aberturaAlt} fill priority sizes="(max-width: 800px) calc(100vw - 40px), 580px" />
+            <span>Projeto · fabricação · instalação</span>
+          </div>
         </div>
       </section>
 
-      <div className="sobre-band">
-        <Image src={abertura} alt={aberturaAlt} fill sizes="100vw" className="sobre-band__image" />
-      </div>
-
       {capacidades.length > 0 && (
-        <section className="sobre-exec">
-          <div className="lm-container">
-            {sobre.capacidadesTitulo && <h2>{sobre.capacidadesTitulo}</h2>}
-            <div className="sobre-exec__list">
-              {capacidades.map((frente) => (
-                <article key={frente.id ?? frente.titulo} className="sobre-exec__row">
-                  <h3>
-                    <i aria-hidden />
-                    {frente.titulo}
-                  </h3>
-                  {frente.texto && <p>{frente.texto}</p>}
+        <section className="sobre-capabilities">
+          <div className="lm-container sobre-capabilities__grid">
+            <div className="sobre-capabilities__story">
+              <p className="eyebrow"><i aria-hidden /> Estrutura própria</p>
+              {sobre.capacidadesTitulo && <h2>{sobre.capacidadesTitulo}</h2>}
+              <p>Da leitura do vão ao acabamento final, as decisões acontecem perto de quem vai fabricar e instalar.</p>
+              <div className="sobre-capabilities__image">
+                <Image src="/images/home/aluminium-detail.png" alt="Detalhe de uma fachada executada pela LM" fill sizes="(max-width: 800px) calc(100vw - 40px), 690px" />
+              </div>
+            </div>
+            <div className="sobre-capabilities__cards">
+              {capacidades.map((frente, index) => (
+                <article key={frente.id ?? frente.titulo}>
+                  <span aria-hidden>{String(index + 1).padStart(2, '0')}</span>
+                  <div>
+                    <h3>{frente.titulo}</h3>
+                    {frente.texto && <p>{frente.texto}</p>}
+                  </div>
                 </article>
               ))}
             </div>
           </div>
         </section>
       )}
+
+      <section className="sobre-projects">
+        <div className="lm-container">
+          <div className="sobre-projects__intro">
+            <div>
+              <p className="eyebrow"><i aria-hidden /> Portfólio LM</p>
+              <h2>Projetos que mostram como trabalhamos</h2>
+            </div>
+            <Link className="button button--dark" href="/catalogo">Ver catálogo <span aria-hidden>→</span></Link>
+          </div>
+          <div className="sobre-projects__grid">
+            {projetos.map((projeto) => (
+              <Link href={projeto.href} key={projeto.title} className="sobre-project-card">
+                <Image src={projeto.image} alt="" fill sizes="(max-width: 800px) 76vw, 290px" />
+                <span aria-hidden />
+                <p><small>{projeto.unit}</small><strong>{projeto.title}</strong></p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {temHistoria && (
         <section className="sobre-historia">
@@ -200,6 +262,22 @@ export default async function SobrePage() {
           </div>
         </section>
       )}
+
+      <section className="sobre-method">
+        <div className="lm-container">
+          <p className="eyebrow"><i aria-hidden /> Nosso método</p>
+          <h2>Uma equipe do primeiro traço à última regulagem</h2>
+          <div className="sobre-method__grid">
+            {metodo.map(([numero, titulo, texto]) => (
+              <article key={numero}>
+                <span>{numero}</span>
+                <h3>{titulo}</h3>
+                <p>{texto}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {fechamento?.titulo && (
         <section className="sobre-cta">
