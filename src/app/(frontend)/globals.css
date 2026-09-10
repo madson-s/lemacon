@@ -198,29 +198,13 @@ a {
 .button-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .home-hero .button-row { margin-top: 32px; }
 .hero-promotions { position: absolute; top: 132px; right: 0; display: grid; width: min(42.5%, 510px); grid-template-columns: 1fr; gap: 14px; }
-.hero-promotion-card { position: relative; height: 102px; overflow: hidden; border-radius: 18px; background: #302b25; box-shadow: 0 16px 42px rgb(0 0 0 / 22%); outline: 1px solid rgb(255 255 255 / 10%); outline-offset: -1px; transform: translateY(0); transition: transform 240ms cubic-bezier(.2,.65,.3,1), box-shadow 240ms ease, outline-color 180ms ease; }
+.hero-promotion-card { position: relative; aspect-ratio: 5 / 1; overflow: hidden; border-radius: 18px; background: #302b25; box-shadow: 0 16px 42px rgb(0 0 0 / 22%); outline: 1px solid rgb(255 255 255 / 10%); outline-offset: -1px; transform: translateY(0); transition: transform 240ms cubic-bezier(.2,.65,.3,1), box-shadow 240ms ease, outline-color 180ms ease; }
 .hero-promotion-card img { object-fit: cover; transition: transform 650ms cubic-bezier(.2,.65,.3,1); }
-.hero-promotion-card__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(15 13 11 / 2%) 24%, rgb(15 13 11 / 84%) 86%, rgb(15 13 11 / 96%)); }
-.hero-promotion-card__copy { position: absolute; inset: 0; display: grid; max-width: 72%; align-content: center; gap: 5px; padding: 18px 22px; }
-.hero-promotion-card__copy small { color: var(--lm-gold-light); font-size: 9px; font-style: normal; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-.hero-promotion-card__copy strong { max-width: 24ch; font-size: 16px; font-weight: 600; letter-spacing: -.025em; line-height: 1.12; text-wrap: balance; }
-.hero-promotion-card__copy > span { max-width: 27ch; color: rgb(255 255 255 / 66%); font-size: 10px; line-height: 1.4; text-wrap: pretty; }
-.hero-promotion-card__copy em { display: flex; width: fit-content; min-height: 32px; margin-top: 3px; align-items: center; gap: 9px; border-radius: 999px; padding: 0 13px; color: var(--lm-ink); background: rgb(255 255 255 / 90%); font-size: 10px; font-style: normal; font-weight: 700; }
-.hero-promotion-card.is-featured { height: 286px; border-radius: 24px; outline-color: rgb(230 199 111 / 62%); box-shadow: 0 0 0 3px rgb(197 154 50 / 15%), 0 30px 80px rgb(0 0 0 / 34%); }
-.hero-promotion-card.is-featured::after { position: absolute; inset: 0; background: radial-gradient(circle at 12% 8%, rgb(230 199 111 / 28%), transparent 34%); content: ''; pointer-events: none; }
-.hero-promotion-card.is-featured .hero-promotion-card__shade { background: linear-gradient(180deg, rgb(32 24 12 / 3%) 18%, rgb(23 18 10 / 55%) 60%, rgb(16 14 11 / 98%) 100%); }
-.hero-promotion-card__badge { position: absolute; z-index: 2; top: 18px; left: 18px; display: flex; min-height: 38px; align-items: center; gap: 8px; border-radius: 999px; padding: 0 14px; color: #241d0d; background: linear-gradient(135deg, var(--lm-gold-light), #d6aa42); box-shadow: 0 8px 26px rgb(0 0 0 / 24%); font-size: 9px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
-.hero-promotion-card__badge i { width: 7px; height: 7px; border-radius: 50%; background: #1c1b18; box-shadow: 0 0 0 4px rgb(28 27 24 / 10%); }
-.hero-promotion-card.is-featured .hero-promotion-card__copy { z-index: 1; inset: auto 28px 25px; max-width: 330px; align-content: initial; padding: 0; gap: 7px; }
-.hero-promotion-card.is-featured .hero-promotion-card__copy strong { font-size: 24px; }
-.hero-promotion-card.is-featured .hero-promotion-card__copy em { min-height: 40px; margin-top: 4px; padding-inline: 16px; font-size: 11px; }
-.hero-promotion-card:not(.is-featured) .hero-promotion-card__shade { background: linear-gradient(90deg, rgb(15 13 11 / 94%) 0%, rgb(15 13 11 / 76%) 55%, rgb(15 13 11 / 10%) 100%); }
-.hero-promotion-card:not(.is-featured) .hero-promotion-card__copy em { position: absolute; right: 15px; bottom: 15px; }
-.hero-promotion-card.is-featured .hero-promotion-card__copy em { color: #211a0c; background: var(--lm-gold-light); box-shadow: 0 8px 26px rgb(0 0 0 / 22%); }
-.hero-promotion-card:hover { box-shadow: 0 30px 72px rgb(0 0 0 / 34%); transform: translateY(-6px); }
-.hero-promotion-card.is-featured:hover { box-shadow: 0 0 0 3px rgb(230 199 111 / 24%), 0 36px 88px rgb(0 0 0 / 44%); transform: translateY(-6px); }
-.hero-promotion-card:hover img { transform: scale(1.045); }
-.hero-promotion-card:active { transform: scale(.96); }
+.hero-promotion-card.is-featured { aspect-ratio: 16 / 9; border-radius: 24px; outline-color: rgb(230 199 111 / 62%); box-shadow: 0 0 0 3px rgb(197 154 50 / 15%), 0 30px 80px rgb(0 0 0 / 34%); }
+a.hero-promotion-card:hover { box-shadow: 0 30px 72px rgb(0 0 0 / 34%); transform: translateY(-6px); }
+a.hero-promotion-card.is-featured:hover { box-shadow: 0 0 0 3px rgb(230 199 111 / 24%), 0 36px 88px rgb(0 0 0 / 44%); transform: translateY(-6px); }
+a.hero-promotion-card:hover img { transform: scale(1.045); }
+a.hero-promotion-card:active { transform: scale(.96); }
 
 .catalog-section { min-height: 0; padding: 64px 0 58px; color: var(--lm-ink); background: var(--lm-paper); }
 .catalog-intro { display: flex; min-height: 205px; align-items: flex-end; justify-content: space-between; gap: 64px; }
@@ -1033,8 +1017,8 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-gold); outline-offs
 @media (hover: none) {
   a.promotion-card:hover { box-shadow: inset 0 0 0 1px rgb(0 0 0 / 8%), 0 18px 44px rgb(39 31 21 / 10%); transform: none; }
   .product-card:hover .product-card__image img, .unit-card:hover img, .promotion-banner:hover .promotion-banner__image { transform: none; }
-  .hero-promotion-card:hover, .sobre-project-card:hover { box-shadow: 0 12px 34px rgb(39 31 21 / 10%); transform: none; }
-  .hero-promotion-card:hover img, .sobre-project-card:hover img { transform: none; }
+  .sobre-project-card:hover { box-shadow: 0 12px 34px rgb(39 31 21 / 10%); transform: none; }
+  .sobre-project-card:hover img { transform: none; }
   .unit-card:hover { box-shadow: none; transform: none; }
   .catalog-product-card:hover { box-shadow: inset 0 0 0 1px #ded8cc, 0 1px 2px rgb(28 25 20 / 3%); transform: none; }
   .catalog-product-card:hover .catalog-product-card__image img, .catalog-product-card:hover .catalog-product-card__footer strong span { transform: none; }

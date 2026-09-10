@@ -4,7 +4,7 @@ import type { Field, GlobalConfig } from 'payload'
  * Banner é arte pronta: o PNG carrega o texto e a página só o enquadra e liga
  * ao destino. Por isso não há título nem descrição aqui — só imagem, alt e link.
  */
-const bannerFields: Field[] = [
+const bannerFields = (medida: string): Field[] => [
   {
     name: 'imagem',
     label: 'Arte do banner',
@@ -12,8 +12,7 @@ const bannerFields: Field[] = [
     relationTo: 'media',
     required: true,
     admin: {
-      description:
-        'PNG na proporção 8:3 — 1200 × 450 px funciona bem. Fora dessa proporção, as bordas da arte podem ser cortadas.',
+      description: `PNG ${medida}. Fora dessa proporção, as bordas da arte podem ser cortadas.`,
     },
   },
   {
@@ -179,6 +178,20 @@ export const Home: GlobalConfig = {
       ],
     },
     {
+      name: 'bannersHero',
+      label: 'Banners do topo',
+      labels: { singular: 'Banner', plural: 'Banners' },
+      type: 'array',
+      maxRows: 3,
+      admin: {
+        description:
+          'Aparecem sobre a foto do topo, à direita. O primeiro é o grande; os seguintes são faixas mais baixas abaixo dele. Deixe vazio para esconder.',
+      },
+      fields: bannerFields(
+        'no primeiro banner use 16:9 — 1020 × 574 px; nos demais, 5:1 — 1020 × 204 px',
+      ),
+    },
+    {
       name: 'bannersFaixa1',
       label: 'Banners — faixa de cima',
       labels: { singular: 'Banner', plural: 'Banners' },
@@ -187,7 +200,7 @@ export const Home: GlobalConfig = {
         description:
           'Aparece logo depois das categorias, antes do bloco "Três frentes, uma equipe". Dois banners por linha. Deixe vazio para esconder a faixa.',
       },
-      fields: bannerFields,
+      fields: bannerFields('na proporção 8:3 — 1200 × 450 px funciona bem'),
     },
     {
       name: 'bannersFaixa2',
@@ -198,7 +211,7 @@ export const Home: GlobalConfig = {
         description:
           'Aparece depois do bloco "Três passos até a instalação". Dois banners por linha. Deixe vazio para esconder a faixa.',
       },
-      fields: bannerFields,
+      fields: bannerFields('na proporção 8:3 — 1200 × 450 px funciona bem'),
     },
   ],
 }

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getPayload } from 'payload'
 
 import { BannerFaixa } from '@/components/BannerFaixa'
+import { BannerHero } from '@/components/BannerHero'
 import { HomeCatalog, type HomeProduct } from '@/components/HomeCatalog'
 import { HorizontalCarousel } from '@/components/HorizontalCarousel'
 import config from '@/payload.config'
@@ -97,24 +98,6 @@ const units = [
   },
 ]
 
-const heroPromotions = [
-  {
-    eyebrow: 'Promoção do mês',
-    title: 'Fachadas que transformam a chegada',
-    support: 'Consulte as condições e a disponibilidade para o seu projeto.',
-    image: '/images/home/product-glass-facade.png',
-    href: '/catalogo?q=fachada%20pele%20de%20vidro',
-    featured: true,
-  },
-  {
-    eyebrow: 'Seleção especial',
-    title: 'Mais abertura para integrar ambientes',
-    image: '/images/home/product-folding-door.png',
-    href: '/catalogo?q=porta-balc%C3%A3o%20sanfonada',
-    featured: false,
-  },
-]
-
 const process = [
   { number: '01', title: 'Medição e projeto', text: 'Visitamos o local ou recebemos as suas medidas. Definimos perfil, vidro, ferragens e enviamos o orçamento com prazo fechado.' },
   { number: '02', title: 'Fabricação', text: 'A peça é produzida sob medida pela nossa equipe, no nosso galpão. Você acompanha o andamento pelo WhatsApp.' },
@@ -145,29 +128,7 @@ export default async function HomePage() {
             <Link href="/catalogo" className="button button--cream">Ver catálogo <Arrow /></Link>
             <Link href="#orcamento" className="button button--dark">Entre em contato <Arrow /></Link>
           </div>
-          <aside className="hero-promotions" aria-label="Promoções em destaque">
-            {heroPromotions.map((promotion) => (
-              <Link
-                href={promotion.href}
-                className={`hero-promotion-card${promotion.featured ? ' is-featured' : ''}`}
-                key={promotion.title}
-              >
-                <Image src={promotion.image} alt="" fill sizes="(max-width: 1100px) 22vw, 286px" />
-                <span className="hero-promotion-card__shade" aria-hidden />
-                {promotion.featured && (
-                  <span className="hero-promotion-card__badge">
-                    <i aria-hidden /> Condição especial
-                  </span>
-                )}
-                <span className="hero-promotion-card__copy">
-                  <small>{promotion.eyebrow}</small>
-                  <strong>{promotion.title}</strong>
-                  {'support' in promotion && promotion.support && <span>{promotion.support}</span>}
-                  <em>{promotion.featured ? 'Quero conhecer' : 'Ver seleção'} <Arrow /></em>
-                </span>
-              </Link>
-            ))}
-          </aside>
+          <BannerHero banners={home.bannersHero ?? []} />
         </div>
       </section>
 

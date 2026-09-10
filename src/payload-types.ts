@@ -750,6 +750,26 @@ export interface Home {
     ctaTexto?: string | null;
   };
   /**
+   * Aparecem sobre a foto do topo, à direita. O primeiro é o grande; os seguintes são faixas mais baixas abaixo dele. Deixe vazio para esconder.
+   */
+  bannersHero?:
+    | {
+        /**
+         * PNG no primeiro banner use 16:9 — 1020 × 574 px; nos demais, 5:1 — 1020 × 204 px. Fora dessa proporção, as bordas da arte podem ser cortadas.
+         */
+        imagem: number | Media;
+        /**
+         * O que o banner diz, em uma frase. É o que quem usa leitor de tela ouve no lugar da imagem.
+         */
+        alt: string;
+        /**
+         * Para onde o banner leva. Ex.: /catalogo?unidade=Esquadrias ou /#orcamento. Vazio, o banner não vira clicável.
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Aparece logo depois das categorias, antes do bloco "Três frentes, uma equipe". Dois banners por linha. Deixe vazio para esconder a faixa.
    */
   bannersFaixa1?:
@@ -980,6 +1000,14 @@ export interface HomeSelect<T extends boolean = true> {
         titulo?: T;
         texto?: T;
         ctaTexto?: T;
+      };
+  bannersHero?:
+    | T
+    | {
+        imagem?: T;
+        alt?: T;
+        link?: T;
+        id?: T;
       };
   bannersFaixa1?:
     | T
