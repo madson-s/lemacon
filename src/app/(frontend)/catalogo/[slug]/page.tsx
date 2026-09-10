@@ -53,7 +53,7 @@ function ProductRecommendation({ product }: { product: CatalogProduct }) {
           <Image src={product.image} alt={product.imageAlt} fill sizes="(max-width: 800px) 78vw, 300px" />
         </span>
         <span className="product-detail__recommendation-copy">
-          <small>{product.unit} · {product.category}</small>
+          <small>{product.unit ? `${product.unit} · ${product.category}` : product.category}</small>
           <strong>{product.name}</strong>
           <span>Conhecer solução <i aria-hidden>→</i></span>
         </span>
@@ -118,10 +118,13 @@ export default async function ProdutoPage({ params }: { params: Promise<{ slug: 
             items={[
               { label: 'Início', href: '/' },
               { label: 'Catálogo', href: '/catalogo' },
-              { label: item.unit, href: `/catalogo?unidade=${encodeURIComponent(item.unit)}` },
+              // A unidade só entra na trilha quando a categoria declara uma.
+              ...(item.unit
+                ? [{ label: item.unit, href: `/catalogo?unidade=${encodeURIComponent(item.unit)}` }]
+                : []),
               {
                 label: item.category,
-                href: `/catalogo?unidade=${encodeURIComponent(item.unit)}&categoria=${encodeURIComponent(item.category)}`,
+                href: `/catalogo?categoria=${encodeURIComponent(item.category)}`,
               },
               { label: item.name },
             ]}
@@ -136,7 +139,7 @@ export default async function ProdutoPage({ params }: { params: Promise<{ slug: 
           </div>
 
           <div className="product-detail__summary">
-            <p className="eyebrow"><i aria-hidden />{item.unit} · {item.category}</p>
+            <p className="eyebrow"><i aria-hidden />{item.unit ? `${item.unit} · ${item.category}` : item.category}</p>
             <h1>{item.name}</h1>
             <p className="product-detail__lead">{item.description}</p>
             <div className="product-detail__tags">
@@ -172,7 +175,7 @@ export default async function ProdutoPage({ params }: { params: Promise<{ slug: 
           <div className="product-detail__technical">
             <h2>Informações técnicas</h2>
             <dl>
-              <div><dt>Unidade</dt><dd>{item.unit}</dd></div>
+              {item.unit && <div><dt>Unidade</dt><dd>{item.unit}</dd></div>}
               <div><dt>Categoria</dt><dd>{item.category}</dd></div>
               {document?.marca && <div><dt>Linha ou marca</dt><dd>{document.marca}</dd></div>}
               {document?.especificacoes?.map((spec) => (

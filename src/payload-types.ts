@@ -221,6 +221,10 @@ export interface Categoria {
    * Gerado a partir de "nome". Edite apenas se precisar de uma URL específica.
    */
   slug?: string | null;
+  /**
+   * A frente da LM a que esta categoria pertence. É o que agrupa a categoria no filtro do catálogo. Sem unidade, os produtos aparecem apenas em "Todas" e no filtro da própria categoria.
+   */
+  unidade?: ('Esquadrias' | 'Vidros' | 'Construção') | null;
   descricao?: string | null;
   /**
    * Define a ordem de exibição no catálogo. Menor aparece primeiro.
@@ -555,6 +559,7 @@ export interface ProdutosSelect<T extends boolean = true> {
 export interface CategoriasSelect<T extends boolean = true> {
   nome?: T;
   slug?: T;
+  unidade?: T;
   descricao?: T;
   ordem?: T;
   destacarNaHome?: T;
