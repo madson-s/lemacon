@@ -83,11 +83,6 @@ export function CatalogoBusca({
     ...(category !== 'Todas' ? [category] : []),
   ]
   const hasActiveFilters = activeFilterTags.length > 0
-  const returnParams = new URLSearchParams()
-  if (normalizedTerm.length >= 2) returnParams.set('q', normalizedTerm)
-  if (unit !== 'Todas') returnParams.set('unidade', unit)
-  if (category !== 'Todas') returnParams.set('categoria', category)
-  const catalogReturnPath = `/catalogo${returnParams.size ? `?${returnParams.toString()}` : ''}`
 
   const countForUnit = (candidate: CatalogUnit) => candidate === 'Todas' ? products.length : products.filter((item) => item.unit === candidate).length
   const countForCategory = (candidate: CatalogCategory) => candidate === 'Todas' ? products.length : products.filter((item) => item.category === candidate).length
@@ -203,7 +198,7 @@ export function CatalogoBusca({
 
             {results.length > 0 ? (
               <ul className="catalog-page__grid">
-                {results.map((item) => <CatalogCard item={item} returnPath={catalogReturnPath} key={item.id} />)}
+                {results.map((item) => <CatalogCard item={item} key={item.id} />)}
               </ul>
             ) : (
               <div className="catalog-page__empty">
@@ -265,11 +260,11 @@ function FilterButton({ active, count, onClick, children }: { active: boolean; c
   return <button type="button" className={active ? 'is-active' : ''} aria-pressed={active} onClick={onClick}><span>{children}</span><small>{count}</small></button>
 }
 
-function CatalogCard({ item, returnPath }: { item: CatalogProduct; returnPath: string }) {
+function CatalogCard({ item }: { item: CatalogProduct }) {
   return (
     <li>
       <Link
-        href={`/catalogo/${item.slug}?voltar=${encodeURIComponent(returnPath)}`}
+        href={`/catalogo/${item.slug}`}
         className="catalog-product-card"
         aria-label={`Conhecer ${item.name}`}
       >

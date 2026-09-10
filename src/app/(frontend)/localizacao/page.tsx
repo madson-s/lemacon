@@ -2,13 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 
-import {
-  enderecoEmLinhas,
-  formatarTelefone,
-  linkDaRota,
-  linkDoWhatsApp,
-  temEndereco,
-} from '@/lib/localizacao'
+import { enderecoEmLinhas, linkDaRota, mapaIncorporado, temEndereco } from '@/lib/localizacao'
 import { altDaMedia, urlDaMedia } from '@/lib/produtos'
 import config from '@/payload.config'
 
@@ -41,52 +35,28 @@ const ClockIcon = () => (
   </svg>
 )
 
-const ChatIcon = () => (
-  <svg viewBox="0 0 24 24" aria-hidden {...stroke}>
-    <path d="M20 11.6a7.7 7.7 0 0 1-11.2 6.9L4 19.6l1.2-4.6A7.7 7.7 0 1 1 20 11.6Z" />
-    <path d="M9.4 10.1c.3 1.6 1.6 3 3.3 3.5l.9-1.2 2 .7-.3 1.6c-2.9.5-6.2-2.4-6.5-5.3l1.6-.4.7 2-1.7-.9Z" />
-  </svg>
-)
-
-const PhoneIcon = () => (
-  <svg viewBox="0 0 24 24" aria-hidden {...stroke}>
-    <path d="M6.2 4.5h3l1.4 3.6-1.9 1.4a10.4 10.4 0 0 0 5.1 5.1l1.4-1.9 3.6 1.4v3a1.6 1.6 0 0 1-1.8 1.6A14.6 14.6 0 0 1 4.6 6.3a1.6 1.6 0 0 1 1.6-1.8Z" />
-  </svg>
-)
-
-const FormIcon = () => (
-  <svg viewBox="0 0 24 24" aria-hidden {...stroke}>
-    <path d="M15.4 4.6H7a2 2 0 0 0-2 2v10.8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.2Z" />
-    <path d="M15.2 4.7v3.4h3.6M8.6 12.4h6.8M8.6 15.6h4.4" />
-  </svg>
-)
-
-const MailIcon = () => (
-  <svg viewBox="0 0 24 24" aria-hidden {...stroke}>
-    <rect x="3.4" y="5.6" width="17.2" height="12.8" rx="2.2" />
-    <path d="m4.4 7.4 7.6 5.3 7.6-5.3" />
-  </svg>
-)
-
 export default async function LocalizacaoPage() {
   const payload = await getPayload({ config: await config })
   const local = await payload.findGlobal({ slug: 'localizacao', depth: 1 })
   const address = local.endereco
   const addressLines = enderecoEmLinhas(address)
   const route = linkDaRota(local.mapaUrl, address)
-  const whatsapp = linkDoWhatsApp(local.contato?.whatsapp)
-  const phone = local.contato?.telefone?.trim() || ''
-  const email = local.contato?.email?.trim() || ''
   const hours = local.horarios ?? []
   const facade = urlDaMedia(local.imagem, 'card')
   const city = address?.cidade?.trim()
     ? [address.cidade.trim(), address.estado?.trim()].filter(Boolean).join(' — ')
     : ''
   const region = local.regiao?.trim() || 'Toda a Chapada Diamantina'
-  const noContactData = !temEndereco(address) && !whatsapp && !phone && !email
-  const primaryCta = route ?? whatsapp ?? '/#orcamento'
-  const primaryExternal = Boolean(route ?? whatsapp)
+  // Com endereço cadastrado o mapa aponta para a base; sem ele, mostra a região
+  // atendida, que é o que a página tem de verdade para dizer.
   const chapadaGoogleMap = 'https://www.google.com/maps?q=Chapada%20Diamantina%2C%20Bahia&z=8&output=embed'
+  const mapEmbed = mapaIncorporado(local.mapaUrl, address) ?? chapadaGoogleMap
+  const mapTitle = temEndereco(address)
+    ? `Mapa do Google Maps com a localização da LM em ${city || region}`
+    : 'Mapa do Google Maps centralizado na Chapada Diamantina'
+  const mapLink =
+    route ??
+    'https://www.google.com/maps/search/?api=1&query=Chapada%20Diamantina%2C%20Bahia'
 
   const locationCards = [
     {
@@ -117,17 +87,14 @@ export default async function LocalizacaoPage() {
           <div className="location-hero__finder">
             <span><PinIcon /></span>
             <p><small>Área de atendimento</small><strong>{region}</strong></p>
-            <a href={primaryCta} target={primaryExternal ? '_blank' : undefined} rel={primaryExternal ? 'noreferrer' : undefined}>
-              {route ? 'Traçar rota' : whatsapp ? 'Falar com a LM' : 'Pedir avaliação'} <span aria-hidden>→</span>
-            </a>
           </div>
         </div>
 
         <div className="lm-container location-map-stage">
           <div className="location-map-stage__media">
             <iframe
-              src={chapadaGoogleMap}
-              title="Mapa do Google Maps centralizado na Chapada Diamantina"
+              src={mapEmbed}
+              title={mapTitle}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
@@ -141,12 +108,7 @@ export default async function LocalizacaoPage() {
             <p>{temEndereco(address) ? addressLines.join(' · ') : 'A equipe combina o melhor ponto de encontro com você antes da visita.'}</p>
             {route && <a href={route} target="_blank" rel="noreferrer">Abrir no mapa <span aria-hidden>→</span></a>}
           </article>
-          <a
-            className="location-map-stage__credit"
-            href="https://www.google.com/maps/search/?api=1&query=Chapada%20Diamantina%2C%20Bahia"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a className="location-map-stage__credit" href={mapLink} target="_blank" rel="noreferrer">
             Abrir no Google Maps
           </a>
         </div>
@@ -200,22 +162,6 @@ export default async function LocalizacaoPage() {
         </section>
       )}
 
-      <section className="local-canais">
-        <div className="lm-container local-canais__inner">
-          <div className="local-canais__copy">
-            <p className="eyebrow"><i aria-hidden />Contato direto</p>
-            <h2>Fale com quem vai cuidar do seu projeto</h2>
-            <p>{noContactData ? 'Conte o que você precisa e a equipe retorna com a especificação e o próximo passo.' : 'Mande as medidas, uma foto do vão ou apenas a dúvida. Quem responde entende da fabricação.'}</p>
-          </div>
-
-          <ul className="local-canais__lista">
-            {whatsapp && <li><a href={whatsapp} target="_blank" rel="noreferrer"><ChatIcon /><span><small>WhatsApp</small>{formatarTelefone(local.contato?.whatsapp)}</span><span aria-hidden className="arrow arrow--diagonal">→</span></a></li>}
-            {phone && <li><a href={`tel:${phone.replace(/\D/g, '')}`}><PhoneIcon /><span><small>Telefone</small>{phone}</span><span aria-hidden className="arrow arrow--diagonal">→</span></a></li>}
-            {email && <li><a href={`mailto:${email}`}><MailIcon /><span><small>E-mail</small>{email}</span><span aria-hidden className="arrow arrow--diagonal">→</span></a></li>}
-            {noContactData && <li><Link href="/#orcamento"><FormIcon /><span><small>Formulário</small>Contar o meu projeto</span><span aria-hidden className="arrow arrow--diagonal">→</span></Link></li>}
-          </ul>
-        </div>
-      </section>
     </main>
   )
 }

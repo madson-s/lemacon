@@ -1,9 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { getPayload } from 'payload'
 
+import { BannerFaixa } from '@/components/BannerFaixa'
 import { HomeCatalog, type HomeProduct } from '@/components/HomeCatalog'
 import { HorizontalCarousel } from '@/components/HorizontalCarousel'
-import { PromotionBanner } from '@/components/PromotionBanner'
+import config from '@/payload.config'
+
+export const dynamic = 'force-dynamic'
 
 const products: HomeProduct[] = [
   {
@@ -93,29 +97,6 @@ const units = [
   },
 ]
 
-const promotions = [
-  {
-    eyebrow: 'Seleção LM · Esquadrias',
-    title: 'Esquadrias sob medida para valorizar o seu projeto',
-    description: 'Portas, janelas, fachadas e coberturas fabricadas com precisão para integrar estética, conforto e durabilidade.',
-    image: '/images/home/group-house-background.png',
-    imageAlt: 'Residência contemporânea com grandes esquadrias de alumínio iluminadas ao entardecer',
-    href: '/catalogo?unidade=Esquadrias',
-    cta: 'Explorar esquadrias',
-    align: 'right' as const,
-  },
-  {
-    eyebrow: 'Seleção LM · Vidros',
-    title: 'Transparência, segurança e acabamento',
-    description: 'Box, guarda-corpo, espelhos e coberturas produzidos sob medida para trazer leveza visual, proteção e sofisticação ao ambiente.',
-    image: '/images/catalog/guarda-corpo-escada.png',
-    imageAlt: 'Escada contemporânea protegida por guarda-corpo de vidro',
-    href: '/catalogo?unidade=Vidros',
-    cta: 'Explorar vidros',
-    align: 'right' as const,
-  },
-]
-
 const heroPromotions = [
   {
     eyebrow: 'Promoção do mês',
@@ -148,7 +129,10 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   return <p className="eyebrow"><i aria-hidden />{children}</p>
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const payload = await getPayload({ config: await config })
+  const home = await payload.findGlobal({ slug: 'home', depth: 1 })
+
   return (
     <>
       <section className="home-hero">
@@ -160,18 +144,6 @@ export default function HomePage() {
           <div className="button-row">
             <Link href="/catalogo" className="button button--cream">Ver catálogo <Arrow /></Link>
             <Link href="#orcamento" className="button button--dark">Entre em contato <Arrow /></Link>
-          </div>
-          <div className="hero-features">
-            <Link href="/catalogo?q=fachada%20pele%20de%20vidro" aria-label="Ver fachada pele de vidro no catálogo">
-              <Image src="/images/home/product-glass-facade.png" alt="Fachada pele de vidro" width={64} height={81} />
-              <span><small>Direto da fábrica</small>Fachada pele de vidro</span>
-              <Arrow diagonal />
-            </Link>
-            <Link href="/catalogo?q=porta-balc%C3%A3o%20sanfonada" aria-label="Ver porta-balcão sanfonada no catálogo">
-              <Image src="/images/home/product-folding-door.png" alt="Porta-balcão sanfonada integrando sala e varanda" width={64} height={81} />
-              <span><small>Integração total</small>Porta-balcão sanfonada</span>
-              <Arrow diagonal />
-            </Link>
           </div>
           <aside className="hero-promotions" aria-label="Promoções em destaque">
             {heroPromotions.map((promotion) => (
@@ -230,11 +202,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="promotion-section" aria-label="Destaque de produtos">
-        <div className="lm-container">
-          <PromotionBanner {...promotions[0]} />
-        </div>
-      </section>
+      <BannerFaixa banners={home.bannersFaixa1 ?? []} rotulo="Destaques da LM" />
 
       <section className="group-section" id="grupo-lm">
         <div className="lm-container group-section__grid">
@@ -282,11 +250,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="promotion-section" aria-label="Destaque de produtos">
-        <div className="lm-container">
-          <PromotionBanner {...promotions[1]} />
-        </div>
-      </section>
+      <BannerFaixa banners={home.bannersFaixa2 ?? []} rotulo="Mais destaques da LM" />
 
       <section className="contact-section" id="orcamento">
         <div className="lm-container contact-section__grid">

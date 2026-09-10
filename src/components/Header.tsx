@@ -9,10 +9,8 @@ import type { CategoriaItem } from '@/lib/produtos'
 import { BrandLogo } from './BrandLogo'
 
 const navigation = [
-  { label: 'Unidades', href: '/#unidades' },
+  { label: 'Início', href: '/' },
   { label: 'Catálogo', href: '/catalogo' },
-  { label: 'Linhas', href: '/#grupo-lm' },
-  { label: 'Processo', href: '/#processo' },
   { label: 'Sobre', href: '/sobre' },
   { label: 'Localização', href: '/localizacao' },
 ]
@@ -27,7 +25,6 @@ export function Header({ categorias: _categorias }: { categorias: CategoriaItem[
       <div className="lm-container site-header__inner">
         <div className="site-header__identity">
           <BrandLogo />
-          <span>Esquadrias · Vidros · Construção</span>
         </div>
 
         <button

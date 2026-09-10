@@ -749,6 +749,46 @@ export interface Home {
     texto?: string | null;
     ctaTexto?: string | null;
   };
+  /**
+   * Aparece logo depois das categorias, antes do bloco "Três frentes, uma equipe". Dois banners por linha. Deixe vazio para esconder a faixa.
+   */
+  bannersFaixa1?:
+    | {
+        /**
+         * PNG na proporção 8:3 — 1200 × 450 px funciona bem. Fora dessa proporção, as bordas da arte podem ser cortadas.
+         */
+        imagem: number | Media;
+        /**
+         * O que o banner diz, em uma frase. É o que quem usa leitor de tela ouve no lugar da imagem.
+         */
+        alt: string;
+        /**
+         * Para onde o banner leva. Ex.: /catalogo?unidade=Esquadrias ou /#orcamento. Vazio, o banner não vira clicável.
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Aparece depois do bloco "Três passos até a instalação". Dois banners por linha. Deixe vazio para esconder a faixa.
+   */
+  bannersFaixa2?:
+    | {
+        /**
+         * PNG na proporção 8:3 — 1200 × 450 px funciona bem. Fora dessa proporção, as bordas da arte podem ser cortadas.
+         */
+        imagem: number | Media;
+        /**
+         * O que o banner diz, em uma frase. É o que quem usa leitor de tela ouve no lugar da imagem.
+         */
+        alt: string;
+        /**
+         * Para onde o banner leva. Ex.: /catalogo?unidade=Esquadrias ou /#orcamento. Vazio, o banner não vira clicável.
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -940,6 +980,22 @@ export interface HomeSelect<T extends boolean = true> {
         titulo?: T;
         texto?: T;
         ctaTexto?: T;
+      };
+  bannersFaixa1?:
+    | T
+    | {
+        imagem?: T;
+        alt?: T;
+        link?: T;
+        id?: T;
+      };
+  bannersFaixa2?:
+    | T
+    | {
+        imagem?: T;
+        alt?: T;
+        link?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

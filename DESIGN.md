@@ -220,6 +220,7 @@ rounded:
   panel-lg: "22px"
   lg: "24px"
   sheet-sm: "28px"
+  card-media: "30px"
   sheet: "32px"
   sheet-lg: "34px"
   hero: "38px"

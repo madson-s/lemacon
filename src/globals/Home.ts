@@ -1,4 +1,42 @@
-import type { GlobalConfig } from 'payload'
+import type { Field, GlobalConfig } from 'payload'
+
+/**
+ * Banner é arte pronta: o PNG carrega o texto e a página só o enquadra e liga
+ * ao destino. Por isso não há título nem descrição aqui — só imagem, alt e link.
+ */
+const bannerFields: Field[] = [
+  {
+    name: 'imagem',
+    label: 'Arte do banner',
+    type: 'upload',
+    relationTo: 'media',
+    required: true,
+    admin: {
+      description:
+        'PNG na proporção 8:3 — 1200 × 450 px funciona bem. Fora dessa proporção, as bordas da arte podem ser cortadas.',
+    },
+  },
+  {
+    name: 'alt',
+    label: 'Descrição da arte',
+    type: 'text',
+    required: true,
+    admin: {
+      description:
+        'O que o banner diz, em uma frase. É o que quem usa leitor de tela ouve no lugar da imagem.',
+    },
+  },
+  {
+    name: 'link',
+    label: 'Link',
+    type: 'text',
+    admin: {
+      description:
+        'Para onde o banner leva. Ex.: /catalogo?unidade=Esquadrias ou /#orcamento. Vazio, o banner não vira clicável.',
+      placeholder: '/catalogo',
+    },
+  },
+]
 
 /**
  * Conteúdo do topo da home. É um global (documento único) porque a home não é
@@ -139,6 +177,28 @@ export const Home: GlobalConfig = {
           defaultValue: 'Ver todos os trabalhos',
         },
       ],
+    },
+    {
+      name: 'bannersFaixa1',
+      label: 'Banners — faixa de cima',
+      labels: { singular: 'Banner', plural: 'Banners' },
+      type: 'array',
+      admin: {
+        description:
+          'Aparece logo depois das categorias, antes do bloco "Três frentes, uma equipe". Dois banners por linha. Deixe vazio para esconder a faixa.',
+      },
+      fields: bannerFields,
+    },
+    {
+      name: 'bannersFaixa2',
+      label: 'Banners — faixa de baixo',
+      labels: { singular: 'Banner', plural: 'Banners' },
+      type: 'array',
+      admin: {
+        description:
+          'Aparece depois do bloco "Três passos até a instalação". Dois banners por linha. Deixe vazio para esconder a faixa.',
+      },
+      fields: bannerFields,
     },
   ],
 }
