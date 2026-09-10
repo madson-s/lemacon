@@ -165,6 +165,75 @@ typography:
     fontSize: "24px"
     fontWeight: 620
     letterSpacing: "-0.025em"
+  step-8:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "8px"
+  step-10:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "10px"
+  step-12:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "12px"
+  step-15:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "15px"
+  step-19:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "19px"
+  step-21:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "21px"
+  step-22:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "22px"
+  step-26:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "26px"
+  step-30:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "30px"
+  step-32:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "32px"
+  step-34:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "34px"
+  step-38:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "38px"
+  step-39:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "39px"
+  step-40:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "40px"
+  step-42:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "42px"
+  step-48:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "48px"
+  step-50:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "50px"
+  step-54:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "54px"
+  step-56:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "56px"
+  step-60:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "60px"
+  step-66:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "66px"
+  step-72:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "72px"
+  step-92:
+    fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
+    fontSize: "92px"
 rounded:
   xs: "9px"
   control: "10px"
