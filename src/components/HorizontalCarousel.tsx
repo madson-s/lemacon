@@ -86,7 +86,6 @@ export function HorizontalCarousel({ children, label, trackClassName }: Horizont
       startX: event.clientX,
       scrollLeft: track.scrollLeft,
     }
-    track.setPointerCapture(event.pointerId)
     setIsDragging(true)
   }
 
@@ -96,9 +95,11 @@ export function HorizontalCarousel({ children, label, trackClassName }: Horizont
     if (!track || !drag.active || drag.pointerId !== event.pointerId) return
 
     const distance = event.clientX - drag.startX
-    if (Math.abs(distance) > 6) {
+    if (Math.abs(distance) > 6 && !drag.moved) {
       drag.moved = true
       suppressClickRef.current = true
+      // Só agora vale capturar: o gesto virou arrasto, e o clique já não é do link.
+      track.setPointerCapture(event.pointerId)
     }
     if (!drag.moved) return
 
@@ -107,7 +108,9 @@ export function HorizontalCarousel({ children, label, trackClassName }: Horizont
   }
 
   const finishPointerDrag = (event: PointerEvent<HTMLDivElement>) => {
+    const track = trackRef.current
     if (!dragRef.current.active || dragRef.current.pointerId !== event.pointerId) return
+    if (track?.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId)
     dragRef.current.active = false
     setIsDragging(false)
   }

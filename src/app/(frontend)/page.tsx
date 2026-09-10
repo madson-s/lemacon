@@ -6,6 +6,8 @@ import { BannerFaixa } from '@/components/BannerFaixa'
 import { BannerHero } from '@/components/BannerHero'
 import { HomeCatalog, type HomeProduct } from '@/components/HomeCatalog'
 import { HorizontalCarousel } from '@/components/HorizontalCarousel'
+import { mergePublishedProducts } from '@/lib/catalogo-design'
+import { paraProdutoItem } from '@/lib/produtos'
 import config from '@/payload.config'
 
 export const dynamic = 'force-dynamic'
@@ -82,21 +84,18 @@ const units = [
     title: 'Esquadrias',
     description: 'Portas, janelas, fachadas e coberturas em alumínio.',
     image: '/images/home/category-doors.png',
-    href: '/catalogo?unidade=Esquadrias',
   },
   {
     title: 'Vidros',
     description: 'Box, guarda-corpo, espelhos e coberturas de vidro.',
     image: '/images/home/category-box.png',
-    href: '/catalogo?unidade=Vidros',
   },
   {
     title: 'Construção',
     description: 'Projeto, execução, reforma e ampliação com equipe própria.',
     image: '/images/catalog/ampliacao-area-externa.png',
-    href: '/catalogo?unidade=Constru%C3%A7%C3%A3o',
   },
-]
+] as const
 
 const process = [
   { number: '01', title: 'Medição e projeto', text: 'Visitamos o local ou recebemos as suas medidas. Definimos perfil, vidro, ferragens e enviamos o orçamento com prazo fechado.' },
@@ -115,6 +114,18 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 export default async function HomePage() {
   const payload = await getPayload({ config: await config })
   const home = await payload.findGlobal({ slug: 'home', depth: 1 })
+
+  const { docs: produtos } = await payload.find({
+    collection: 'produtos',
+    depth: 1,
+    limit: 2000,
+    pagination: false,
+    where: { ativo: { equals: true } },
+  })
+  const porUnidade = mergePublishedProducts(produtos.map(paraProdutoItem)).reduce<Record<string, number>>(
+    (acc, item) => (item.unit ? { ...acc, [item.unit]: (acc[item.unit] ?? 0) + 1 } : acc),
+    {},
+  )
 
   return (
     <>
@@ -149,16 +160,26 @@ export default async function HomePage() {
             <Link href="/catalogo" className="button button--gold">Ver catálogo completo <Arrow /></Link>
           </div>
           <HorizontalCarousel trackClassName="unit-grid" label="Unidades do catálogo">
-            {units.map((unit) => (
-              <Link href={unit.href} key={unit.title} className="unit-card" aria-label={`Abrir a unidade ${unit.title} no catálogo`}>
-                <Image src={unit.image} alt={unit.title} fill sizes="(max-width: 800px) 74vw, 270px" />
-                <span className="unit-card__copy">
-                  <strong>{unit.title}</strong>
-                  <small>{unit.description}</small>
-                </span>
-                <Arrow />
-              </Link>
-            ))}
+            {units.map((unit) => {
+              const total = porUnidade[unit.title] ?? 0
+
+              return (
+                <Link
+                  href={`/catalogo?unidade=${encodeURIComponent(unit.title)}`}
+                  key={unit.title}
+                  className="unit-card"
+                  aria-label={`Ver ${total === 1 ? '1 item' : `${total} itens`} da unidade ${unit.title} no catálogo`}
+                >
+                  <Image src={unit.image} alt={unit.title} fill sizes="(max-width: 800px) 74vw, 270px" />
+                  <span className="unit-card__copy">
+                    <strong>{unit.title}</strong>
+                    <small>{unit.description}</small>
+                    <em className="unit-card__count">{total === 1 ? '1 item' : `${total} itens`}</em>
+                  </span>
+                  <Arrow />
+                </Link>
+              )
+            })}
           </HorizontalCarousel>
         </div>
       </section>

@@ -262,6 +262,8 @@ a.hero-promotion-card:active { transform: scale(.96); }
 .unit-card__copy { position: absolute; z-index: 2; right: 54px; bottom: 17px; left: 16px; display: grid; gap: 4px; }
 .unit-card__copy strong { font-size: 16px; font-weight: 650; letter-spacing: -.015em; }
 .unit-card__copy small { color: rgb(255 255 255 / 70%); font-size: 11px; line-height: 1.35; text-wrap: pretty; }
+/* Quantos itens a unidade tem hoje: evita mandar o visitante a uma lista vazia. */
+.unit-card__count { display: block; margin-top: 8px; color: var(--lm-gold-light); font-size: 11px; font-style: normal; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .unit-card > .arrow { position: absolute; z-index: 2; right: 14px; bottom: 14px; display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid rgb(255 255 255 / 25%); border-radius: 50%; background: rgb(246 241 233 / 20%); transition: color 180ms ease, background-color 180ms ease, transform 220ms ease; }
 .unit-card:hover > .arrow { color: var(--lm-ink); background: rgb(255 255 255 / 92%); transform: translateX(2px); }
 
