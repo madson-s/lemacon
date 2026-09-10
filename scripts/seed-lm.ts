@@ -63,6 +63,41 @@ const PRODUTOS: { nome: string; categoria: string; marca: string; descricao: str
     descricao: 'Telha térmica ondulada, indicada para cobertura e fechamento lateral.',
     tags: ['Ondulada', 'Isolamento térmico', 'Kingspan'],
   },
+  {
+    nome: 'Telha Residence',
+    categoria: 'Telhas Metálicas',
+    marca: 'Kingspan',
+    descricao: 'Telha metálica com perfil residencial, para coberturas aparentes com acabamento uniforme.',
+    tags: ['Residencial', 'Metálica', 'Kingspan'],
+  },
+  {
+    nome: 'Telha Colonial (Standard - 5 ondas)',
+    categoria: 'Telhas Metálicas',
+    marca: 'Kingspan',
+    descricao: 'Telha metálica colonial de 5 ondas, no perfil padrão, com o desenho tradicional em aço.',
+    tags: ['Colonial', '5 ondas', 'Metálica', 'Kingspan'],
+  },
+  {
+    nome: 'Telha Colonial (Standard - 6 ondas)',
+    categoria: 'Telhas Metálicas',
+    marca: 'Kingspan',
+    descricao: 'Telha metálica colonial de 6 ondas, no perfil padrão, para maior cobertura útil por peça.',
+    tags: ['Colonial', '6 ondas', 'Metálica', 'Kingspan'],
+  },
+  {
+    nome: 'Telha Isoluz',
+    categoria: 'Telhas Translúcidas',
+    marca: 'Kingspan',
+    descricao: 'Telha translúcida que leva luz natural para dentro da cobertura, sem abrir o vão.',
+    tags: ['Translúcida', 'Luz natural', 'Kingspan'],
+  },
+  {
+    nome: 'Perfil Lystra',
+    categoria: 'Fachadas e Revestimentos',
+    marca: 'Kingspan',
+    descricao: 'Perfil para fachada e revestimento, com encaixe aparente e acabamento arquitetônico.',
+    tags: ['Fachada', 'Revestimento', 'Kingspan'],
+  },
 ]
 
 const MARCAS = ['Kingspan']

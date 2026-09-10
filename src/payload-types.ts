@@ -158,11 +158,11 @@ export interface Produto {
    */
   preco?: number | null;
   /**
-   * Aparece no card e abre a galeria na página do produto.
+   * A capa do produto: aparece no card do catálogo e é a primeira foto da galeria.
    */
   imagem?: (number | null) | Media;
   /**
-   * Fotos adicionais mostradas na página do produto.
+   * Outros ângulos, detalhes e aplicações. Aparecem como miniaturas ao lado da foto principal, na ordem em que estiverem aqui — arraste para reordenar.
    */
   galeria?: (number | Media)[] | null;
   /**
