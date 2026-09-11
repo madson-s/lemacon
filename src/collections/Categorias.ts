@@ -24,6 +24,21 @@ export const Categorias: CollectionConfig = {
     },
     slugField('nome'),
     {
+      name: 'unidade',
+      label: 'Unidade',
+      type: 'select',
+      options: [
+        { label: 'Esquadrias', value: 'Esquadrias' },
+        { label: 'Vidros', value: 'Vidros' },
+        { label: 'Construção', value: 'Construção' },
+      ],
+      index: true,
+      admin: {
+        description:
+          'A frente da LM a que esta categoria pertence. É o que agrupa a categoria no filtro do catálogo. Sem unidade, os produtos aparecem apenas em "Todas" e no filtro da própria categoria.',
+      },
+    },
+    {
       name: 'descricao',
       label: 'Descrição',
       type: 'textarea',

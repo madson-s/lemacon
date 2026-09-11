@@ -4,10 +4,9 @@ import { getPayload } from 'payload'
 
 import { CatalogoBusca } from '@/components/CatalogoBusca'
 import {
-  catalogCategories,
+  categoriasDosProdutos,
   catalogUnits,
   mergePublishedProducts,
-  type CatalogCategory,
   type CatalogUnit,
 } from '@/lib/catalogo-design'
 import { paraProdutoItem } from '@/lib/produtos'
@@ -21,7 +20,6 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 const isUnit = (value: string | undefined): value is CatalogUnit => catalogUnits.includes(value as CatalogUnit)
-const isCategory = (value: string | undefined): value is CatalogCategory => catalogCategories.includes(value as CatalogCategory)
 
 export default async function CatalogoPage({
   searchParams,
@@ -39,6 +37,8 @@ export default async function CatalogoPage({
     where: { ativo: { equals: true } },
   })
   const products = mergePublishedProducts(docs.map(paraProdutoItem))
+  // O filtro de categorias reflete o que existe cadastrado, não uma lista fixa.
+  const categorias = categoriasDosProdutos(products)
 
   return (
     <div className="catalog-page">
@@ -60,7 +60,8 @@ export default async function CatalogoPage({
         products={products}
         initialTerm={q ?? ''}
         initialUnit={isUnit(unidade) ? unidade : 'Todas'}
-        initialCategory={isCategory(categoria) ? categoria : 'Todas'}
+        categorias={categorias}
+        initialCategory={categoria && categorias.includes(categoria) ? categoria : 'Todas'}
       />
 
       <section className="contact-section catalog-page__contact" id="orcamento">

@@ -4,6 +4,9 @@ import * as migration_20260812_024221_marcas from './20260812_024221_marcas';
 import * as migration_20260812_031415_projetos from './20260812_031415_projetos';
 import * as migration_20260812_032218_solucoes from './20260812_032218_solucoes';
 import * as migration_20260828_171345_sobre_localizacao from './20260828_171345_sobre_localizacao';
+import * as migration_20260904_041116_banners_home from './20260904_041116_banners_home';
+import * as migration_20260910_135841_banners_hero from './20260910_135841_banners_hero';
+import * as migration_20260910_165539_categoria_unidade from './20260910_165539_categoria_unidade';
 
 export const migrations = [
   {
@@ -34,6 +37,21 @@ export const migrations = [
   {
     up: migration_20260828_171345_sobre_localizacao.up,
     down: migration_20260828_171345_sobre_localizacao.down,
-    name: '20260828_171345_sobre_localizacao'
+    name: '20260828_171345_sobre_localizacao',
+  },
+  {
+    up: migration_20260904_041116_banners_home.up,
+    down: migration_20260904_041116_banners_home.down,
+    name: '20260904_041116_banners_home',
+  },
+  {
+    up: migration_20260910_135841_banners_hero.up,
+    down: migration_20260910_135841_banners_hero.down,
+    name: '20260910_135841_banners_hero',
+  },
+  {
+    up: migration_20260910_165539_categoria_unidade.up,
+    down: migration_20260910_165539_categoria_unidade.down,
+    name: '20260910_165539_categoria_unidade'
   },
 ];

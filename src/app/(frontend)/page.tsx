@@ -1,9 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { getPayload } from 'payload'
 
+import { BannerFaixa } from '@/components/BannerFaixa'
+import { BannerHero } from '@/components/BannerHero'
 import { HomeCatalog, type HomeProduct } from '@/components/HomeCatalog'
 import { HorizontalCarousel } from '@/components/HorizontalCarousel'
-import { PromotionBanner } from '@/components/PromotionBanner'
+import { mergePublishedProducts } from '@/lib/catalogo-design'
+import { paraProdutoItem } from '@/lib/produtos'
+import config from '@/payload.config'
+
+export const dynamic = 'force-dynamic'
 
 const products: HomeProduct[] = [
   {
@@ -77,62 +84,18 @@ const units = [
     title: 'Esquadrias',
     description: 'Portas, janelas, fachadas e coberturas em alumínio.',
     image: '/images/home/category-doors.png',
-    href: '/catalogo?unidade=Esquadrias',
   },
   {
     title: 'Vidros',
     description: 'Box, guarda-corpo, espelhos e coberturas de vidro.',
     image: '/images/home/category-box.png',
-    href: '/catalogo?unidade=Vidros',
   },
   {
     title: 'Construção',
     description: 'Projeto, execução, reforma e ampliação com equipe própria.',
     image: '/images/catalog/ampliacao-area-externa.png',
-    href: '/catalogo?unidade=Constru%C3%A7%C3%A3o',
   },
-]
-
-const promotions = [
-  {
-    eyebrow: 'Seleção LM · Esquadrias',
-    title: 'Esquadrias sob medida para valorizar o seu projeto',
-    description: 'Portas, janelas, fachadas e coberturas fabricadas com precisão para integrar estética, conforto e durabilidade.',
-    image: '/images/home/group-house-background.png',
-    imageAlt: 'Residência contemporânea com grandes esquadrias de alumínio iluminadas ao entardecer',
-    href: '/catalogo?unidade=Esquadrias',
-    cta: 'Explorar esquadrias',
-    align: 'right' as const,
-  },
-  {
-    eyebrow: 'Seleção LM · Vidros',
-    title: 'Transparência, segurança e acabamento',
-    description: 'Box, guarda-corpo, espelhos e coberturas produzidos sob medida para trazer leveza visual, proteção e sofisticação ao ambiente.',
-    image: '/images/catalog/guarda-corpo-escada.png',
-    imageAlt: 'Escada contemporânea protegida por guarda-corpo de vidro',
-    href: '/catalogo?unidade=Vidros',
-    cta: 'Explorar vidros',
-    align: 'right' as const,
-  },
-]
-
-const heroPromotions = [
-  {
-    eyebrow: 'Promoção do mês',
-    title: 'Fachadas que transformam a chegada',
-    support: 'Consulte as condições e a disponibilidade para o seu projeto.',
-    image: '/images/home/product-glass-facade.png',
-    href: '/catalogo?q=fachada%20pele%20de%20vidro',
-    featured: true,
-  },
-  {
-    eyebrow: 'Seleção especial',
-    title: 'Mais abertura para integrar ambientes',
-    image: '/images/home/product-folding-door.png',
-    href: '/catalogo?q=porta-balc%C3%A3o%20sanfonada',
-    featured: false,
-  },
-]
+] as const
 
 const process = [
   { number: '01', title: 'Medição e projeto', text: 'Visitamos o local ou recebemos as suas medidas. Definimos perfil, vidro, ferragens e enviamos o orçamento com prazo fechado.' },
@@ -148,7 +111,22 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   return <p className="eyebrow"><i aria-hidden />{children}</p>
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const payload = await getPayload({ config: await config })
+  const home = await payload.findGlobal({ slug: 'home', depth: 1 })
+
+  const { docs: produtos } = await payload.find({
+    collection: 'produtos',
+    depth: 1,
+    limit: 2000,
+    pagination: false,
+    where: { ativo: { equals: true } },
+  })
+  const porUnidade = mergePublishedProducts(produtos.map(paraProdutoItem)).reduce<Record<string, number>>(
+    (acc, item) => (item.unit ? { ...acc, [item.unit]: (acc[item.unit] ?? 0) + 1 } : acc),
+    {},
+  )
+
   return (
     <>
       <section className="home-hero">
@@ -161,41 +139,7 @@ export default function HomePage() {
             <Link href="/catalogo" className="button button--cream">Ver catálogo <Arrow /></Link>
             <Link href="#orcamento" className="button button--dark">Entre em contato <Arrow /></Link>
           </div>
-          <div className="hero-features">
-            <Link href="/catalogo?q=fachada%20pele%20de%20vidro" aria-label="Ver fachada pele de vidro no catálogo">
-              <Image src="/images/home/product-glass-facade.png" alt="Fachada pele de vidro" width={64} height={81} />
-              <span><small>Direto da fábrica</small>Fachada pele de vidro</span>
-              <Arrow diagonal />
-            </Link>
-            <Link href="/catalogo?q=porta-balc%C3%A3o%20sanfonada" aria-label="Ver porta-balcão sanfonada no catálogo">
-              <Image src="/images/home/product-folding-door.png" alt="Porta-balcão sanfonada integrando sala e varanda" width={64} height={81} />
-              <span><small>Integração total</small>Porta-balcão sanfonada</span>
-              <Arrow diagonal />
-            </Link>
-          </div>
-          <aside className="hero-promotions" aria-label="Promoções em destaque">
-            {heroPromotions.map((promotion) => (
-              <Link
-                href={promotion.href}
-                className={`hero-promotion-card${promotion.featured ? ' is-featured' : ''}`}
-                key={promotion.title}
-              >
-                <Image src={promotion.image} alt="" fill sizes="(max-width: 1100px) 22vw, 286px" />
-                <span className="hero-promotion-card__shade" aria-hidden />
-                {promotion.featured && (
-                  <span className="hero-promotion-card__badge">
-                    <i aria-hidden /> Condição especial
-                  </span>
-                )}
-                <span className="hero-promotion-card__copy">
-                  <small>{promotion.eyebrow}</small>
-                  <strong>{promotion.title}</strong>
-                  {'support' in promotion && promotion.support && <span>{promotion.support}</span>}
-                  <em>{promotion.featured ? 'Quero conhecer' : 'Ver seleção'} <Arrow /></em>
-                </span>
-              </Link>
-            ))}
-          </aside>
+          <BannerHero banners={home.bannersHero ?? []} />
         </div>
       </section>
 
@@ -216,25 +160,31 @@ export default function HomePage() {
             <Link href="/catalogo" className="button button--gold">Ver catálogo completo <Arrow /></Link>
           </div>
           <HorizontalCarousel trackClassName="unit-grid" label="Unidades do catálogo">
-            {units.map((unit) => (
-              <Link href={unit.href} key={unit.title} className="unit-card" aria-label={`Abrir a unidade ${unit.title} no catálogo`}>
-                <Image src={unit.image} alt={unit.title} fill sizes="(max-width: 800px) 74vw, 270px" />
-                <span className="unit-card__copy">
-                  <strong>{unit.title}</strong>
-                  <small>{unit.description}</small>
-                </span>
-                <Arrow />
-              </Link>
-            ))}
+            {units.map((unit) => {
+              const total = porUnidade[unit.title] ?? 0
+
+              return (
+                <Link
+                  href={`/catalogo?unidade=${encodeURIComponent(unit.title)}`}
+                  key={unit.title}
+                  className="unit-card"
+                  aria-label={`Ver ${total === 1 ? '1 item' : `${total} itens`} da unidade ${unit.title} no catálogo`}
+                >
+                  <Image src={unit.image} alt={unit.title} fill sizes="(max-width: 800px) 74vw, 270px" />
+                  <span className="unit-card__copy">
+                    <strong>{unit.title}</strong>
+                    <small>{unit.description}</small>
+                    <em className="unit-card__count">{total === 1 ? '1 item' : `${total} itens`}</em>
+                  </span>
+                  <Arrow />
+                </Link>
+              )
+            })}
           </HorizontalCarousel>
         </div>
       </section>
 
-      <section className="promotion-section" aria-label="Destaque de produtos">
-        <div className="lm-container">
-          <PromotionBanner {...promotions[0]} />
-        </div>
-      </section>
+      <BannerFaixa banners={home.bannersFaixa1 ?? []} rotulo="Destaques da LM" />
 
       <section className="group-section" id="grupo-lm">
         <div className="lm-container group-section__grid">
@@ -282,11 +232,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="promotion-section" aria-label="Destaque de produtos">
-        <div className="lm-container">
-          <PromotionBanner {...promotions[1]} />
-        </div>
-      </section>
+      <BannerFaixa banners={home.bannersFaixa2 ?? []} rotulo="Mais destaques da LM" />
 
       <section className="contact-section" id="orcamento">
         <div className="lm-container contact-section__grid">

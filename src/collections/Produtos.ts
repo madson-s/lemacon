@@ -62,16 +62,18 @@ export const Produtos: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       admin: {
-        description: 'Aparece no card e abre a galeria na página do produto.',
+        description: 'A capa do produto: aparece no card do catálogo e é a primeira foto da galeria.',
       },
     },
     {
       name: 'galeria',
+      label: 'Mais fotos',
       type: 'upload',
       relationTo: 'media',
       hasMany: true,
       admin: {
-        description: 'Fotos adicionais mostradas na página do produto.',
+        description:
+          'Outros ângulos, detalhes e aplicações. Aparecem como miniaturas ao lado da foto principal, na ordem em que estiverem aqui — arraste para reordenar.',
       },
     },
     {

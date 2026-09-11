@@ -14,6 +14,7 @@ export type ProdutoItem = {
   tags: string[]
   categoriaId: string | null
   categoriaNome: string | null
+  categoriaUnidade: string | null
   imagemUrl: string | null
   imagemAlt: string
   destaque: boolean
@@ -70,6 +71,7 @@ export const paraProdutoItem = (produto: Produto): ProdutoItem => {
     tags: produto.tags?.map((t) => t.valor) ?? [],
     categoriaId: categoria ? String(categoria.id) : String(produto.categoria),
     categoriaNome: categoria?.nome ?? null,
+    categoriaUnidade: categoria?.unidade ?? null,
     imagemUrl: urlDaMedia(produto.imagem),
     imagemAlt: altDaMedia(produto.imagem) || produto.nome,
     destaque: produto.destaque ?? false,

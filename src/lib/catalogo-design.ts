@@ -4,12 +4,13 @@ export const catalogUnits = ['Todas', 'Esquadrias', 'Vidros', 'Construção'] as
 export const catalogCategories = ['Todas', 'Portas', 'Janelas', 'Fachadas', 'Coberturas', 'Box', 'Guarda-corpo', 'Espelhos', 'Obra', 'Projeto'] as const
 
 export type CatalogUnit = (typeof catalogUnits)[number]
-export type CatalogCategory = (typeof catalogCategories)[number]
+/** A categoria vem do CMS, então é texto livre — não uma união fechada. */
+export type CatalogCategory = string
 
 export type CatalogProduct = {
   id: string
   slug: string
-  unit: Exclude<CatalogUnit, 'Todas'>
+  unit: Exclude<CatalogUnit, 'Todas'> | null
   category: Exclude<CatalogCategory, 'Todas'>
   name: string
   description: string
@@ -17,10 +18,6 @@ export type CatalogProduct = {
   imageAlt: string
   tags: string[]
 }
-
-const productCategories = catalogCategories.filter(
-  (candidate): candidate is CatalogProduct['category'] => candidate !== 'Todas',
-)
 
 const product = (
   slug: string,
@@ -61,6 +58,14 @@ export const catalogProducts: CatalogProduct[] = [
   product('ampliacao-area-externa', 'Construção', 'Obra', 'Ampliação e área externa', 'Ampliação e áreas externas com integração de esquadrias e vidros no mesmo projeto.', ['Área externa', 'Integração', 'Acabamento']),
 ]
 
+const inferUnit = (categoria: string | null): CatalogProduct['unit'] | null => {
+  if (!categoria) return null
+  if (/vidro|box|espelho|guarda/i.test(categoria)) return 'Vidros'
+  if (/obra|projeto|constru/i.test(categoria)) return 'Construção'
+  if (/porta|janela|fachada|cobertura|esquadria/i.test(categoria)) return 'Esquadrias'
+  return null
+}
+
 const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR')
 
 export function mergePublishedProducts(published: ProdutoItem[]): CatalogProduct[] {
@@ -68,25 +73,29 @@ export function mergePublishedProducts(published: ProdutoItem[]): CatalogProduct
 
   return published.map((item) => {
     const designed = catalogProducts.find((candidate) => normalize(candidate.name) === normalize(item.nome))
+
+    // A categoria e a unidade são as cadastradas no painel. Só quando a categoria
+    // não declara unidade é que caímos no palpite pelo nome — e, se nem isso
+    // resolver, o produto fica sem unidade em vez de ser posto na errada.
+    const category = item.categoriaNome ?? designed?.category ?? 'Sem categoria'
+    const unit =
+      (item.categoriaUnidade as CatalogProduct['unit'] | null) ??
+      designed?.unit ??
+      inferUnit(item.categoriaNome)
+
     if (designed) {
       return {
         ...designed,
         id: item.id,
         slug: item.slug ?? designed.slug,
+        unit,
+        category,
         description: item.descricao ?? designed.description,
         image: item.imagemUrl ?? designed.image,
         imageAlt: item.imagemAlt || designed.imageAlt,
         tags: item.tags.length > 0 ? item.tags : designed.tags,
       }
     }
-
-    const categoryName = item.categoriaNome ?? 'Projeto'
-    const category = productCategories.find((candidate) => normalize(categoryName).includes(normalize(candidate))) ?? 'Projeto'
-    const unit: CatalogProduct['unit'] = /vidro|box|espelho|guarda/i.test(categoryName)
-      ? 'Vidros'
-      : /obra|projeto|constru/i.test(categoryName)
-        ? 'Construção'
-        : 'Esquadrias'
 
     return {
       id: item.id,
@@ -100,4 +109,9 @@ export function mergePublishedProducts(published: ProdutoItem[]): CatalogProduct
       tags: item.tags,
     }
   })
+}
+
+/** Lista de categorias para o filtro, na ordem em que os produtos as trazem. */
+export function categoriasDosProdutos(products: CatalogProduct[]): CatalogCategory[] {
+  return [...new Set(products.map((p) => p.category))].sort((a, b) => a.localeCompare(b, 'pt-BR'))
 }

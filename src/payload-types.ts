@@ -158,11 +158,11 @@ export interface Produto {
    */
   preco?: number | null;
   /**
-   * Aparece no card e abre a galeria na página do produto.
+   * A capa do produto: aparece no card do catálogo e é a primeira foto da galeria.
    */
   imagem?: (number | null) | Media;
   /**
-   * Fotos adicionais mostradas na página do produto.
+   * Outros ângulos, detalhes e aplicações. Aparecem como miniaturas ao lado da foto principal, na ordem em que estiverem aqui — arraste para reordenar.
    */
   galeria?: (number | Media)[] | null;
   /**
@@ -221,6 +221,10 @@ export interface Categoria {
    * Gerado a partir de "nome". Edite apenas se precisar de uma URL específica.
    */
   slug?: string | null;
+  /**
+   * A frente da LM a que esta categoria pertence. É o que agrupa a categoria no filtro do catálogo. Sem unidade, os produtos aparecem apenas em "Todas" e no filtro da própria categoria.
+   */
+  unidade?: ('Esquadrias' | 'Vidros' | 'Construção') | null;
   descricao?: string | null;
   /**
    * Define a ordem de exibição no catálogo. Menor aparece primeiro.
@@ -555,6 +559,7 @@ export interface ProdutosSelect<T extends boolean = true> {
 export interface CategoriasSelect<T extends boolean = true> {
   nome?: T;
   slug?: T;
+  unidade?: T;
   descricao?: T;
   ordem?: T;
   destacarNaHome?: T;
@@ -749,6 +754,66 @@ export interface Home {
     texto?: string | null;
     ctaTexto?: string | null;
   };
+  /**
+   * Aparecem sobre a foto do topo, à direita. O primeiro é o grande; os seguintes são faixas mais baixas abaixo dele. Deixe vazio para esconder.
+   */
+  bannersHero?:
+    | {
+        /**
+         * PNG no primeiro banner use 16:9 — 1020 × 574 px; nos demais, 5:1 — 1020 × 204 px. Fora dessa proporção, as bordas da arte podem ser cortadas.
+         */
+        imagem: number | Media;
+        /**
+         * O que o banner diz, em uma frase. É o que quem usa leitor de tela ouve no lugar da imagem.
+         */
+        alt: string;
+        /**
+         * Para onde o banner leva. Ex.: /catalogo?unidade=Esquadrias ou /#orcamento. Vazio, o banner não vira clicável.
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Aparece logo depois das categorias, antes do bloco "Três frentes, uma equipe". Dois banners por linha. Deixe vazio para esconder a faixa.
+   */
+  bannersFaixa1?:
+    | {
+        /**
+         * PNG na proporção 8:3 — 1200 × 450 px funciona bem. Fora dessa proporção, as bordas da arte podem ser cortadas.
+         */
+        imagem: number | Media;
+        /**
+         * O que o banner diz, em uma frase. É o que quem usa leitor de tela ouve no lugar da imagem.
+         */
+        alt: string;
+        /**
+         * Para onde o banner leva. Ex.: /catalogo?unidade=Esquadrias ou /#orcamento. Vazio, o banner não vira clicável.
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Aparece depois do bloco "Três passos até a instalação". Dois banners por linha. Deixe vazio para esconder a faixa.
+   */
+  bannersFaixa2?:
+    | {
+        /**
+         * PNG na proporção 8:3 — 1200 × 450 px funciona bem. Fora dessa proporção, as bordas da arte podem ser cortadas.
+         */
+        imagem: number | Media;
+        /**
+         * O que o banner diz, em uma frase. É o que quem usa leitor de tela ouve no lugar da imagem.
+         */
+        alt: string;
+        /**
+         * Para onde o banner leva. Ex.: /catalogo?unidade=Esquadrias ou /#orcamento. Vazio, o banner não vira clicável.
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -940,6 +1005,30 @@ export interface HomeSelect<T extends boolean = true> {
         titulo?: T;
         texto?: T;
         ctaTexto?: T;
+      };
+  bannersHero?:
+    | T
+    | {
+        imagem?: T;
+        alt?: T;
+        link?: T;
+        id?: T;
+      };
+  bannersFaixa1?:
+    | T
+    | {
+        imagem?: T;
+        alt?: T;
+        link?: T;
+        id?: T;
+      };
+  bannersFaixa2?:
+    | T
+    | {
+        imagem?: T;
+        alt?: T;
+        link?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

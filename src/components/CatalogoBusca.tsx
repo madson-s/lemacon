@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 
 import {
-  catalogCategories,
   catalogUnits,
   type CatalogCategory,
   type CatalogProduct,
@@ -47,11 +46,13 @@ function labelCount(count: number) {
 
 export function CatalogoBusca({
   products,
+  categorias,
   initialTerm = '',
   initialUnit = 'Todas',
   initialCategory = 'Todas',
 }: {
   products: CatalogProduct[]
+  categorias: CatalogCategory[]
   initialTerm?: string
   initialUnit?: CatalogUnit
   initialCategory?: CatalogCategory
@@ -83,11 +84,8 @@ export function CatalogoBusca({
     ...(category !== 'Todas' ? [category] : []),
   ]
   const hasActiveFilters = activeFilterTags.length > 0
-  const returnParams = new URLSearchParams()
-  if (normalizedTerm.length >= 2) returnParams.set('q', normalizedTerm)
-  if (unit !== 'Todas') returnParams.set('unidade', unit)
-  if (category !== 'Todas') returnParams.set('categoria', category)
-  const catalogReturnPath = `/catalogo${returnParams.size ? `?${returnParams.toString()}` : ''}`
+
+  const listaCategorias: CatalogCategory[] = ['Todas', ...categorias]
 
   const countForUnit = (candidate: CatalogUnit) => candidate === 'Todas' ? products.length : products.filter((item) => item.unit === candidate).length
   const countForCategory = (candidate: CatalogCategory) => candidate === 'Todas' ? products.length : products.filter((item) => item.category === candidate).length
@@ -169,7 +167,7 @@ export function CatalogoBusca({
             </FilterGroup>
 
             <FilterGroup title="Categorias">
-              {catalogCategories.map((candidate) => (
+              {listaCategorias.map((candidate) => (
                 <FilterButton key={candidate} active={category === candidate} count={countForCategory(candidate)} onClick={() => setCategory(candidate)}>
                   {candidate === 'Todas' ? 'Todas as categorias' : candidate}
                 </FilterButton>
@@ -203,7 +201,7 @@ export function CatalogoBusca({
 
             {results.length > 0 ? (
               <ul className="catalog-page__grid">
-                {results.map((item) => <CatalogCard item={item} returnPath={catalogReturnPath} key={item.id} />)}
+                {results.map((item) => <CatalogCard item={item} key={item.id} />)}
               </ul>
             ) : (
               <div className="catalog-page__empty">
@@ -232,7 +230,7 @@ export function CatalogoBusca({
           <fieldset>
             <legend><i aria-hidden />Categoria</legend>
             <div className="mobile-filter-sheet__chips">
-              {catalogCategories.map((candidate) => <button type="button" className={category === candidate ? 'is-active' : ''} aria-pressed={category === candidate} onClick={() => setCategory(candidate)} key={candidate}>{candidate}</button>)}
+              {listaCategorias.map((candidate) => <button type="button" className={category === candidate ? 'is-active' : ''} aria-pressed={category === candidate} onClick={() => setCategory(candidate)} key={candidate}>{candidate}</button>)}
             </div>
           </fieldset>
           <div className="mobile-filter-sheet__actions">
@@ -265,11 +263,11 @@ function FilterButton({ active, count, onClick, children }: { active: boolean; c
   return <button type="button" className={active ? 'is-active' : ''} aria-pressed={active} onClick={onClick}><span>{children}</span><small>{count}</small></button>
 }
 
-function CatalogCard({ item, returnPath }: { item: CatalogProduct; returnPath: string }) {
+function CatalogCard({ item }: { item: CatalogProduct }) {
   return (
     <li>
       <Link
-        href={`/catalogo/${item.slug}?voltar=${encodeURIComponent(returnPath)}`}
+        href={`/catalogo/${item.slug}`}
         className="catalog-product-card"
         aria-label={`Conhecer ${item.name}`}
       >

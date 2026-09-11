@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { GaleriaProduto, type Foto } from '@/components/GaleriaProduto'
 import {
   catalogProducts,
@@ -41,23 +42,18 @@ async function getCatalogData(slug: string): Promise<CatalogData> {
   return { item, document, products: products.length ? products : catalogProducts }
 }
 
-function safeReturnPath(value?: string) {
-  if (!value || !value.startsWith('/catalogo') || value.startsWith('//')) return '/catalogo'
-  return value
-}
-
-function ProductRecommendation({ product, returnPath }: { product: CatalogProduct; returnPath: string }) {
+function ProductRecommendation({ product }: { product: CatalogProduct }) {
   return (
     <li>
       <Link
         className="product-detail__recommendation"
-        href={`/catalogo/${product.slug}?voltar=${encodeURIComponent(returnPath)}`}
+        href={`/catalogo/${product.slug}`}
       >
         <span className="product-detail__recommendation-image">
           <Image src={product.image} alt={product.imageAlt} fill sizes="(max-width: 800px) 78vw, 300px" />
         </span>
         <span className="product-detail__recommendation-copy">
-          <small>{product.unit} · {product.category}</small>
+          <small>{product.unit ? `${product.unit} · ${product.category}` : product.category}</small>
           <strong>{product.name}</strong>
           <span>Conhecer solução <i aria-hidden>→</i></span>
         </span>
@@ -74,18 +70,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: item.name, description: item.description }
 }
 
-export default async function ProdutoPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ slug: string }>
-  searchParams: Promise<{ voltar?: string }>
-}) {
-  const [{ slug }, { voltar }] = await Promise.all([params, searchParams])
+export default async function ProdutoPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const { item, document, products } = await getCatalogData(slug)
   if (!item) notFound()
 
-  const returnPath = safeReturnPath(voltar)
   const extraPhotos = document?.galeria ?? []
   const photos: Foto[] = [
     { url: item.image, alt: item.imageAlt },
@@ -125,10 +114,21 @@ export default async function ProdutoPage({
     <main className="product-detail">
       <div className="product-detail__topbar">
         <div className="lm-container">
-          <Link href={returnPath} className="product-detail__back">
-            <span aria-hidden>←</span> Voltar ao catálogo
-          </Link>
-          <span>{item.unit} · {item.category}</span>
+          <Breadcrumbs
+            items={[
+              { label: 'Início', href: '/' },
+              { label: 'Catálogo', href: '/catalogo' },
+              // A unidade só entra na trilha quando a categoria declara uma.
+              ...(item.unit
+                ? [{ label: item.unit, href: `/catalogo?unidade=${encodeURIComponent(item.unit)}` }]
+                : []),
+              {
+                label: item.category,
+                href: `/catalogo?categoria=${encodeURIComponent(item.category)}`,
+              },
+              { label: item.name },
+            ]}
+          />
         </div>
       </div>
 
@@ -139,7 +139,7 @@ export default async function ProdutoPage({
           </div>
 
           <div className="product-detail__summary">
-            <p className="eyebrow"><i aria-hidden />{item.unit} · {item.category}</p>
+            <p className="eyebrow"><i aria-hidden />{item.unit ? `${item.unit} · ${item.category}` : item.category}</p>
             <h1>{item.name}</h1>
             <p className="product-detail__lead">{item.description}</p>
             <div className="product-detail__tags">
@@ -175,7 +175,7 @@ export default async function ProdutoPage({
           <div className="product-detail__technical">
             <h2>Informações técnicas</h2>
             <dl>
-              <div><dt>Unidade</dt><dd>{item.unit}</dd></div>
+              {item.unit && <div><dt>Unidade</dt><dd>{item.unit}</dd></div>}
               <div><dt>Categoria</dt><dd>{item.category}</dd></div>
               {document?.marca && <div><dt>Linha ou marca</dt><dd>{document.marca}</dd></div>}
               {document?.especificacoes?.map((spec) => (
@@ -209,10 +209,10 @@ export default async function ProdutoPage({
                 <p className="eyebrow"><i aria-hidden />Continue explorando</p>
                 <h2>Soluções que combinam com este projeto</h2>
               </div>
-              <Link href={returnPath}>Ver catálogo completo <span aria-hidden>→</span></Link>
+              <Link href="/catalogo">Ver catálogo completo <span aria-hidden>→</span></Link>
             </div>
             <ul className="product-detail__recommendations">
-              {related.map((product) => <ProductRecommendation product={product} returnPath={returnPath} key={product.slug} />)}
+              {related.map((product) => <ProductRecommendation product={product} key={product.slug} />)}
             </ul>
           </div>
         </section>
