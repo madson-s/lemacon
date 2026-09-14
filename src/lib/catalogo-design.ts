@@ -17,6 +17,7 @@ export type CatalogProduct = {
   image: string
   imageAlt: string
   tags: string[]
+  promocao: boolean
 }
 
 const product = (
@@ -36,6 +37,7 @@ const product = (
   image: `/images/catalog/${slug}.png`,
   imageAlt: name,
   tags,
+  promocao: false,
 })
 
 export const catalogProducts: CatalogProduct[] = [
@@ -94,6 +96,7 @@ export function mergePublishedProducts(published: ProdutoItem[]): CatalogProduct
         image: item.imagemUrl ?? designed.image,
         imageAlt: item.imagemAlt || designed.imageAlt,
         tags: item.tags.length > 0 ? item.tags : designed.tags,
+        promocao: item.promocao,
       }
     }
 
@@ -107,6 +110,7 @@ export function mergePublishedProducts(published: ProdutoItem[]): CatalogProduct
       image: item.imagemUrl ?? '/images/catalog/catalog-hero.png',
       imageAlt: item.imagemAlt || item.nome,
       tags: item.tags,
+      promocao: item.promocao,
     }
   })
 }

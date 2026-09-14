@@ -18,6 +18,7 @@ export type ProdutoItem = {
   imagemUrl: string | null
   imagemAlt: string
   destaque: boolean
+  promocao: boolean
 }
 
 export type CategoriaItem = {
@@ -75,6 +76,7 @@ export const paraProdutoItem = (produto: Produto): ProdutoItem => {
     imagemUrl: urlDaMedia(produto.imagem),
     imagemAlt: altDaMedia(produto.imagem) || produto.nome,
     destaque: produto.destaque ?? false,
+    promocao: produto.promocao ?? false,
   }
 }
 

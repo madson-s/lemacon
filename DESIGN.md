@@ -247,6 +247,7 @@ rounded:
   panel-lg: "22px"
   lg: "24px"
   banner-featured: "24px"
+  map-card: "26px"
   sheet-sm: "28px"
   card-media: "30px"
   sheet: "32px"

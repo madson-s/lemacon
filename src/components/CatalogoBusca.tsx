@@ -71,13 +71,24 @@ export function CatalogoBusca({
 
   const results = useMemo(() => {
     const query = term.trim()
-    const searched = query.length >= 2 ? fuse.search(query).map((entry) => entry.item) : products
+    const buscando = query.length >= 2
+    const searched = buscando ? fuse.search(query).map((entry) => entry.item) : products
 
-    return searched.filter((item) => {
+    const filtrados = searched.filter((item) => {
       const matchesUnit = unit === 'Todas' || item.unit === unit
       const matchesCategory = category === 'Todas' || item.category === category
       return matchesUnit && matchesCategory
     })
+
+    // Durante a busca a ordem é a relevância do Fuse: reordenar por promoção
+    // colocaria itens pouco parecidos à frente do que a pessoa procurou.
+    if (buscando) return filtrados
+
+    // Promoções primeiro, e dentro de cada grupo em ordem alfabética.
+    return [...filtrados].sort(
+      (a, b) =>
+        Number(b.promocao) - Number(a.promocao) || a.name.localeCompare(b.name, 'pt-BR'),
+    )
   }, [category, fuse, products, term, unit])
 
   // Paginação pela URL: `?pagina=2` é a fonte da verdade, então o estado
@@ -321,13 +332,41 @@ export function CatalogoBusca({
           <fieldset>
             <legend><i aria-hidden />Unidade</legend>
             <div className="mobile-filter-sheet__chips">
-              {catalogUnits.map((candidate) => <button type="button" className={unit === candidate ? 'is-active' : ''} aria-pressed={unit === candidate} onClick={() => setUnit(candidate)} key={candidate}>{candidate}</button>)}
+              {catalogUnits.map((candidate) => {
+                const total = countForUnit(candidate)
+                return (
+                  <button
+                    type="button"
+                    className={unit === candidate ? 'is-active' : ''}
+                    aria-pressed={unit === candidate}
+                    disabled={total === 0 && unit !== candidate}
+                    onClick={() => setUnit(candidate)}
+                    key={candidate}
+                  >
+                    {candidate}
+                  </button>
+                )
+              })}
             </div>
           </fieldset>
           <fieldset>
             <legend><i aria-hidden />Categoria</legend>
             <div className="mobile-filter-sheet__chips">
-              {listaCategorias.map((candidate) => <button type="button" className={category === candidate ? 'is-active' : ''} aria-pressed={category === candidate} onClick={() => setCategory(candidate)} key={candidate}>{candidate}</button>)}
+              {listaCategorias.map((candidate) => {
+                const total = countForCategory(candidate)
+                return (
+                  <button
+                    type="button"
+                    className={category === candidate ? 'is-active' : ''}
+                    aria-pressed={category === candidate}
+                    disabled={total === 0 && category !== candidate}
+                    onClick={() => setCategory(candidate)}
+                    key={candidate}
+                  >
+                    {candidate}
+                  </button>
+                )
+              })}
             </div>
           </fieldset>
           <div className="mobile-filter-sheet__actions">
@@ -357,7 +396,22 @@ function FilterState({ tags, hasActiveFilters, onReset }: { tags: string[]; hasA
 }
 
 function FilterButton({ active, count, onClick, children }: { active: boolean; count: number; onClick: () => void; children: ReactNode }) {
-  return <button type="button" className={active ? 'is-active' : ''} aria-pressed={active} onClick={onClick}><span>{children}</span><small>{count}</small></button>
+  // Filtro sem nenhum item não leva a lugar nenhum: fica desabilitado em vez de
+  // levar o visitante a uma lista vazia.
+  const vazio = count === 0
+  return (
+    <button
+      type="button"
+      className={active ? 'is-active' : ''}
+      aria-pressed={active}
+      onClick={onClick}
+      disabled={vazio && !active}
+      title={vazio ? 'Nenhum item nesta seleção' : undefined}
+    >
+      <span>{children}</span>
+      <small>{count}</small>
+    </button>
+  )
 }
 
 function CatalogCard({ item }: { item: CatalogProduct }) {
@@ -371,6 +425,7 @@ function CatalogCard({ item }: { item: CatalogProduct }) {
         <div className="catalog-product-card__image">
           <Image src={item.image} alt={item.imageAlt} fill sizes="(max-width: 800px) calc(100vw - 40px), (max-width: 1200px) 33vw, 276px" />
           <span>{item.unit} · {item.category}</span>
+          {item.promocao && <em className="catalog-product-card__promo">Promoção</em>}
         </div>
         <div className="catalog-product-card__body">
           <h3>{item.name}</h3>

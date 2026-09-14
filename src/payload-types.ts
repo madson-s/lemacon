@@ -203,6 +203,10 @@ export interface Produto {
       }[]
     | null;
   /**
+   * Produtos em promoção aparecem primeiro no catálogo, antes dos demais. Entre eles, a ordem continua alfabética.
+   */
+  promocao?: boolean | null;
+  /**
    * Marque para o produto aparecer na seção "Produtos e serviços que a LM entrega", na home. Sem nenhum marcado, a seção mostra os mais recentes do catálogo.
    */
   destaque?: boolean | null;
@@ -550,6 +554,7 @@ export interface ProdutosSelect<T extends boolean = true> {
         valor?: T;
         id?: T;
       };
+  promocao?: T;
   destaque?: T;
   ativo?: T;
   updatedAt?: T;
@@ -766,12 +771,12 @@ export interface Home {
     texto?: string | null;
   };
   /**
-   * Aparecem sobre a foto do topo, à direita. O primeiro é o grande; os seguintes são faixas mais baixas abaixo dele. Deixe vazio para esconder.
+   * Aparecem sobre a foto do topo: empilhados à direita no computador, e como um slide que desliza no celular. Todos com o mesmo tamanho. Deixe vazio para esconder.
    */
   bannersHero?:
     | {
         /**
-         * PNG no primeiro banner use 16:9 — 1020 × 574 px; nos demais, 5:1 — 1020 × 204 px. Fora dessa proporção, as bordas da arte podem ser cortadas.
+         * PNG na proporção 16:6 — 1020 × 390 px atende bem do computador ao celular. Fora dessa proporção, as bordas da arte podem ser cortadas.
          */
         imagem: number | Media;
         /**

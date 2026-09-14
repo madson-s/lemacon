@@ -45,6 +45,9 @@ export function HomeCatalog({
   const sheetRef = useRef<HTMLDivElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const filterButtonRef = useRef<HTMLButtonElement>(null)
+  const contarUnidade = (filtro: CatalogFilter) =>
+    filtro === 'Todos' ? products.length : products.filter((p) => p.unit === filtro).length
+
   const visibleProducts = activeFilter === 'Todos'
     ? products
     : products.filter((product) => product.unit === activeFilter)
@@ -116,18 +119,23 @@ export function HomeCatalog({
           {texto && <p>{texto}</p>}
         </div>
         <div className="catalog-filters" role="group" aria-label="Filtros do catálogo">
-          {filters.map((filter) => (
-            <button
-              type="button"
-              className={activeFilter === filter ? 'is-active' : ''}
-              aria-pressed={activeFilter === filter}
-              aria-controls="home-product-grid"
-              onClick={() => setActiveFilter(filter)}
-              key={filter}
-            >
-              {filter}
-            </button>
-          ))}
+          {filters.map((filter) => {
+            const total = contarUnidade(filter)
+            return (
+              <button
+                type="button"
+                className={activeFilter === filter ? 'is-active' : ''}
+                aria-pressed={activeFilter === filter}
+                aria-controls="home-product-grid"
+                disabled={total === 0 && activeFilter !== filter}
+                title={total === 0 ? 'Nenhum item nesta unidade' : undefined}
+                onClick={() => setActiveFilter(filter)}
+                key={filter}
+              >
+                {filter}
+              </button>
+            )
+          })}
         </div>
         <div className="catalog-mobile-search">
           <form onSubmit={submitSearch} className="catalog-mobile-search__field" role="search">
@@ -184,7 +192,21 @@ export function HomeCatalog({
           <fieldset>
             <legend><i aria-hidden />Unidade</legend>
             <div className="mobile-filter-sheet__chips">
-              {filters.map((filter) => <button type="button" className={mobileUnit === filter ? 'is-active' : ''} aria-pressed={mobileUnit === filter} onClick={() => setMobileUnit(filter)} key={filter}>{filter === 'Todos' ? 'Todas' : filter}</button>)}
+              {filters.map((filter) => {
+                const total = contarUnidade(filter)
+                return (
+                  <button
+                    type="button"
+                    className={mobileUnit === filter ? 'is-active' : ''}
+                    aria-pressed={mobileUnit === filter}
+                    disabled={total === 0 && mobileUnit !== filter}
+                    onClick={() => setMobileUnit(filter)}
+                    key={filter}
+                  >
+                    {filter === 'Todos' ? 'Todas' : filter}
+                  </button>
+                )
+              })}
             </div>
           </fieldset>
           <fieldset>

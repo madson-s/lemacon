@@ -223,6 +223,8 @@ a.hero-promotion-card:active { transform: scale(.96); }
 .catalog-filters button { min-height: 40px; border: 1px solid var(--lm-line); border-radius: 999px; padding: 0 20px; color: var(--lm-muted); background: transparent; font-size: 13px; cursor: pointer; transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 100ms ease; }
 .catalog-filters button:active { transform: scale(.96); }
 .catalog-filters button.is-active { color: white; border-color: var(--lm-ink); background: var(--lm-ink); }
+/* Unidade sem item não leva a lugar nenhum: o botão fica apagado e sem cursor. */
+.catalog-filters button:disabled { cursor: default; opacity: .38; }
 .catalog-mobile-search, .mobile-filter-sheet { display: none; }
 .catalog-meta { display: flex; margin-top: 28px; padding: 17px 0 15px; align-items: center; border-top: 1px solid var(--lm-line); color: #888279; font-size: 11px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
 
@@ -399,6 +401,8 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-gold); outline-offs
 .catalog-sidebar__group button:hover { color: var(--lm-ink); background: #eee7dc; }
 .catalog-sidebar__group button:active { transform: scale(.985); }
 .catalog-sidebar__group button.is-active { color: white; background: var(--lm-ink); }
+.catalog-sidebar__group button:disabled { cursor: default; opacity: .4; }
+.catalog-sidebar__group button:disabled:hover { color: #5f5a52; background: transparent; }
 .catalog-sidebar__group small { display: grid; min-width: 24px; height: 22px; place-items: center; border-radius: 999px; padding-inline: 6px; color: #8a8378; background: #eee8de; font-size: 10px; font-variant-numeric: tabular-nums; }
 .catalog-sidebar__group button.is-active small { color: var(--lm-ink); background: var(--lm-gold-light); }
 
@@ -419,6 +423,10 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-gold); outline-offs
 .catalog-product-card__image img { object-fit: cover; transition: transform 400ms cubic-bezier(.2,.7,.3,1); }
 .catalog-product-card:hover .catalog-product-card__image img { transform: scale(1.035); }
 .catalog-product-card__image > span { position: absolute; z-index: 1; top: 13px; left: 13px; max-width: calc(100% - 26px); overflow: hidden; border-radius: 999px; padding: 7px 10px 6px; color: #9d7521; background: rgb(251 249 244 / 91%); box-shadow: 0 2px 12px rgb(0 0 0 / 8%); font-size: 9px; font-weight: 750; letter-spacing: .08em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; backdrop-filter: blur(8px); }
+/* Selo de promoção: no canto oposto ao da categoria, em ouro, para explicar por
+   que o item aparece antes dos outros na lista. */
+.catalog-product-card__promo { position: absolute; z-index: 1; top: 13px; right: 13px; border-radius: 999px; padding: 6px 10px 5px; color: #191711; background: var(--lm-gold); box-shadow: 0 2px 12px rgb(0 0 0 / 12%); font-size: 9px; font-style: normal; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+
 .catalog-product-card__body { display: flex; min-height: 176px; flex: 1; flex-direction: column; padding: 20px 20px 17px; }
 .catalog-product-card h3 { min-height: 48px; font-size: 19px; font-weight: 650; letter-spacing: -.025em; line-height: 1.2; text-wrap: balance; }
 .catalog-product-card__tags { display: flex; min-height: 48px; align-content: flex-start; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
@@ -488,6 +496,13 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-gold); outline-offs
 .product-detail__price strong { font-size: 24px; font-weight: 620; letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
 .product-detail__price small { color: #8c857a; font-size: 11px; line-height: 1.45; }
 .product-detail__summary > .button { width: 100%; min-height: 52px; margin-top: 24px; }
+/* Ficha do projeto: reusa a caixa do preço na página de produto, trocando o
+   número grande por pares rótulo/valor (local, ano, tipo). */
+.projeto-ficha dl { display: grid; gap: 12px; }
+.projeto-ficha dl div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
+.projeto-ficha dt { color: #8c857a; font-size: 10px; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
+.projeto-ficha dd { color: var(--lm-ink); font-size: 15px; font-weight: 650; letter-spacing: -.012em; }
+
 .product-detail__coverage { display: block; margin-top: 12px; color: #8c857a; font-size: 10px; text-align: center; }
 .product-detail__information { padding: 80px 0; background: var(--lm-paper-2); }
 .product-detail__information-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(340px, .9fr); gap: 82px; }
@@ -628,7 +643,7 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-gold); outline-offs
 /* Localização — mapa protagonista, conteúdo como camadas de decisão. */
 .location-page { color: var(--lm-ink); background: var(--lm-paper); }
 .location-hero { position: relative; overflow: hidden; padding: 72px 0 0; background: var(--lm-paper); }
-.location-hero::before { position: absolute; inset: 0 0 auto; height: 610px; background: radial-gradient(circle at 50% 80%, rgb(197 154 50 / 10%), transparent 40%), linear-gradient(rgb(28 27 24 / 3%) 1px, transparent 1px), linear-gradient(90deg, rgb(28 27 24 / 3%) 1px, transparent 1px); background-size: auto, 40px 40px, 40px 40px; mask-image: linear-gradient(to bottom, black, transparent); content: ''; pointer-events: none; }
+.location-hero::before { position: absolute; inset: 0 0 auto; height: 610px; background: radial-gradient(circle at 50% 80%, rgb(197 154 50 / 10%), transparent 40%); mask-image: linear-gradient(to bottom, black, transparent); content: ''; pointer-events: none; }
 .location-hero__intro { position: relative; z-index: 1; display: grid; justify-items: center; text-align: center; }
 .location-hero__intro h1 { max-width: 14ch; margin-top: 20px; font-size: clamp(44px, 5.3vw, 72px); font-weight: 600; letter-spacing: -.052em; line-height: .98; text-wrap: balance; }
 .location-hero__intro > p:not(.eyebrow) { max-width: 62ch; margin-top: 20px; color: var(--lm-muted); font-size: 16px; line-height: 1.62; text-wrap: pretty; }
@@ -923,6 +938,7 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-gold); outline-offs
   .mobile-filter-sheet__chips button { min-width: max-content; min-height: 48px; border-radius: 999px; padding: 0 20px; color: #4f4b44; background: #fbf9f4; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 12%); font-size: 15px; font-weight: 600; transition: color 180ms ease, background-color 180ms ease, box-shadow 180ms ease, transform 100ms ease; }
   .mobile-filter-sheet__chips button:active { transform: scale(.96); }
   .mobile-filter-sheet__chips button.is-active { color: white; background: var(--lm-ink); box-shadow: none; }
+  .mobile-filter-sheet__chips button:disabled { cursor: default; opacity: .38; }
   .mobile-filter-sheet__actions { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.35fr); gap: 10px; margin-top: 32px; }
   .mobile-filter-sheet__actions .button { min-height: 54px; padding-inline: 16px; }
   .mobile-filter-sheet__clear { color: var(--lm-ink); background: transparent; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 20%); }

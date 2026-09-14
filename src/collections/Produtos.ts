@@ -134,6 +134,18 @@ export const Produtos: CollectionConfig = {
       ],
     },
     {
+      name: 'promocao',
+      label: 'Em promoção',
+      type: 'checkbox',
+      defaultValue: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Produtos em promoção aparecem primeiro no catálogo, antes dos demais. Entre eles, a ordem continua alfabética.',
+      },
+    },
+    {
       name: 'destaque',
       label: 'Mostrar na home',
       type: 'checkbox',
