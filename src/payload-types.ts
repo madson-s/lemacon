@@ -202,6 +202,9 @@ export interface Produto {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Marque para o produto aparecer na seção "Produtos e serviços que a LM entrega", na home. Sem nenhum marcado, a seção mostra os mais recentes do catálogo.
+   */
   destaque?: boolean | null;
   /**
    * Desmarque para tirar do catálogo sem apagar o cadastro.
@@ -755,6 +758,14 @@ export interface Home {
     ctaTexto?: string | null;
   };
   /**
+   * A vitrine logo abaixo do topo. Os produtos vêm do catálogo: marque "Mostrar na home" em cada um. Sem nenhum marcado, aparecem os mais recentes.
+   */
+  secaoCatalogo?: {
+    chapeu?: string | null;
+    titulo?: string | null;
+    texto?: string | null;
+  };
+  /**
    * Aparecem sobre a foto do topo, à direita. O primeiro é o grande; os seguintes são faixas mais baixas abaixo dele. Deixe vazio para esconder.
    */
   bannersHero?:
@@ -1005,6 +1016,13 @@ export interface HomeSelect<T extends boolean = true> {
         titulo?: T;
         texto?: T;
         ctaTexto?: T;
+      };
+  secaoCatalogo?:
+    | T
+    | {
+        chapeu?: T;
+        titulo?: T;
+        texto?: T;
       };
   bannersHero?:
     | T

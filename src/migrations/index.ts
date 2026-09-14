@@ -7,6 +7,7 @@ import * as migration_20260828_171345_sobre_localizacao from './20260828_171345_
 import * as migration_20260904_041116_banners_home from './20260904_041116_banners_home';
 import * as migration_20260910_135841_banners_hero from './20260910_135841_banners_hero';
 import * as migration_20260910_165539_categoria_unidade from './20260910_165539_categoria_unidade';
+import * as migration_20260914_140510_secao_catalogo_home from './20260914_140510_secao_catalogo_home';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20260910_165539_categoria_unidade.up,
     down: migration_20260910_165539_categoria_unidade.down,
-    name: '20260910_165539_categoria_unidade'
+    name: '20260910_165539_categoria_unidade',
+  },
+  {
+    up: migration_20260914_140510_secao_catalogo_home.up,
+    down: migration_20260914_140510_secao_catalogo_home.down,
+    name: '20260914_140510_secao_catalogo_home'
   },
 ];
