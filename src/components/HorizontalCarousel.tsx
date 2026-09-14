@@ -2,7 +2,6 @@
 
 import {
   Children,
-  type CSSProperties,
   type KeyboardEvent,
   type MouseEvent,
   type PointerEvent,
@@ -138,19 +137,23 @@ export function HorizontalCarousel({ children, label, trackClassName }: Horizont
       >
         {children}
       </div>
-      <div className="mobile-carousel__controls">
-        <div
-          className="mobile-carousel__progress"
-          role="progressbar"
-          aria-label={`Posição em ${label}`}
-          aria-valuemin={1}
-          aria-valuemax={itemCount}
-          aria-valuenow={activeIndex + 1}
-          style={{ '--carousel-progress': (activeIndex + 1) / itemCount } as CSSProperties}
-        >
-          <span />
+      {itemCount > 1 && (
+        <div className="mobile-carousel__controls">
+          <div className="mobile-carousel__dots" role="tablist" aria-label={`Navegação de ${label}`}>
+            {Array.from({ length: itemCount }, (_, index) => (
+              <button
+                key={index}
+                type="button"
+                role="tab"
+                aria-label={`Ir para ${index + 1} de ${itemCount}`}
+                aria-selected={index === activeIndex}
+                className={index === activeIndex ? 'is-active' : undefined}
+                onClick={() => scrollToItem(index)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

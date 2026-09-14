@@ -3,6 +3,7 @@
 import Fuse from 'fuse.js'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 
 import {
@@ -50,12 +51,14 @@ export function CatalogoBusca({
   initialTerm = '',
   initialUnit = 'Todas',
   initialCategory = 'Todas',
+  initialPage = 1,
 }: {
   products: CatalogProduct[]
   categorias: CatalogCategory[]
   initialTerm?: string
   initialUnit?: CatalogUnit
   initialCategory?: CatalogCategory
+  initialPage?: number
 }) {
   const [term, setTerm] = useState(initialTerm)
   const [unit, setUnit] = useState<CatalogUnit>(initialUnit)
@@ -76,6 +79,56 @@ export function CatalogoBusca({
       return matchesUnit && matchesCategory
     })
   }, [category, fuse, products, term, unit])
+
+  // Paginação pela URL: `?pagina=2` é a fonte da verdade, então o estado
+  // sobrevive a recarregar, compartilhar o link e ao voltar do navegador.
+  const POR_PAGINA = 12
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const totalPaginas = Math.max(1, Math.ceil(results.length / POR_PAGINA))
+
+  // Na primeira renderização o servidor já leu o parâmetro; depois quem manda é
+  // a URL do cliente, que muda sem recarregar a página.
+  const daUrl = Number.parseInt(searchParams.get('pagina') ?? '', 10)
+  const pedida = Number.isNaN(daUrl) ? initialPage : daUrl
+  // Filtrar pode encurtar a lista e deixar a página pedida fora do intervalo.
+  const paginaAtual = Math.min(Math.max(1, pedida), totalPaginas)
+
+  const inicio = (paginaAtual - 1) * POR_PAGINA
+  const mostrados = results.slice(inicio, inicio + POR_PAGINA)
+
+  const escreverNaUrl = (mudancas: Record<string, string | null>, opcoes?: { replace?: boolean }) => {
+    const params = new URLSearchParams(searchParams.toString())
+    for (const [chave, valor] of Object.entries(mudancas)) {
+      if (valor === null || valor === '') params.delete(chave)
+      else params.set(chave, valor)
+    }
+    const query = params.toString()
+    const destino = query ? `${pathname}?${query}` : pathname
+    // `scroll: false` porque a rolagem é tratada aqui, até o topo da lista.
+    if (opcoes?.replace) router.replace(destino, { scroll: false })
+    else router.push(destino, { scroll: false })
+  }
+
+  const irParaPagina = (destino: number) => {
+    const alvo = Math.max(1, Math.min(destino, totalPaginas))
+    // Página 1 não entra na URL: o endereço limpo é o estado padrão.
+    escreverNaUrl({ pagina: alvo === 1 ? null : String(alvo) })
+    document.querySelector<HTMLElement>('.catalog-page__results')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  // Mudar de filtro ou buscar invalida a página atual: volta para a primeira,
+  // com `replace` para não encher o histórico a cada tecla digitada. O ref evita
+  // guardar isso em estado, que dispararia render em cascata dentro do efeito.
+  const chaveFiltros = `${term}|${unit}|${category}`
+  const chaveAnteriorRef = useRef(chaveFiltros)
+  useEffect(() => {
+    if (chaveAnteriorRef.current === chaveFiltros) return
+    chaveAnteriorRef.current = chaveFiltros
+    if (searchParams.get('pagina')) escreverNaUrl({ pagina: null }, { replace: true })
+  })
 
   const normalizedTerm = term.trim()
   const activeFilterTags = [
@@ -178,7 +231,9 @@ export function CatalogoBusca({
           <div className="catalog-page__results">
             <div className="catalog-page__results-head">
               <h2 id="catalog-results-title">Catálogo completo</h2>
-              <span aria-live="polite">{labelCount(results.length)}</span>
+              <span aria-live="polite">
+                {labelCount(results.length)}
+              </span>
             </div>
 
             <div className="catalog-page__mobile-tools">
@@ -200,9 +255,51 @@ export function CatalogoBusca({
             </div>
 
             {results.length > 0 ? (
-              <ul className="catalog-page__grid">
-                {results.map((item) => <CatalogCard item={item} key={item.id} />)}
-              </ul>
+              <>
+                <ul className="catalog-page__grid">
+                  {mostrados.map((item) => <CatalogCard item={item} key={item.id} />)}
+                </ul>
+
+                {totalPaginas > 1 && (
+                  <nav className="catalog-pagination" aria-label="Paginação do catálogo">
+                    <button
+                      type="button"
+                      className="catalog-pagination__seta"
+                      onClick={() => irParaPagina(paginaAtual - 1)}
+                      disabled={paginaAtual === 1}
+                      aria-label="Página anterior"
+                    >
+                      <span aria-hidden>←</span>
+                    </button>
+
+                    <ol className="catalog-pagination__paginas">
+                      {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((n) => (
+                        <li key={n}>
+                          <button
+                            type="button"
+                            onClick={() => irParaPagina(n)}
+                            aria-label={`Página ${n} de ${totalPaginas}`}
+                            aria-current={n === paginaAtual ? 'page' : undefined}
+                            className={n === paginaAtual ? 'is-active' : undefined}
+                          >
+                            {n}
+                          </button>
+                        </li>
+                      ))}
+                    </ol>
+
+                    <button
+                      type="button"
+                      className="catalog-pagination__seta"
+                      onClick={() => irParaPagina(paginaAtual + 1)}
+                      disabled={paginaAtual === totalPaginas}
+                      aria-label="Próxima página"
+                    >
+                      <span aria-hidden>→</span>
+                    </button>
+                  </nav>
+                )}
+              </>
             ) : (
               <div className="catalog-page__empty">
                 <p>Nenhum serviço encontrado com esses filtros.</p>
@@ -277,7 +374,6 @@ function CatalogCard({ item }: { item: CatalogProduct }) {
         </div>
         <div className="catalog-product-card__body">
           <h3>{item.name}</h3>
-          <p>{item.description}</p>
           <div className="catalog-product-card__tags">{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
           <div className="catalog-product-card__footer"><small>Sob orçamento</small><strong>Ver detalhes <span aria-hidden>→</span></strong></div>
         </div>

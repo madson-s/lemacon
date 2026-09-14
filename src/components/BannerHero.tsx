@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { HorizontalCarousel } from '@/components/HorizontalCarousel'
 import { urlDaMedia } from '@/lib/produtos'
 import type { Home } from '@/payload-types'
 
@@ -8,15 +9,16 @@ type Banner = NonNullable<Home['bannersHero']>[number]
 
 /**
  * Banners sobre a foto do topo. Mesmo modelo das faixas entre as seções: a arte
- * é um PNG do painel e a página só enquadra e liga. O primeiro item ocupa o
- * cartão grande; os seguintes viram faixas mais baixas abaixo dele.
+ * é um PNG do painel e a página só enquadra e liga. No desktop o primeiro item
+ * ocupa o cartão grande e os seguintes viram faixas mais baixas abaixo dele; no
+ * celular e no tablet em retrato, viram um slideshow com bolinhas.
  */
 export function BannerHero({ banners }: { banners: Banner[] }) {
   const comArte = banners.filter((banner) => urlDaMedia(banner.imagem, 'card'))
   if (comArte.length === 0) return null
 
   return (
-    <aside className="hero-promotions" aria-label="Destaques da LM">
+    <HorizontalCarousel trackClassName="hero-promotions" label="Destaques da LM">
       {comArte.map((banner, indice) => {
         const src = urlDaMedia(banner.imagem, 'card') as string
         const destino = banner.link?.trim()
@@ -42,6 +44,6 @@ export function BannerHero({ banners }: { banners: Banner[] }) {
           </div>
         )
       })}
-    </aside>
+    </HorizontalCarousel>
   )
 }

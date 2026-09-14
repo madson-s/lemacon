@@ -24,9 +24,9 @@ const isUnit = (value: string | undefined): value is CatalogUnit => catalogUnits
 export default async function CatalogoPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; unidade?: string; categoria?: string }>
+  searchParams: Promise<{ q?: string; unidade?: string; categoria?: string; pagina?: string }>
 }) {
-  const { q, unidade, categoria } = await searchParams
+  const { q, unidade, categoria, pagina } = await searchParams
   const payload = await getPayload({ config: await config })
   const { docs } = await payload.find({
     collection: 'produtos',
@@ -62,31 +62,9 @@ export default async function CatalogoPage({
         initialUnit={isUnit(unidade) ? unidade : 'Todas'}
         categorias={categorias}
         initialCategory={categoria && categorias.includes(categoria) ? categoria : 'Todas'}
+        initialPage={Number.parseInt(pagina ?? '1', 10) || 1}
       />
 
-      <section className="contact-section catalog-page__contact" id="orcamento">
-        <div className="lm-container contact-section__grid">
-          <div className="contact-card">
-            <p className="eyebrow"><i aria-hidden />Orçamento</p>
-            <h2>Conte o seu<br />projeto</h2>
-            <p>Envie as medidas ou peça uma avaliação no local. Retornamos com a especificação e o orçamento pelo WhatsApp.</p>
-            <a className="button button--gold" href="https://wa.me/" target="_blank" rel="noreferrer">Falar no WhatsApp <span aria-hidden>→</span></a>
-            <dl>
-              <div><dt>Atendimento</dt><dd>Toda a Chapada Diamantina</dd></div>
-              <div><dt>Escopo</dt><dd>Projeto · fabricação · instalação</dd></div>
-              <div><dt>Avaliação</dt><dd>Sem compromisso</dd></div>
-            </dl>
-          </div>
-          <form className="contact-form" action="#orcamento">
-            <label>Nome<input name="nome" type="text" placeholder="Como podemos chamar você" /></label>
-            <label>Telefone / WhatsApp<input name="telefone" type="tel" placeholder="(00) 0 0000-0000" /></label>
-            <label>Unidade de interesse<select name="unidade" defaultValue="Esquadrias de alumínio"><option>Esquadrias de alumínio</option><option>Vidros temperados</option><option>Tec Construção</option></select></label>
-            <label>Mensagem<textarea name="mensagem" placeholder="Descreva o ambiente, as medidas ou o que precisa" /></label>
-            <button type="submit" className="button button--dark">Solicitar orçamento</button>
-            <small>Seus dados ficam protegidos e não são compartilhados.</small>
-          </form>
-        </div>
-      </section>
     </div>
   )
 }

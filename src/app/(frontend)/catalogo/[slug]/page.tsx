@@ -152,7 +152,7 @@ export default async function ProdutoPage({ params }: { params: Promise<{ slug: 
               <small>Produção e instalação dimensionadas para o seu projeto.</small>
             </div>
 
-            <Link href="/catalogo#orcamento" className="button button--gold">
+            <Link href="/#orcamento" className="button button--gold">
               Solicitar orçamento <span aria-hidden>→</span>
             </Link>
             <small className="product-detail__coverage">Atendimento em toda a Chapada Diamantina.</small>
