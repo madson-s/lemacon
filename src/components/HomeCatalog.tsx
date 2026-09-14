@@ -25,7 +25,17 @@ function Arrow() {
   return <span aria-hidden className="arrow">→</span>
 }
 
-export function HomeCatalog({ products }: { products: HomeProduct[] }) {
+export function HomeCatalog({
+  products,
+  chapeu = 'Catálogo',
+  titulo = 'Produtos e serviços que a LM entrega',
+  texto,
+}: {
+  products: HomeProduct[]
+  chapeu?: string | null
+  titulo?: string | null
+  texto?: string | null
+}) {
   const router = useRouter()
   const [activeFilter, setActiveFilter] = useState<CatalogFilter>('Todos')
   const [searchTerm, setSearchTerm] = useState('')
@@ -101,9 +111,9 @@ export function HomeCatalog({ products }: { products: HomeProduct[] }) {
     <>
       <div className="catalog-intro">
         <div>
-          <p className="eyebrow"><i aria-hidden />Catálogo</p>
-          <h2>Produtos e serviços<br />que a LM entrega</h2>
-          <p>Um catálogo amplo de esquadrias, vidros e obra — cada peça medida, fabricada e instalada pela nossa equipe. Filtre por unidade de negócio.</p>
+          {chapeu && <p className="eyebrow"><i aria-hidden />{chapeu}</p>}
+          {titulo && <h2>{titulo}</h2>}
+          {texto && <p>{texto}</p>}
         </div>
         <div className="catalog-filters" role="group" aria-label="Filtros do catálogo">
           {filters.map((filter) => (

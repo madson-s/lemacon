@@ -135,11 +135,14 @@ export const Produtos: CollectionConfig = {
     },
     {
       name: 'destaque',
+      label: 'Mostrar na home',
       type: 'checkbox',
       defaultValue: false,
       index: true,
       admin: {
         position: 'sidebar',
+        description:
+          'Marque para o produto aparecer na seção "Produtos e serviços que a LM entrega", na home. Sem nenhum marcado, a seção mostra os mais recentes do catálogo.',
       },
     },
     {

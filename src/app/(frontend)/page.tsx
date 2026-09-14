@@ -12,73 +12,6 @@ import config from '@/payload.config'
 
 export const dynamic = 'force-dynamic'
 
-const products: HomeProduct[] = [
-  {
-    unit: 'Esquadrias',
-    category: 'Esquadrias · Portas',
-    title: 'Porta de correr em alumínio',
-    description: 'Folhas amplas que abrem o ambiente para a vista, com perfil reforçado e rolamento suave.',
-    tags: ['Perfil reforçado', 'Vidro laminado', 'Sob medida'],
-    image: '/images/home/product-sliding-door.png',
-  },
-  {
-    unit: 'Esquadrias',
-    category: 'Esquadrias · Portas',
-    title: 'Porta pivotante de entrada',
-    description: 'Folha larga com eixo pivotante, acabamento anodizado ou pintado e puxador sob medida.',
-    tags: ['Folha ampla', 'Anodizado', 'Puxador sob medida'],
-    image: '/images/home/product-pivot-door.png',
-  },
-  {
-    unit: 'Esquadrias',
-    category: 'Esquadrias · Janelas',
-    title: 'Janela maxim-ar',
-    description: 'Abertura projetante que ventila sem ocupar espaço interno, com vedação em escova e borracha.',
-    tags: ['Projetante', 'Tela opcional', 'Anodizado'],
-    image: '/images/home/product-maxim-ar.png',
-  },
-  {
-    unit: 'Esquadrias',
-    category: 'Esquadrias · Janelas',
-    title: 'Janela de correr 2 folhas',
-    description: 'Linha reforçada com marco amplo, vidro incolor ou verde e trilho de rolamento silencioso.',
-    tags: ['2 folhas', 'Marco reforçado', 'Sob medida'],
-    image: '/images/home/product-sliding-window.png',
-  },
-  {
-    unit: 'Vidros',
-    category: 'Vidros · Fachadas',
-    title: 'Fachada pele de vidro',
-    description: 'Sistema structural glazing para fachadas contínuas, com vidro refletivo ou incolor.',
-    tags: ['Structural glazing', 'Refletivo', 'Comercial'],
-    image: '/images/home/product-glass-facade.png',
-  },
-  {
-    unit: 'Construção',
-    category: 'Construção · Fachadas',
-    title: 'Fachada ventilada com brise',
-    description: 'Revestimento em alumínio com brise horizontal, para controle solar e conforto térmico.',
-    tags: ['Brise de alumínio', 'Controle solar', 'Térmico'],
-    image: '/images/home/product-brise-facade.png',
-  },
-  {
-    unit: 'Esquadrias',
-    category: 'Esquadrias · Portas',
-    title: 'Porta-balcão sanfonada',
-    description: 'Abertura total do vão com folhas que recolhem na lateral, integrando interior e varanda.',
-    tags: ['Abertura total', 'Alumínio', 'Vidro temperado'],
-    image: '/images/home/product-folding-door.png',
-  },
-  {
-    unit: 'Construção',
-    category: 'Construção · Coberturas',
-    title: 'Cobertura em pergolado',
-    description: 'Estrutura de alumínio com fechamento em policarbonato ou vidro, para áreas externas.',
-    tags: ['Vidro livre', 'Policarbonato', 'Externo'],
-    image: '/images/home/product-pergola.png',
-  },
-]
-
 const units = [
   {
     title: 'Esquadrias',
@@ -122,10 +55,29 @@ export default async function HomePage() {
     pagination: false,
     where: { ativo: { equals: true } },
   })
-  const porUnidade = mergePublishedProducts(produtos.map(paraProdutoItem)).reduce<Record<string, number>>(
+  const doCatalogo = mergePublishedProducts(produtos.map(paraProdutoItem))
+  const porUnidade = doCatalogo.reduce<Record<string, number>>(
     (acc, item) => (item.unit ? { ...acc, [item.unit]: (acc[item.unit] ?? 0) + 1 } : acc),
     {},
   )
+
+  // A vitrine da home é gerenciada pelo painel: mostra os produtos marcados como
+  // "Mostrar na home". Sem nenhum marcado, cai nos mais recentes do catálogo,
+  // para a seção nunca ficar vazia por esquecimento.
+  const marcados = new Set(
+    produtos.filter((produto) => produto.destaque).map((produto) => String(produto.id)),
+  )
+  const vitrine = doCatalogo.filter((item) => marcados.has(item.id))
+  const produtosDaHome: HomeProduct[] = (vitrine.length > 0 ? vitrine : doCatalogo)
+    .slice(0, 8)
+    .map((item) => ({
+      unit: item.unit ?? 'Construção',
+      category: item.unit ? `${item.unit} · ${item.category}` : item.category,
+      title: item.name,
+      description: item.description,
+      tags: item.tags,
+      image: item.image,
+    }))
 
   return (
     <>
@@ -145,7 +97,12 @@ export default async function HomePage() {
 
       <section className="catalog-section" id="catalogo">
         <div className="lm-container">
-          <HomeCatalog products={products} />
+          <HomeCatalog
+            products={produtosDaHome}
+            chapeu={home.secaoCatalogo?.chapeu}
+            titulo={home.secaoCatalogo?.titulo}
+            texto={home.secaoCatalogo?.texto}
+          />
         </div>
       </section>
 

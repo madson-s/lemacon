@@ -1,6 +1,17 @@
+import path from 'path'
 import { getPayload } from 'payload'
 
 import config from '../src/payload.config'
+import { MIDIA_DE_PRODUTOS } from './seed-midia'
+
+/** Uma foto: nome do arquivo em `public/produtos/` e o texto alternativo. */
+export type Foto = [arquivo: string, alt: string]
+
+export type MidiaDeProduto = {
+  produto: string
+  capa: Foto
+  galeria: Foto[]
+}
 
 /**
  * Conteúdo real da LM: marcas, categorias e produtos.
@@ -274,6 +285,39 @@ if (faltando.length > 0) {
     data: { marcas: [...atuais, ...faltando].map((nome) => ({ nome })) },
   })
   console.log('marcas adicionadas:', faltando.join(', '))
+}
+
+// --- Fotos dos produtos ---------------------------------------------------
+// Só sobe o que falta: uma foto já associada é deixada como está, para não
+// duplicar mídia nem sobrescrever o que foi trocado pelo painel.
+const PASTA_FOTOS = path.resolve(process.cwd(), 'public/produtos')
+
+const subirFoto = async ([arquivo, alt]: Foto) => {
+  const achado = await payload.find({ collection: 'media', where: { alt: { equals: alt } }, limit: 1 })
+  if (achado.docs[0]) return achado.docs[0].id
+  const doc = await payload.create({
+    collection: 'media',
+    data: { alt },
+    filePath: path.join(PASTA_FOTOS, arquivo),
+  })
+  return doc.id
+}
+
+for (const midia of MIDIA_DE_PRODUTOS) {
+  const achado = await payload.find({ collection: 'produtos', where: { nome: { equals: midia.produto } }, limit: 1 })
+  const produto = achado.docs[0]
+  if (!produto) {
+    console.warn('produto ausente, fotos ignoradas:', midia.produto)
+    continue
+  }
+  if (produto.imagem) continue
+
+  const capa = await subirFoto(midia.capa)
+  const galeria: number[] = []
+  for (const foto of midia.galeria) galeria.push(await subirFoto(foto))
+
+  await payload.update({ collection: 'produtos', id: produto.id, data: { imagem: capa, galeria } })
+  console.log('fotos aplicadas:', midia.produto, `(1 capa + ${galeria.length})`)
 }
 
 console.log('seed concluído')

@@ -178,6 +178,36 @@ export const Home: GlobalConfig = {
       ],
     },
     {
+      name: 'secaoCatalogo',
+      label: 'Seção de produtos da home',
+      type: 'group',
+      admin: {
+        description:
+          'A vitrine logo abaixo do topo. Os produtos vêm do catálogo: marque "Mostrar na home" em cada um. Sem nenhum marcado, aparecem os mais recentes.',
+      },
+      fields: [
+        {
+          name: 'chapeu',
+          label: 'Chapéu',
+          type: 'text',
+          defaultValue: 'Catálogo',
+        },
+        {
+          name: 'titulo',
+          label: 'Título',
+          type: 'text',
+          defaultValue: 'Produtos e serviços que a LM entrega',
+        },
+        {
+          name: 'texto',
+          label: 'Texto de apoio',
+          type: 'textarea',
+          defaultValue:
+            'Um catálogo amplo de esquadrias, vidros e obra — cada peça medida, fabricada e instalada pela nossa equipe. Filtre por unidade de negócio.',
+        },
+      ],
+    },
+    {
       name: 'bannersHero',
       label: 'Banners do topo',
       labels: { singular: 'Banner', plural: 'Banners' },
