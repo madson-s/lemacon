@@ -8,6 +8,7 @@ import * as migration_20260904_041116_banners_home from './20260904_041116_banne
 import * as migration_20260910_135841_banners_hero from './20260910_135841_banners_hero';
 import * as migration_20260910_165539_categoria_unidade from './20260910_165539_categoria_unidade';
 import * as migration_20260914_140510_secao_catalogo_home from './20260914_140510_secao_catalogo_home';
+import * as migration_20260914_150701_produto_promocao from './20260914_150701_produto_promocao';
 
 export const migrations = [
   {
@@ -58,6 +59,11 @@ export const migrations = [
   {
     up: migration_20260914_140510_secao_catalogo_home.up,
     down: migration_20260914_140510_secao_catalogo_home.down,
-    name: '20260914_140510_secao_catalogo_home'
+    name: '20260914_140510_secao_catalogo_home',
+  },
+  {
+    up: migration_20260914_150701_produto_promocao.up,
+    down: migration_20260914_150701_produto_promocao.down,
+    name: '20260914_150701_produto_promocao'
   },
 ];

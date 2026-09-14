@@ -71,13 +71,24 @@ export function CatalogoBusca({
 
   const results = useMemo(() => {
     const query = term.trim()
-    const searched = query.length >= 2 ? fuse.search(query).map((entry) => entry.item) : products
+    const buscando = query.length >= 2
+    const searched = buscando ? fuse.search(query).map((entry) => entry.item) : products
 
-    return searched.filter((item) => {
+    const filtrados = searched.filter((item) => {
       const matchesUnit = unit === 'Todas' || item.unit === unit
       const matchesCategory = category === 'Todas' || item.category === category
       return matchesUnit && matchesCategory
     })
+
+    // Durante a busca a ordem é a relevância do Fuse: reordenar por promoção
+    // colocaria itens pouco parecidos à frente do que a pessoa procurou.
+    if (buscando) return filtrados
+
+    // Promoções primeiro, e dentro de cada grupo em ordem alfabética.
+    return [...filtrados].sort(
+      (a, b) =>
+        Number(b.promocao) - Number(a.promocao) || a.name.localeCompare(b.name, 'pt-BR'),
+    )
   }, [category, fuse, products, term, unit])
 
   // Paginação pela URL: `?pagina=2` é a fonte da verdade, então o estado
@@ -414,6 +425,7 @@ function CatalogCard({ item }: { item: CatalogProduct }) {
         <div className="catalog-product-card__image">
           <Image src={item.image} alt={item.imageAlt} fill sizes="(max-width: 800px) calc(100vw - 40px), (max-width: 1200px) 33vw, 276px" />
           <span>{item.unit} · {item.category}</span>
+          {item.promocao && <em className="catalog-product-card__promo">Promoção</em>}
         </div>
         <div className="catalog-product-card__body">
           <h3>{item.name}</h3>

@@ -423,6 +423,10 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-gold); outline-offs
 .catalog-product-card__image img { object-fit: cover; transition: transform 400ms cubic-bezier(.2,.7,.3,1); }
 .catalog-product-card:hover .catalog-product-card__image img { transform: scale(1.035); }
 .catalog-product-card__image > span { position: absolute; z-index: 1; top: 13px; left: 13px; max-width: calc(100% - 26px); overflow: hidden; border-radius: 999px; padding: 7px 10px 6px; color: #9d7521; background: rgb(251 249 244 / 91%); box-shadow: 0 2px 12px rgb(0 0 0 / 8%); font-size: 9px; font-weight: 750; letter-spacing: .08em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; backdrop-filter: blur(8px); }
+/* Selo de promoção: no canto oposto ao da categoria, em ouro, para explicar por
+   que o item aparece antes dos outros na lista. */
+.catalog-product-card__promo { position: absolute; z-index: 1; top: 13px; right: 13px; border-radius: 999px; padding: 6px 10px 5px; color: #191711; background: var(--lm-gold); box-shadow: 0 2px 12px rgb(0 0 0 / 12%); font-size: 9px; font-style: normal; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+
 .catalog-product-card__body { display: flex; min-height: 176px; flex: 1; flex-direction: column; padding: 20px 20px 17px; }
 .catalog-product-card h3 { min-height: 48px; font-size: 19px; font-weight: 650; letter-spacing: -.025em; line-height: 1.2; text-wrap: balance; }
 .catalog-product-card__tags { display: flex; min-height: 48px; align-content: flex-start; flex-wrap: wrap; gap: 5px; margin-top: 12px; }

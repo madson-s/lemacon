@@ -203,6 +203,10 @@ export interface Produto {
       }[]
     | null;
   /**
+   * Produtos em promoção aparecem primeiro no catálogo, antes dos demais. Entre eles, a ordem continua alfabética.
+   */
+  promocao?: boolean | null;
+  /**
    * Marque para o produto aparecer na seção "Produtos e serviços que a LM entrega", na home. Sem nenhum marcado, a seção mostra os mais recentes do catálogo.
    */
   destaque?: boolean | null;
@@ -550,6 +554,7 @@ export interface ProdutosSelect<T extends boolean = true> {
         valor?: T;
         id?: T;
       };
+  promocao?: T;
   destaque?: T;
   ativo?: T;
   updatedAt?: T;
