@@ -251,6 +251,7 @@ rounded:
   sheet-sm: "28px"
   card-media: "30px"
   sheet: "32px"
+  contact-card: "34px"
   hero-visual: "36px"
   hero: "38px"
   hero-lg: "40px"
