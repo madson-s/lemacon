@@ -215,11 +215,9 @@ export const Home: GlobalConfig = {
       maxRows: 3,
       admin: {
         description:
-          'Aparecem sobre a foto do topo, à direita. O primeiro é o grande; os seguintes são faixas mais baixas abaixo dele. Deixe vazio para esconder.',
+          'Aparecem sobre a foto do topo: empilhados à direita no computador, e como um slide que desliza no celular. Todos com o mesmo tamanho. Deixe vazio para esconder.',
       },
-      fields: bannerFields(
-        'no primeiro banner use 16:9 — 1020 × 574 px; nos demais, 5:1 — 1020 × 204 px',
-      ),
+      fields: bannerFields('na proporção 16:6 — 1020 × 390 px atende bem do computador ao celular'),
     },
     {
       name: 'bannersFaixa1',

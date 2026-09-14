@@ -321,13 +321,41 @@ export function CatalogoBusca({
           <fieldset>
             <legend><i aria-hidden />Unidade</legend>
             <div className="mobile-filter-sheet__chips">
-              {catalogUnits.map((candidate) => <button type="button" className={unit === candidate ? 'is-active' : ''} aria-pressed={unit === candidate} onClick={() => setUnit(candidate)} key={candidate}>{candidate}</button>)}
+              {catalogUnits.map((candidate) => {
+                const total = countForUnit(candidate)
+                return (
+                  <button
+                    type="button"
+                    className={unit === candidate ? 'is-active' : ''}
+                    aria-pressed={unit === candidate}
+                    disabled={total === 0 && unit !== candidate}
+                    onClick={() => setUnit(candidate)}
+                    key={candidate}
+                  >
+                    {candidate}
+                  </button>
+                )
+              })}
             </div>
           </fieldset>
           <fieldset>
             <legend><i aria-hidden />Categoria</legend>
             <div className="mobile-filter-sheet__chips">
-              {listaCategorias.map((candidate) => <button type="button" className={category === candidate ? 'is-active' : ''} aria-pressed={category === candidate} onClick={() => setCategory(candidate)} key={candidate}>{candidate}</button>)}
+              {listaCategorias.map((candidate) => {
+                const total = countForCategory(candidate)
+                return (
+                  <button
+                    type="button"
+                    className={category === candidate ? 'is-active' : ''}
+                    aria-pressed={category === candidate}
+                    disabled={total === 0 && category !== candidate}
+                    onClick={() => setCategory(candidate)}
+                    key={candidate}
+                  >
+                    {candidate}
+                  </button>
+                )
+              })}
             </div>
           </fieldset>
           <div className="mobile-filter-sheet__actions">
@@ -357,7 +385,22 @@ function FilterState({ tags, hasActiveFilters, onReset }: { tags: string[]; hasA
 }
 
 function FilterButton({ active, count, onClick, children }: { active: boolean; count: number; onClick: () => void; children: ReactNode }) {
-  return <button type="button" className={active ? 'is-active' : ''} aria-pressed={active} onClick={onClick}><span>{children}</span><small>{count}</small></button>
+  // Filtro sem nenhum item não leva a lugar nenhum: fica desabilitado em vez de
+  // levar o visitante a uma lista vazia.
+  const vazio = count === 0
+  return (
+    <button
+      type="button"
+      className={active ? 'is-active' : ''}
+      aria-pressed={active}
+      onClick={onClick}
+      disabled={vazio && !active}
+      title={vazio ? 'Nenhum item nesta seleção' : undefined}
+    >
+      <span>{children}</span>
+      <small>{count}</small>
+    </button>
+  )
 }
 
 function CatalogCard({ item }: { item: CatalogProduct }) {
