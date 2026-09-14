@@ -36,6 +36,19 @@ const carregar = async () => {
   return payload.findGlobal({ slug: 'sobre', depth: 1 })
 }
 
+const carregarProjetos = async () => {
+  const payload = await getPayload({ config: await config })
+  const { docs } = await payload.find({
+    collection: 'projetos',
+    depth: 1,
+    limit: 8,
+    pagination: false,
+    sort: 'ordem',
+    where: { publicado: { equals: true } },
+  })
+  return docs
+}
+
 /** O Lexical devolve um parágrafo vazio quando o editor nunca foi preenchido. */
 const temTexto = (data: RichTextData | null | undefined): boolean => {
   if (!data?.root?.children) return false
@@ -57,33 +70,6 @@ const iniciais = (nome: string): string =>
     .map((parte) => parte[0]?.toUpperCase() ?? '')
     .join('')
 
-const projetos = [
-  {
-    title: 'Fachadas de vidro',
-    unit: 'Vidros',
-    image: '/images/catalog/fachada-pele-vidro.png',
-    href: '/catalogo?unidade=Vidros&categoria=Fachadas',
-  },
-  {
-    title: 'Portas e grandes vãos',
-    unit: 'Esquadrias',
-    image: '/images/catalog/porta-sanfonada.png',
-    href: '/catalogo?unidade=Esquadrias&categoria=Portas',
-  },
-  {
-    title: 'Guarda-corpos sob medida',
-    unit: 'Vidros',
-    image: '/images/catalog/guarda-corpo-escada.png',
-    href: '/catalogo?unidade=Vidros&categoria=Guarda-corpo',
-  },
-  {
-    title: 'Reforma e ampliação',
-    unit: 'Construção',
-    image: '/images/catalog/ampliacao-area-externa.png',
-    href: '/catalogo?unidade=Constru%C3%A7%C3%A3o',
-  },
-]
-
 const metodo = [
   ['01', 'Projeto conectado à execução', 'Quem mede e especifica acompanha o que será produzido.'],
   ['02', 'Fabricação própria', 'Perfis, vidros e acabamentos passam pela mesma coordenação.'],
@@ -92,6 +78,7 @@ const metodo = [
 
 export default async function SobrePage() {
   const sobre = await carregar()
+  const projetos = await carregarProjetos()
 
   const ficha = (sobre.ficha ?? []).filter((linha) => linha.valor?.trim())
   const capacidades = sobre.capacidades ?? []
@@ -180,13 +167,23 @@ export default async function SobrePage() {
             <Link className="button button--dark" href="/catalogo">Ver catálogo <span aria-hidden>→</span></Link>
           </div>
           <div className="sobre-projects__grid">
-            {projetos.map((projeto) => (
-              <Link href={projeto.href} key={projeto.title} className="sobre-project-card">
-                <Image src={projeto.image} alt="" fill sizes="(max-width: 800px) 76vw, 290px" />
-                <span aria-hidden />
-                <p><small>{projeto.unit}</small><strong>{projeto.title}</strong></p>
-              </Link>
-            ))}
+            {projetos.map((projeto) => {
+              const capa = urlDaMedia(projeto.capa, 'card')
+              return (
+                <Link
+                  href={`/projetos/${projeto.slug ?? projeto.id}`}
+                  key={projeto.id}
+                  className="sobre-project-card"
+                >
+                  {capa && <Image src={capa} alt="" fill sizes="(max-width: 800px) 76vw, 290px" />}
+                  <span aria-hidden />
+                  <p>
+                    <small>{projeto.tipo ?? projeto.local ?? 'Projeto'}</small>
+                    <strong>{projeto.titulo}</strong>
+                  </p>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>

@@ -492,6 +492,13 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-gold); outline-offs
 .product-detail__price strong { font-size: 24px; font-weight: 620; letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
 .product-detail__price small { color: #8c857a; font-size: 11px; line-height: 1.45; }
 .product-detail__summary > .button { width: 100%; min-height: 52px; margin-top: 24px; }
+/* Ficha do projeto: reusa a caixa do preço na página de produto, trocando o
+   número grande por pares rótulo/valor (local, ano, tipo). */
+.projeto-ficha dl { display: grid; gap: 12px; }
+.projeto-ficha dl div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
+.projeto-ficha dt { color: #8c857a; font-size: 10px; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
+.projeto-ficha dd { color: var(--lm-ink); font-size: 15px; font-weight: 650; letter-spacing: -.012em; }
+
 .product-detail__coverage { display: block; margin-top: 12px; color: #8c857a; font-size: 10px; text-align: center; }
 .product-detail__information { padding: 80px 0; background: var(--lm-paper-2); }
 .product-detail__information-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(340px, .9fr); gap: 82px; }
