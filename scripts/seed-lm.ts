@@ -2,6 +2,8 @@ import path from 'path'
 import { getPayload } from 'payload'
 
 import config from '../src/payload.config'
+
+import { limparMarcadorDev } from './limpar-marcador-dev'
 import { MIDIA_DE_PRODUTOS } from './seed-midia'
 
 /** Uma foto: nome do arquivo em `public/produtos/` e o texto alternativo. */
@@ -321,4 +323,6 @@ for (const midia of MIDIA_DE_PRODUTOS) {
 }
 
 console.log('seed concluído')
+await limparMarcadorDev(payload)
+
 process.exit(0)

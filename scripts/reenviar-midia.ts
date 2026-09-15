@@ -2,6 +2,8 @@ import { getPayload } from 'payload'
 
 import config from '../src/payload.config'
 
+import { limparMarcadorDev } from './limpar-marcador-dev'
+
 /**
  * Reenvia as fotos dos produtos para o storage configurado.
  *
@@ -53,5 +55,7 @@ for (const midia of midias) {
 }
 console.log('mídias removidas:', removidas)
 console.log('agora rode: pnpm payload run scripts/seed-lm.ts')
+
+await limparMarcadorDev(payload)
 
 process.exit(0)
