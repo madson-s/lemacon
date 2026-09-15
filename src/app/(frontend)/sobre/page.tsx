@@ -1,7 +1,7 @@
 /*
   THESIS: a LM se apresenta na mesma gramática com que vende — uma ficha técnica.
   Recusa a página institucional de linha do tempo com cards de valores.
-  OWN-WORLD: mundo LM já existente (ink #1c1b18, paper #f8f5ef, ouro #c59a32,
+  OWN-WORLD: mundo LM já existente (ink #0d0e0f, fundo #f3f3f2, vermelho #c8161c,
   .lm-container, .eyebrow, botões pill). Novidade: régua de dados com filetes,
   valores tabulares e o ano em Instrument Serif — face já carregada e nunca usada.
   STORY: o visitante entende que projeto, fábrica e instalação são a mesma equipe,
