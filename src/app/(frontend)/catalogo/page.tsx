@@ -51,7 +51,7 @@ export default async function CatalogoPage({
           </div>
           <div className="catalog-page__hero-visual" aria-label="Ambiente com esquadrias de alumínio e vidro" role="img">
             <div className="catalog-page__hero-image"><Image src="/images/catalog/catalog-hero.png" alt="" fill priority sizes="(max-width: 800px) 100vw, 508px" /></div>
-            <Image className="catalog-page__hero-monogram" src="/images/catalog/catalog-monogram.png" alt="" width={510} height={510} priority />
+            <Image className="catalog-page__hero-monogram" src="/images/catalog/catalog-monogram.png?v=205-207" alt="" width={510} height={510} priority />
           </div>
         </div>
       </section>

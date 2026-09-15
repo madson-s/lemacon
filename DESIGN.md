@@ -2,82 +2,95 @@
 name: LM · Esquadrias, Vidros e Construção
 description: Ferro e vidro sobre papel — um catálogo que se lê como ficha técnica de esquadria.
 colors:
-  ink: "#1c1b18"
-  ink-deep: "#191816"
-  paper: "#f8f5ef"
-  paper-2: "#f2ede3"
-  card: "#fbf8f2"
-  field: "#fbf9f4"
-  line: "#ded8cc"
-  muted: "#6f6b63"
-  gold: "#c59a32"
-  gold-light: "#e6c76f"
-  gold-cream: "#ead38a"
-  gold-ink: "#9d7521"
-  ink-raised: "#302e29"
-  ink-panel: "#37332d"
-  ink-warm: "#3b3428"
-  ink-stone: "#42382b"
-  ink-mute: "#4a463f"
-  ink-banner: "#302b25"
-  text-strong: "#4f4b44"
-  text-link: "#4e4b46"
-  text-body: "#5f5a52"
-  text-soft: "#655f56"
-  text-crumb: "#6d675e"
-  text-mute: "#6f6960"
-  text-quiet: "#716a61"
-  text-faint: "#756f65"
-  label: "#777168"
-  label-soft: "#7d776c"
-  label-warm: "#7d7669"
-  label-tag: "#7c7468"
-  label-quiet: "#8a8378"
-  label-faint: "#8b857c"
-  label-mute: "#8c857a"
-  label-stat: "#8d826f"
-  meta: "#888279"
-  meta-soft: "#918a80"
-  meta-quiet: "#9a9287"
-  meta-faint: "#9b958a"
-  edge-dark: "#a99e8c"
-  edge-warm: "#a78d72"
-  edge-crumb: "#a89f8f"
-  line-soft: "#ddd6ca"
-  line-warm: "#d2c9bb"
-  line-sheet: "#d8d3ca"
-  line-tag: "#e2d9ca"
-  line-tag-soft: "#dfd7c8"
-  line-rule: "#e8e1d6"
-  line-rule-soft: "#e4ddd1"
-  line-spec: "#e1d9cc"
-  surface-photo: "#ddd6cb"
-  surface-photo-alt: "#ddd7cd"
-  surface-photo-cool: "#d9d4ca"
-  surface-photo-warm: "#d9d3c9"
-  surface-photo-deep: "#d8d2c7"
-  surface-map: "#cfc9bf"
-  surface-tag: "#eee8de"
-  surface-tag-alt: "#eee8dc"
-  surface-tag-warm: "#eee7dc"
-  surface-tag-detail: "#eee7db"
-  surface-sunk: "#f0eade"
-  surface-empty: "#f0ebe1"
-  surface-chip: "#f1ebe0"
-  surface-stat: "#efe8dc"
-  surface-pin: "#efe4cb"
-  gold-deep: "#6d4a08"
-  gold-dark: "#866619"
-  gold-icon: "#8b6719"
-  gold-link: "#7e5e16"
-  gold-number: "#aa7f24"
-  gold-hover: "#d6ae4d"
-  gold-cream-hover: "#f1dda1"
-  gold-tint: "#f0e5cf"
-  gold-tint-warm: "#f3e8d7"
-  gold-footer: "#a78b48"
-  gold-pin-ink: "#251e0f"
-  on-gold: "#191711"
+  red: "#c8161c"
+  red-bright: "#e63329"
+  red-deep: "#8c0d12"
+  red-wash: "#fbedec"
+  ink: "#0d0e0f"
+  graphite: "#1a1c1e"
+  silver: "#c6cace"
+  steel: "#8e949a"
+  bg: "#f3f3f2"
+  bg-alt: "#ededeb"
+  surface: "#ffffff"
+  border: "#e2e2e0"
+  text: "#16181a"
+  text-muted: "#6a7075"
+  ink-deep: "#0d0e0f"
+  paper: "#f3f3f2"
+  paper-2: "#ededeb"
+  card: "#ffffff"
+  field: "#ffffff"
+  line: "#e2e2e0"
+  muted: "#6a7075"
+  gold: "#c8161c"
+  gold-light: "#e63329"
+  gold-cream: "#d6201f"
+  gold-ink: "#c8161c"
+  ink-raised: "#1a1c1e"
+  ink-panel: "#1a1c1e"
+  ink-warm: "#1a1c1e"
+  ink-stone: "#1a1c1e"
+  ink-mute: "#1a1c1e"
+  ink-banner: "#1a1c1e"
+  text-strong: "#16181a"
+  text-link: "#16181a"
+  text-body: "#6a7075"
+  text-soft: "#6a7075"
+  text-crumb: "#6a7075"
+  text-mute: "#6a7075"
+  text-quiet: "#6a7075"
+  text-faint: "#6a7075"
+  label: "#6a7075"
+  label-soft: "#6a7075"
+  label-warm: "#6a7075"
+  label-tag: "#6a7075"
+  label-quiet: "#8e949a"
+  label-faint: "#8e949a"
+  label-mute: "#8e949a"
+  label-stat: "#8e949a"
+  meta: "#8e949a"
+  meta-soft: "#8e949a"
+  meta-quiet: "#8e949a"
+  meta-faint: "#8e949a"
+  edge-dark: "#8e949a"
+  edge-warm: "#8e949a"
+  edge-crumb: "#8e949a"
+  line-soft: "#e2e2e0"
+  line-warm: "#c6cace"
+  line-sheet: "#c6cace"
+  line-tag: "#e2e2e0"
+  line-tag-soft: "#e2e2e0"
+  line-rule: "#e2e2e0"
+  line-rule-soft: "#e2e2e0"
+  line-spec: "#e2e2e0"
+  surface-photo: "#e2e2e0"
+  surface-photo-alt: "#e2e2e0"
+  surface-photo-cool: "#e2e2e0"
+  surface-photo-warm: "#e2e2e0"
+  surface-photo-deep: "#e2e2e0"
+  surface-map: "#c6cace"
+  surface-tag: "#ededeb"
+  surface-tag-alt: "#ededeb"
+  surface-tag-warm: "#ededeb"
+  surface-tag-detail: "#ededeb"
+  surface-sunk: "#ededeb"
+  surface-empty: "#ededeb"
+  surface-chip: "#ededeb"
+  surface-stat: "#ededeb"
+  surface-pin: "#fbedec"
+  gold-deep: "#8c0d12"
+  gold-dark: "#8c0d12"
+  gold-icon: "#c8161c"
+  gold-link: "#8c0d12"
+  gold-number: "#c8161c"
+  gold-hover: "#e63329"
+  gold-cream-hover: "#e63329"
+  gold-tint: "#fbedec"
+  gold-tint-warm: "#fbedec"
+  gold-footer: "#e63329"
+  gold-pin-ink: "#ffffff"
+  on-gold: "#ffffff"
 typography:
   display:
     fontFamily: "var(--font-space-grotesk), Space Grotesk, sans-serif"
@@ -378,13 +391,13 @@ components:
 
 LM sells things that are measured, fabricated and installed — a window profile, a tempered pane, a pergola span. The site is built in that same grammar. Information is set the way a spec sheet is set: ruled rows, a label on the left, a value on the right, numbers in tabular figures. Nothing is presented as a claim when it can be presented as a measurement. The visitor is meant to read the company the way they'd read the section drawing of an aluminium frame.
 
-Materially the world is two substances. **Paper** — a warm off-white with a second, slightly deeper tone under it — carries everything that must be read: catalogue, prose, tables, forms, the product page. **Ink** — a near-black warm brown — carries everything that must be felt: the hero, the closing call, the footer, the band that shows work. Photography lives only on ink or behind glass, never floating on paper. Gold is the third material and it is used like brass hardware: a 5px dot, a 2px underline, a numbered marker, one button. It is never a surface.
+Materially the world is two substances. **Paper** — a cool off-white with a second, slightly deeper tone under it — carries everything that must be read: catalogue, prose, tables, forms, the product page. **Ink** — a neutral near-black — carries everything that must be felt: the hero, the closing call, the footer, the band that shows work. Photography lives only on ink or behind glass, never floating on paper. Red is the third material and it is used as the brand's metallic accent: a 5px dot, a 2px underline, a numbered marker, one button. It is never a large surface.
 
 Density is editorial, not dashboard. Bands run 56–90px of vertical air; prose is capped by a `ch` measure so a line never outruns the eye; headings carry hard negative tracking while uppercase labels open wide. One thing has been added to that grammar since the first pass and it is worth naming: **CMS artwork**. Promotional banners are finished PNGs from the panel, and the design system's job for them is to be a frame and nothing else — a fixed aspect ratio, a radius, a hover. The page does not compose type over the art, so the art can be whatever the panel makes it without the system fighting it.
 
 **Key Characteristics:**
-- Two substances only — warm paper for reading, warm ink for feeling — alternating as full-bleed bands.
-- Gold as hardware: dots, underlines, markers, numerals, one button. Never a field.
+- Two substances only — cool paper for reading, neutral ink for feeling — alternating as full-bleed bands.
+- Red as the brand accent: dots, underlines, markers, numerals and primary buttons. Never body copy.
 - Data set as ruled lists with tabular numerals, not as cards.
 - Hairlines at rest; shadow and lift are responses to the pointer, never a resting state.
 - Glass (blur + inset highlight) exists, but only over photography or ink.
@@ -393,32 +406,32 @@ Density is editorial, not dashboard. Bands run 56–90px of vertical air; prose 
 
 ## Colors
 
-A warm neutral world — everything is pulled toward brown, nothing is pulled toward blue — with a single metallic accent standing in for brass and anodised finish.
+A cool neutral world built from graphite, silver and off-white, with the metallic red extracted from the LM logo as its only saturated accent. Gold, beige and cream are not part of the palette.
 
 ### Primary
-- **Ouro LM** (`colors.gold`): The accent and the only saturated colour in the system. It appears as the eyebrow dot and eyebrow text, the active-nav underline, the gold pill button, the leading dot on a capability row, the diamond in the mobile filter legend, the focus ring on a catalogue card and on a promotional banner, the active thumbnail ring in the product gallery, and the focus glow on a field. Its budget is small on purpose: on a full band it should read as hardware, not as paint.
-- **Ouro Claro** (`colors.gold-light`): The gold that survives on ink. Used for the focus ring (2px, offset 3px) everywhere, for the step numeral on every ink-backed card, for the active count badge in the catalogue sidebar, for the carousel progress bar, for the map card's pin disc, and for the project card's category label. Rule of thumb: on paper use Ouro LM, on ink use Ouro Claro.
-- **Creme** (`colors.gold-cream`): The lighter button fill used when a gold action sits directly on hero photography and the deeper gold would sink into it.
-- **Ouro Tinta** (`colors.gold-ink`): Gold as *text* on a light surface — the product badge over a photo, the step numeral on a paper-backed card, the mobile filter-sheet legend, the clock icon on opening hours, the recommendation card's category label. This is the gold that is read as a word on paper.
+- **Vermelho LM** (`colors.red`, `#C8161C`): The accent and the only saturated colour in the system. It appears in eyebrow labels, active-nav underlines, primary actions, capability markers, filter legends, focus rings, promotional badges and product labels.
+- **Vermelho Brilhante** (`colors.red-bright`, `#E63329`): The accent that survives on ink. Used for numerals and labels on dark surfaces and as the top of the primary-button hover gradient.
+- **Vermelho Profundo** (`colors.red-deep`, `#8C0D12`): The hover and shadow step of the brand colour and the bottom of metallic gradients.
+- **Lavagem Vermelha** (`colors.red-wash`, `#FBEDEC`): The only light chromatic surface, reserved for small highlighted cards, chips and icon grounds.
 
 ### Neutral
 - **Tinta** (`colors.ink`): The dark substance. Page background behind everything (`html`), the closing bands, the contact card, the footer, the solid header, the active state of every filter control, and the text colour for all body copy on paper.
-- **Tinta Profunda** (`colors.ink-deep`): A single step darker, used only for the unidades band so it reads as a recess between two paper bands.
-- **Papel** (`colors.paper`): The reading surface. The default band background.
-- **Papel 2** (`colors.paper-2`): The second paper. Its whole job is to separate two consecutive paper bands without going dark — the promotional banner bands, the product-detail information band, Sobre's capacidades and história and método bands, Localização's cobertura band, the contact form.
-- **Cartão** (`colors.card`): The card surface, a half-step above paper so a card lifts off its band without a shadow.
-- **Campo** (`colors.field`): The input surface — the lightest tone in the system. Fields read as cut into the paper, not laid on it.
+- **Grafite** (`colors.graphite`): The raised dark surface used for overlays, cards on ink and dark hover states.
+- **Fundo** (`colors.bg`): The cool reading surface and default band background.
+- **Fundo Alternativo** (`colors.bg-alt`): Separates two consecutive light bands without going dark — promotional bands, product information, institutional sections and the contact form.
+- **Superfície** (`colors.surface`): Pure white for cards and fields.
+- **Prata e Aço** (`colors.silver`, `colors.steel`): Supporting structure, icons, dark-ground copy and subdued metadata.
 - **Filete** (`colors.line`): The hairline. Every divider, every card ring, every table rule.
 - **Cinza Texto** (`colors.muted`): Secondary prose — leads, descriptions, captions, the muted half of a label/value pair.
 
-The long tail of near-neutrals in the frontmatter (`text-*`, `label-*`, `meta-*`, `line-*`, `surface-*`) is not a second palette; it is one warm ramp sampled at the exact contrast each context needs. They are recorded so a new surface can reuse an existing step instead of inventing a new one, and so the design detector recognises them as in-world. Reach for the named token above first; drop to the ramp only when a specific contrast is already solved there.
+The compatibility aliases in the frontmatter (`gold-*`, `text-*`, `label-*`, `meta-*`, `line-*`, `surface-*`) preserve existing component contracts, but every alias resolves to the canonical red, graphite, silver or cool-neutral palette. New code must use the canonical tokens first.
 
 ### Named Rules
-**The Hardware Rule.** Gold is hardware, not paint. It may be a dot, a rule, a marker, a numeral, an icon, an underline or one button — it may not be a background wider than a button. If a comp has a gold panel, the panel is wrong. (The two sanctioned exceptions are both small and both deliberate: the 44px pin disc on the map card, and the 12%-opacity focus glow on a field.)
+**The Accent Rule.** Red is action and brand, not body copy. It may be a label, marker, numeral, icon, underline, badge, focus ring or primary button. Red Wash is the only sanctioned chromatic light surface.
 
 **The Two Substances Rule.** A surface is paper or it is ink. There is no third background colour and no gradient between them. Paper 2 and Tinta Profunda are not new substances; they are the same two materials one step apart, used only to keep two same-substance bands from fusing.
 
-**The Warm Neutral Rule.** Every neutral in this system is warm. If a new value reads cool or grey next to Papel, it is not from this world — including Tailwind's `neutral-*` scale, which is the legacy register (see Do's and Don'ts).
+**The Cool Neutral Rule.** Every neutral in this system belongs to the graphite–silver–off-white ramp. Brown, gold, beige and cream are legacy colours and must not be reintroduced.
 
 **The Alternating Card Rule.** In a row of three or four sibling cards, exactly one is inverted to ink and the rest are paper — `nth-child(2)` in the product-detail process row, Sobre's capacidades and método; `first-child` in Localização's cobertura. The inversion is the rhythm; two inverted cards in a row is out of world.
 
@@ -488,10 +501,10 @@ Two exceptions to flat-on-paper are real and deliberate: a **large media object*
 On ink and over photography the depth model changes completely: panels are built from a translucent gradient fill, a `backdrop-filter` blur of 12–28px, an inset top highlight and an inset bottom shade. This is the only place real material thickness is expressed, and it is what makes the header, the home processo tiles, the map card and the hero location finder read as glass over a photograph rather than as boxes on a page.
 
 ### Shadow Vocabulary
-- **Hairline ring** (`inset 0 0 0 1px #ded8cc, 0 1px 2px rgb(28 25 20 / 3%)`): The resting state of every card on paper. The 3% shadow is a seat, not a lift.
-- **Card lift** (`inset 0 0 0 1px rgb(155 119 37 / 38%), 0 18px 42px rgb(39 31 21 / 12%)` with `translateY(-5px)`): Hover on a catalogue card. Note the ring warms to gold as it lifts.
+- **Hairline ring** (`inset 0 0 0 1px #e2e2e0, 0 1px 2px rgb(13 14 15 / 3%)`): The resting state of every card on paper. The 3% shadow is a seat, not a lift.
+- **Card lift** (`inset 0 0 0 1px rgb(214 32 31 / 38%), 0 18px 42px rgb(0 0 0 / 12%)` with `translateY(-5px)`): Hover on a catalogue card. The ring shifts to the brand red as it lifts.
 - **Banner rest / lift** (`inset 0 0 0 1px rgb(0 0 0 / 8%), 0 18px 44px rgb(39 31 21 / 10%)` → `inset 0 0 0 1px rgb(155 119 37 / 34%), 0 26px 60px rgb(39 31 21 / 18%)` with `translateY(-5px)`): The promotional banner, only when it is a link.
-- **Hero banner rest / lift** (`0 16px 42px rgb(0 0 0 / 22%)` → `0 30px 72px rgb(0 0 0 / 34%)` with `translateY(-6px)`): The banner pair over the home hero. The featured card additionally carries a `0 0 0 3px rgb(197 154 50 / 15%)` gold halo that brightens to 24% on hover.
+- **Hero banner rest / lift** (`0 16px 42px rgb(0 0 0 / 22%)` → `0 30px 72px rgb(0 0 0 / 34%)` with `translateY(-6px)`): The banner pair over the home hero. The featured card additionally carries a `0 0 0 3px rgb(200 22 28 / 15%)` red halo that brightens to 24% on hover.
 - **Tile lift** (`0 20px 45px rgb(0 0 0 / 38%)` with `translateY(-6px) scale(1.025)`): Hover on a dark photographic tile.
 - **Glass panel** (`inset 0 1px rgb(255 255 255 / 28%), inset 0 -1px rgb(255 255 255 / 8%), 0 0 0 1px rgb(255 255 255 / 34%), 0 18px 40px rgb(0 0 0 / 18%)` + `backdrop-filter: blur(18px)`): Cards over photography.
 - **Glass chrome** (`inset 0 1px rgb(255 255 255 / 18%), inset 0 -1px rgb(255 255 255 / 10%), 0 12px 34px rgb(10 7 5 / 18%)` + `backdrop-filter: blur(28px)`): The header over the home hero.
@@ -512,7 +525,7 @@ Corners are always symmetric except where an object meets an edge: the bottom sh
 
 The declared `--lm-radius-sm / -md / -lg` (8 / 16 / 24px) custom properties describe this ladder's spine, but the built rules write the pixel value directly; treat the ladder above as normative and the tokens as its shorthand.
 
-Two recurring geometries define the form language beyond radius. The **ruled row**: a `1px solid` top border, an optional leading marker in a fixed-width column (a 7px gold dot, a 32–52px numeral column, a 56px avatar), and content in `minmax(0, 1fr)`. And the **framed rectangle**: a fixed `aspect-ratio` box with `overflow: hidden`, an inset 1px outline, and an image at `object-fit: cover` — the shape all CMS artwork lives in (8/3 for the banner grid, 16/9 for the featured hero banner, 5/1 for the rest of the pair, 1.18 for the gallery main, 1.25 for its thumbnails).
+Two recurring geometries define the form language beyond radius. The **ruled row**: a `1px solid` top border, an optional leading marker in a fixed-width column (a 7px red dot, a 32–52px numeral column, a 56px avatar), and content in `minmax(0, 1fr)`. And the **framed rectangle**: a fixed `aspect-ratio` box with `overflow: hidden`, an inset 1px outline, and an image at `object-fit: cover` — the shape all CMS artwork lives in (8/3 for the banner grid, 16/9 for the featured hero banner, 5/1 for the rest of the pair, 1.18 for the gallery main, 1.25 for its thumbnails).
 
 ### Named Rules
 **The Radius Follows Area Rule.** A 16px radius on a 48px control, or a 9px radius on a 500px panel, both read as mistakes. Pick from the ladder by the size of the thing.
@@ -528,22 +541,22 @@ The system's one action primitive. Every button and every button-shaped link in 
 
 - **Shape:** Full pill (999px), minimum height 44px (40px for the header CTA, 48px in the mobile hero, 50–54px on the newer surfaces and in the filter sheet), horizontal padding 22px (24px for the header CTA, 25–32px for a page's primary action), 12px gap between label and arrow, and a `1px solid transparent` border so the dark variant's border does not change the box.
 - **Type:** 14px / weight 650 / line-height 1, never uppercase.
-- **Gold**: the primary action on paper and on ink. **Creme**: the primary action laid directly over hero photography, where the deeper gold sinks into the image. **Escuro**: the secondary action, ink fill with a `rgb(255 255 255 / 18%)` border so it survives on both substances.
-- **States:** Hover shifts the fill one step lighter over 180ms. `:active` presses to `scale(.96)` over 100ms. Focus draws a 2px Ouro Claro outline at 3px offset.
+- **Vermelho**: the primary action on paper, ink and photography, rendered with the metallic red gradient. **Escuro**: the secondary action, ink fill with a `rgb(255 255 255 / 18%)` border so it survives on both substances.
+- **States:** Hover shifts the red gradient one step brighter over 180ms. `:active` presses to `scale(.96)` over 100ms. Focus draws a 2px Vermelho Brilhante outline at 3px offset.
 - **Content:** Label plus an optional trailing arrow. Buttons open in a `.button-row` (flex, 12px gap, wrapping) which goes full-width column below 520px.
 
 ### Eyebrow
-A 5px gold dot and 11px uppercase gold label at .2em tracking, 9px apart, opening a band above its heading. Present on every design-system surface. Use it where the band genuinely carries a second, categorising label — not as an automatic section preamble.
+A 5px red dot and 11px uppercase red label at .2em tracking, 9px apart, opening a band above its heading. Present on every design-system surface. Use it where the band genuinely carries a second, categorising label — not as an automatic section preamble.
 
 ### Arrow Disc
 The system's recurring affordance: a circular hairline-ringed disc (32–42px) holding an arrow, sitting at the corner of a card or the end of a row. At rest it is a translucent ring; on parent hover it inverts to near-white fill with ink glyph and nudges in the direction it points (`translateX(2px)`, or the `.arrow--diagonal` variant's `rotate(-45deg)`). The disc is decorative and `aria-hidden`; the parent link carries the accessible name.
 
 ### Header (three-zone)
-One nav, two shells. Over the home hero it is **fixed glass** — 62%-opaque warm ink (72% below 800px), a 28px backdrop blur, a diagonal light sweep and a lit top edge. Everywhere else it is **solid sticky** — 96%-opaque ink with a 12px blur. Both are 68px tall (64px below 800px).
+One nav, two shells. Over the home hero it is **fixed glass** — 62%-opaque neutral ink (72% below 800px), a 28px backdrop blur, a diagonal light sweep and a lit top edge. Everywhere else it is **solid sticky** — 96%-opaque ink with a 12px blur. Both are 68px tall (64px below 800px).
 
 The desktop inner is a **three-column grid, `1fr auto 1fr`**, 24px gap: brand in the left column, nav in the centre column, and the CTA absolutely positioned at `right: 0`. The equal side columns are the point — the nav sits at the true centre of the band, not at the middle of whatever the logo leaves over. The CTA is taken out of flow deliberately: it lives inside the `<nav>` element (so the mobile dropdown can contain it) and would otherwise push the links off-centre.
 
-Links are 14px / weight 500 at 76% white, going to 100% on hover over 180ms. The active page is marked with `aria-current="page"` and rendered as full-white text plus a 2px Ouro LM underline at 7px offset — a shape change, not only a colour change.
+Links are 14px / weight 500 at 76% white, going to 100% on hover over 180ms. The active page is marked with `aria-current="page"` and rendered as full-white text plus a 2px Vermelho LM underline at 7px offset — a shape change, not only a colour change.
 
 Below 800px the inner becomes a flex row (`justify-content: space-between`), the CTA returns to `position: static` and drops to the bottom of the dropdown, and the nav collapses behind a 44px circular toggle whose two bars cross into an X on `aria-expanded="true"`. The dropdown is an 18px-radius, 86%-opaque ink panel with a 24px blur and 44px-tall link rows.
 
@@ -551,9 +564,9 @@ Below 800px the inner becomes a flex row (`justify-content: space-between`), the
 CMS artwork, framed. Two surfaces, one grammar.
 
 - **Band banner** (`.promotion-grid` / `.promotion-card`): two per row at `repeat(2, minmax(0, 1fr))` with a 24px gap, each an 8/3 aspect box at 20px radius on a Papel ground, with a `inset 0 0 0 1px rgb(0 0 0 / 8%)` ring and an ambient seat. The band itself is Papel 2 at 40px of padding (32px below 800px). Below 800px the grid becomes one per row at 16px gap and the radius drops to 16px.
-- **Hero pair** (`.hero-promotions` / `.hero-promotion-card`): an absolutely-positioned column at `top: 132px; right: 0`, `min(42.5%, 510px)` wide, 14px gap, floated over the home hero photograph. The first card is `.is-featured` — 16/9, 24px radius, a 62%-opaque Ouro Claro outline and a gold halo. The rest are 5/1 strips at 18px radius with a 10%-white outline. The whole pair is hidden below 1100px, where it would crowd the headline.
+- **Hero pair** (`.hero-promotions` / `.hero-promotion-card`): an absolutely-positioned column at `top: 132px; right: 0`, `min(42.5%, 510px)` wide, 14px gap, floated over the home hero photograph. The first card is `.is-featured` — 16/9, 24px radius, a 62%-opaque Vermelho Brilhante outline and a red halo. The rest are 5/1 strips at 18px radius with a 10%-white outline. The whole pair is hidden below 1100px, where it would crowd the headline.
 
-**Hover and press are scoped to `a.`** — `a.promotion-card:hover`, `a.hero-promotion-card:hover`, `a.hero-promotion-card:active`. A banner with no link in the CMS renders as a `<div>` and is therefore inert: it does not lift, does not zoom, does not press. This is the rule that keeps a decorative banner from lying about being clickable. Linked banners lift 5–6px, scale their image to 1.045, press to `scale(.96)` (band banners to `translateY(-2px) scale(.995)`), and take a 3px Ouro LM focus ring at 4px offset.
+**Hover and press are scoped to `a.`** — `a.promotion-card:hover`, `a.hero-promotion-card:hover`, `a.hero-promotion-card:active`. A banner with no link in the CMS renders as a `<div>` and is therefore inert: it does not lift, does not zoom, does not press. This is the rule that keeps a decorative banner from lying about being clickable. Linked banners lift 5–6px, scale their image to 1.045, press to `scale(.96)` (band banners to `translateY(-2px) scale(.995)`), and take a 3px Vermelho LM focus ring at 4px offset.
 
 ### Breadcrumbs (signature)
 The product page's orientation device, replacing the old back-link and its `?voltar=` query param. It states *where the page sits in the site*, not where the visitor came from — which is exactly why the URL no longer has to carry the return path.
@@ -561,7 +574,7 @@ The product page's orientation device, replacing the old back-link and its `?vol
 It lives in its own topbar band (`#efe8dc`, minimum 56px, an `inset 0 -1px rgb(0 0 0 / 6%)` bottom lip) as a `<nav aria-label="Você está aqui">` around an `<ol>`. Links are 12px in `#6d675e` (11px below 800px), separated by a 9px-gapped `/` in `#a89f8f` marked `aria-hidden`; the final crumb carries `aria-current="page"`, weight 650 in Tinta, and truncates with an ellipsis at 42ch (22ch below 800px). The trail is `overflow-x: auto` with the scrollbar hidden and `white-space: nowrap` on each item: **it scrolls horizontally rather than wrapping**, because a wrapped trail doubles the bar's height and shifts the whole page down. The unit crumb is conditional — it only appears when the category declares one.
 
 ### Cards
-- **Catalogue product card** — the canonical card. Cartão fill, 16px radius, hairline ring, minimum 476px tall with fixed-height zones (210px image, 48px title, 58px description, 48px tags, 40px footer) so a row of cards aligns regardless of copy length. A gold-ink badge floats top-left over the image on a 91%-opaque paper pill with an 8px backdrop blur. Hover: ring warms to gold at 38%, card lifts 5px, image scales 1.035 over 400ms, and the footer's arrow nudges 3px. Focus: 3px Ouro LM outline at 4px offset. **It is an `<a>` and it navigates to `/catalogo/<slug>`** — the product is a real page with its own URL, gallery and spec panel, not a modal.
+- **Catalogue product card** — the canonical card. Surface fill, 16px radius, hairline ring, minimum 476px tall with fixed-height zones (210px image, 48px title, 58px description, 48px tags, 40px footer) so a row of cards aligns regardless of copy length. A red badge floats top-left over the image on a 91%-opaque cool-paper pill with an 8px backdrop blur. Hover: ring shifts to red at 38%, card lifts 5px, image scales 1.035 over 400ms, and the footer's arrow nudges 3px. Focus: 3px Vermelho LM outline at 4px offset. **It is an `<a>` and it navigates to `/catalogo/<slug>`** — the product is a real page with its own URL, gallery and spec panel, not a modal.
 - **Home product card** — the larger sibling on the home band: 548px tall, a 230px image, 22px body padding, 20px title. Below 800px it becomes a 510px snap-carousel card at `min(84vw, 360px)`.
 - **Dark photographic tile** — 16px radius, translucent white outline, a bottom-up black gradient scrim to 82%, a 16px label bottom-left and an arrow disc bottom-right. Lifts 6px and scales 1.025 on hover; image scales 1.06.
 - **Step card** — the ruled trio on the product page, Sobre and Localização: a 22px-radius panel, a 12px/750 tabular numeral at the top, a title and a short paragraph, with exactly one sibling inverted to ink (see The Alternating Card Rule).
@@ -570,16 +583,16 @@ It lives in its own topbar band (`#efe8dc`, minimum 56px, an `inset 0 -1px rgb(0
 ### Chips and Tags
 - **Tag** (read-only): pill, `surface-tag-alt` fill with an inset `line-tag-soft` ring, 9–11px, muted brown text. Used for product attributes.
 - **Filter chip** (interactive): pill, transparent with a Filete border and muted text at rest; the active state inverts to ink fill / white text. Minimum 40px desktop, 48px in the mobile sheet. The active state is *always* a fill inversion, never a colour-only change, and carries `aria-pressed`.
-- **Count badge**: a pill of at least 24×22px with tabular numerals, muted on `surface-tag`, flipping to ink-on-Ouro Claro when its row is active.
+- **Count badge**: a pill of at least 24×22px with tabular numerals, muted on `surface-tag`, flipping to white-on-Vermelho LM when its row is active.
 
 ### Inputs
 - **Form field:** 45px tall (48px below 800px), 9px radius, Campo fill, 1px Filete border, 17px horizontal padding, 14px type (16px on mobile, to stop iOS from zooming). Its label sits above as an 11px uppercase tracked label in `label`.
 - **Search field:** 12px radius, Campo fill, an inset 1px ring instead of a border, and a 19px leading icon column. On mobile it becomes a 56px-tall, 28px-radius field paired with a 56px square filter trigger.
-- **Focus:** the border (or ring) becomes Ouro LM and a 3px gold glow at 11–12% opacity blooms outside it, and the search field's ground brightens to white. This is the only place gold is used as a diffuse surface, and it is 12% opaque.
+- **Focus:** the border (or ring) becomes Vermelho LM and a 3px red glow at 11–12% opacity blooms outside it, and the search field's ground brightens to white.
 - **Disabled:** `opacity: .42` and `cursor: default`; never a colour swap.
 
 ### Product Gallery
-The product page's evidence column. A 1.18-ratio main frame at 30px radius on `surface-photo-warm`, seated with a `0 22px 58px rgb(39 31 21 / 13%)` shadow and an inset hairline outline; beneath it a row of five 88px thumbnails at 10px radius and a 1.25 ratio. Thumbnails rest at `opacity: .58` and go to full opacity with a 2px Ouro LM ring when hovered or active; they press to `scale(.96)`. Below 520px the main frame goes to a .98 ratio at 22px radius and the thumb row becomes four 72px cells that scroll. The empty state reuses the same frame with a 14px centred label — the frame never collapses.
+The product page's evidence column. A 1.18-ratio main frame at 30px radius on `surface-photo`, seated with a `0 22px 58px rgb(0 0 0 / 13%)` shadow and an inset hairline outline; beneath it a row of five 88px thumbnails at 10px radius and a 1.25 ratio. Thumbnails rest at `opacity: .58` and go to full opacity with a 2px Vermelho LM ring when hovered or active; they press to `scale(.96)`. Below 520px the main frame goes to a .98 ratio at 22px radius and the thumb row becomes four 72px cells that scroll. The empty state reuses the same frame with a 14px centred label — the frame never collapses.
 
 ### Spec Panel (signature)
 The component the whole world is named after, in its current form: a 24px-radius Cartão panel at 28px of padding, a 20px/650 title, then a `<dl>` whose rows are `minmax(100px, .7fr) / 1fr` grids at 14px of vertical padding, divided by a `1px solid` rule. `dt` is 11px in `label-mute`, `dd` is 12px / 650 and right-aligned. The same grammar recurs without the panel wherever there is a label and a value — the contact card's `dl` on ink (11px uppercase `dt` at 40% white, 12px `dd` at 76%), Localização's opening hours (14px both sides, tabular `dd`), Sobre's stats. Below 520px the ink and hours variants stack each row and left-align the value.
@@ -605,7 +618,7 @@ There is no product detail modal. Selecting a product navigates.
 
 ### Accessibility floors met by the build
 These are the floors the shipped code actually holds; treat them as the minimum for a new surface, not as aspirations.
-- **Focus is always visible**: 2px Ouro Claro at 3px offset on buttons, text links and header links; 3px Ouro LM at 4px offset on catalogue cards and linked banners; 2px Ouro LM at 3px offset on breadcrumb links; 2px Ouro Claro at 4px offset on draggable carousels.
+- **Focus is always visible**: 2px Vermelho Brilhante at 3px offset on buttons, text links and header links; 3px Vermelho LM at 4px offset on catalogue cards and linked banners; 2px Vermelho LM at 3px offset on breadcrumb links; 2px Vermelho Brilhante at 4px offset on draggable carousels.
 - **Hit targets ≥ 44px**: `.button`, `.text-link`, the mobile toggle, mobile nav rows, the sheet close (48px); mobile chips run 48px and sheet actions 54px. The header CTA is the one deliberate exception at 40px, sized to the 68px band.
 - **16px inputs on mobile**, so iOS does not zoom on focus.
 - **State is never colour alone**: the active nav page adds an underline, active filters invert their fill and carry `aria-pressed`, the current breadcrumb changes weight and carries `aria-current="page"`, the active gallery thumbnail gains a ring and full opacity.
@@ -622,7 +635,7 @@ These are the floors the shipped code actually holds; treat them as the minimum 
 - **Do** wrap every band's content in `.lm-container` and let the band's background run full-bleed. One container, no nested max-widths.
 - **Do** cap every text block with a `ch` measure — 12–19ch headings, 48–68ch prose — and set `text-wrap: balance` on headings, `pretty` on paragraphs.
 - **Do** set anything with a label and a value as a ruled list with tabular numerals: `dt` muted, `dd` full-contrast and right-aligned, rows divided by a 1px rule.
-- **Do** use `.button` plus a variant for every action, and pick the variant by ground: gold on paper or ink, creme over photography, dark for the secondary.
+- **Do** use `.button` plus a variant for every action: the metallic red gradient for primary actions and ink for secondary actions.
 - **Do** give any container that receives a CMS image a fixed `aspect-ratio` (or height) and `overflow: hidden`, and frame the artwork rather than composing type over it.
 - **Do** scope hover, lift, press and focus styles to `a.` (or the interactive element) when a component can render inert, so a decorative instance does not advertise an interaction it does not have.
 - **Do** centre a header-style nav with equal `1fr` side columns rather than by margin, and take any element that would push the centre out of flow.
@@ -631,11 +644,11 @@ These are the floors the shipped code actually holds; treat them as the minimum 
 - **Do** give a two-column band an `is-solo` collapse for when its evidence half has no CMS content.
 - **Do** hold hover lift within `translateY(-5px … -6px)` and scale ≤ 1.035, and make sure the rest state still reads when `@media (hover: none)` strips it.
 - **Do** put every entrance animation behind `@media (prefers-reduced-motion: no-preference)`, and keep it to one moment per page.
-- **Do** give every new interactive element a ≥44px target and a visible gold focus ring.
+- **Do** give every new interactive element a ≥44px target and a visible red focus ring.
 
 ### Don't:
 - **Don't** introduce a colour outside the palette above. If a comp needs a new hue, it needs a new argument first.
-- **Don't** fill a surface with gold. Gold is a dot, a rule, a marker, a numeral, an icon or one button; the only diffuse gold in the system is a 12%-opacity focus glow and the 44px map pin.
+- **Don't** reintroduce gold, beige or cream. Red is reserved for actions, brand markers, labels and restrained focus glows.
 - **Don't** lay type, a scrim or a button over CMS artwork. The frame is the system's contribution; the art is the client's.
 - **Don't** write a new surface in Tailwind's `neutral-*` utilities. `/solucoes`, `/trabalhos`, `ProdutoCard`, `ProjetoBloco`, `SecaoTrabalhos` and `FaixaDeMarcas` are still in that generic register (`max-w-6xl`, `text-neutral-600`, `border-neutral-300`) and read as a different product — that is **legacy drift to be migrated onto the design system, not a second sanctioned style**. The design system is `globals.css`; the surfaces that speak it are Home, Catálogo, Produto, Sobre and Localização. (The `bg-white text-neutral-900` on `<body>` in the frontend layout is the same holdover.)
 - **Don't** put glass on a paper band, or a resting drop shadow under a paper *card*. On paper, a card at rest is a hairline; only large media and framed artwork are seated with a shadow.
@@ -644,6 +657,6 @@ These are the floors the shipped code actually holds; treat them as the minimum 
 - **Don't** add an eyebrow to a band that already carries a categorising label. It is an existing device in this build, not a required section-opener — a heading that stands alone is finished.
 - **Don't** signal state with colour alone; add a fill inversion, an underline, a ring or a weight change.
 - **Don't** carry navigation history in the URL. The product page states its position with breadcrumbs; a `?voltar=` style parameter dirties the address, changes with the referrer, and was removed for exactly that reason.
-- **Don't** reference a custom property that isn't declared in `:root`. The 800px block still calls `var(--lm-gray-600)` and `var(--lm-gold-500)`, neither of which exists — the home mobile search's clear button therefore loses its colour and its focus ring. That is a bug in the build, not a token; new code must not copy it.
+- **Don't** reference a custom property that isn't declared in `:root`. Mobile search and focus states use the same canonical `--lm-text-muted` and `--lm-red-bright` tokens as desktop.
 - **Don't** leave animation rules pointed at a class the markup no longer renders. The reduced-motion block still staggers `.local-rota__lista`, a route-spine component the Localização redesign removed; it is dead weight, not a pattern to extend.
 - **Don't** let a card's height float with its copy in a grid. The catalogue card fixes each zone's height so a row aligns; a new card in a grid must do the same.
