@@ -2,6 +2,8 @@ import path from 'path'
 import { getPayload } from 'payload'
 
 import config from '../src/payload.config'
+
+import { limparMarcadorDev } from './limpar-marcador-dev'
 import { MIDIA_WALLBOARD, PRODUTOS_WALLBOARD } from './seed-wallboard-dados'
 
 /**
@@ -102,5 +104,7 @@ for (const midia of MIDIA_WALLBOARD) {
 }
 
 console.log('seed Wallboard concluído')
+
+await limparMarcadorDev(payload)
 
 process.exit(0)
