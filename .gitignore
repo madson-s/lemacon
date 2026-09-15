@@ -51,3 +51,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Fontes originais do catálogo Wallboard (127 MB de PNG extraídos do PDF).
+# O site usa as versões WebP em public/produtos/, que são versionadas.
+Wallboard_Imagens_Para_Site/
