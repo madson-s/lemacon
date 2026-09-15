@@ -4,6 +4,7 @@ description: Ferro e vidro sobre papel — um catálogo que se lê como ficha t�
 colors:
   red: "#c8161c"
   red-bright: "#e63329"
+  red-shade: "#9e1014"
   red-deep: "#8c0d12"
   red-wash: "#fbedec"
   ink: "#0d0e0f"
@@ -411,6 +412,7 @@ A cool neutral world built from graphite, silver and off-white, with the metalli
 ### Primary
 - **Vermelho LM** (`colors.red`, `#C8161C`): The accent and the only saturated colour in the system. It appears in eyebrow labels, active-nav underlines, primary actions, capability markers, filter legends, focus rings, promotional badges and product labels.
 - **Vermelho Brilhante** (`colors.red-bright`, `#E63329`): The accent that survives on ink. Used for numerals and labels on dark surfaces and as the top of the primary-button hover gradient.
+- **Vermelho Sombra** (`colors.red-shade`, `#9E1014`): The bottom of the primary button at rest. It sits one step above Vermelho Profundo so that hover can brighten the top and darken the base at once, which is what gives the button its metallic travel.
 - **Vermelho Profundo** (`colors.red-deep`, `#8C0D12`): The hover and shadow step of the brand colour and the bottom of metallic gradients.
 - **Lavagem Vermelha** (`colors.red-wash`, `#FBEDEC`): The only light chromatic surface, reserved for small highlighted cards, chips and icon grounds.
 
