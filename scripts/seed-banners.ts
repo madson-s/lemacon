@@ -3,6 +3,8 @@ import { getPayload } from 'payload'
 
 import config from '../src/payload.config'
 
+import { limparMarcadorDev } from './limpar-marcador-dev'
+
 /**
  * Banners da home.
  *
@@ -115,10 +117,13 @@ for (const [campo, entradas, atuais] of secoes) {
 
 if (Object.keys(data).length === 0) {
   console.log('nada a fazer — todas as seções já têm banner')
+  await limparMarcadorDev(payload)
   process.exit(0)
 }
 
 await payload.updateGlobal({ slug: 'home', data })
 console.log('banners da home atualizados')
+
+await limparMarcadorDev(payload)
 
 process.exit(0)
