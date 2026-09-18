@@ -86,7 +86,7 @@ export default async function HomePage() {
         <div className="home-hero__shade" />
         <div className="lm-container home-hero__content">
           <Eyebrow>Catálogo LM</Eyebrow>
-          <h1>Tudo o que a LM<br />fabrica, em um<br />só lugar.</h1>
+          <h1>Tudo o que a <span className="home-hero__brand-word">LM</span><br />fabrica, em um<br />só lugar.</h1>
           <div className="button-row">
             <Link href="/catalogo" className="button button--cream">Ver catálogo <Arrow /></Link>
             <Link href="#orcamento" className="button button--dark">Entre em contato <Arrow /></Link>
