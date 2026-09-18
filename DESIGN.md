@@ -4,6 +4,7 @@ description: Ferro e vidro sobre papel — um catálogo que se lê como ficha t�
 colors:
   red: "#c8161c"
   red-bright: "#e63329"
+  btn-top: "#e01d2b"
   red-shade: "#9e1014"
   red-deep: "#8c0d12"
   red-wash: "#fbedec"

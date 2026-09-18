@@ -17,6 +17,8 @@
   --lm-text: #16181a;
   --lm-text-muted: #555b60;
   --lm-btn: linear-gradient(180deg, #e01d2b, #b90c1b);
+  /* O topo do gradiente do botão, isolado para quem precisa da cor chapada. */
+  --lm-btn-top: #e01d2b;
   --lm-btn-hover: linear-gradient(180deg, #e62332, #c30f20);
   --lm-red-border: rgb(223 23 38 / 42%);
   --lm-overlay: linear-gradient(90deg, rgb(13 14 15 / 94%), rgb(13 14 15 / 45%));
@@ -187,7 +189,10 @@ a {
   text-transform: uppercase;
 }
 .eyebrow i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-.home-hero .eyebrow, .unit-section .eyebrow, .contact-card .eyebrow { color: var(--lm-red-bright); }
+.unit-section .eyebrow, .contact-card .eyebrow { color: var(--lm-red-bright); }
+/* Sobre a foto escura da hero o chapéu vermelho quase desaparecia; em branco
+   ele volta a ser legível e o vermelho fica reservado à marca no título. */
+.home-hero .eyebrow { color: white; }
 
 .home-hero {
   position: relative;
@@ -211,7 +216,10 @@ a {
   line-height: 1.02;
   text-wrap: balance;
 }
-.home-hero__brand-word { color: var(--lm-red-bright); text-shadow: 0 2px 20px rgb(13 14 15 / 45%); }
+/* A marca sai no topo do gradiente do botão primário — é o tom que se lê como
+   "a cor do botão". O --lm-red-bright (#ff525b) puxava para o rosa e não
+   casava com o "Ver catálogo" logo abaixo. */
+.home-hero__brand-word { color: var(--lm-btn-top); text-shadow: 0 2px 20px rgb(13 14 15 / 45%); }
 .button-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .home-hero .button-row { margin-top: 32px; }
 .home-hero .mobile-carousel { position: absolute; top: 132px; right: 0; width: min(42.5%, 510px); }
