@@ -295,7 +295,7 @@ export interface Projeto {
    */
   local?: string | null;
   ano?: number | null;
-  tipo?: ('residencial' | 'comercial' | 'corporativo') | null;
+  tipo?: ('Residencial' | 'Comercial' | 'Corporativo') | null;
   /**
    * Uma ou duas linhas sobre o que foi resolvido no ambiente.
    */
