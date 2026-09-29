@@ -50,11 +50,13 @@ export const Projetos: CollectionConfig = {
         {
           name: 'tipo',
           type: 'select',
-          defaultValue: 'residencial',
+          // O valor é impresso como está na página do projeto e no card da
+          // página Sobre, por isso é gravado já com inicial maiúscula.
+          defaultValue: 'Residencial',
           options: [
-            { label: 'Residencial', value: 'residencial' },
-            { label: 'Comercial', value: 'comercial' },
-            { label: 'Corporativo', value: 'corporativo' },
+            { label: 'Residencial', value: 'Residencial' },
+            { label: 'Comercial', value: 'Comercial' },
+            { label: 'Corporativo', value: 'Corporativo' },
           ],
           admin: { width: '25%' },
         },
