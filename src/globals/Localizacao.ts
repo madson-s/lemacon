@@ -3,7 +3,7 @@ import type { GlobalConfig } from 'payload'
 /**
  * Conteúdo da página /localizacao.
  *
- * Endereço, horários e telefone são dados que só a LM tem. Nada aqui vem
+ * Endereço e horários são dados que só a LM tem. Nada aqui vem
  * preenchido por chute: a página monta o roteiro de chegada com o que estiver
  * cadastrado e omite cada etapa que ainda estiver vazia, em vez de exibir um
  * endereço inventado — que mandaria um cliente para o lugar errado.
@@ -171,42 +171,6 @@ export const Localizacao: GlobalConfig = {
               type: 'text',
               required: true,
               admin: { width: '50%', placeholder: '07h30 às 17h30' },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'contato',
-      label: 'Contato',
-      type: 'group',
-      admin: {
-        description: 'Cada canal preenchido vira um botão na página. Vazio, o botão não aparece.',
-      },
-      fields: [
-        {
-          name: 'whatsapp',
-          label: 'WhatsApp',
-          type: 'text',
-          admin: {
-            description: 'Só os números, com DDD e o 55 na frente. Ex.: 5575900000000',
-            placeholder: '5575900000000',
-          },
-        },
-        {
-          type: 'row',
-          fields: [
-            {
-              name: 'telefone',
-              label: 'Telefone',
-              type: 'text',
-              admin: { width: '50%', placeholder: '(75) 3000-0000' },
-            },
-            {
-              name: 'email',
-              label: 'E-mail',
-              type: 'email',
-              admin: { width: '50%' },
             },
           ],
         },

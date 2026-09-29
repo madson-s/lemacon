@@ -9,8 +9,8 @@ import { slugField } from '@/lib/slug'
 export const Projetos: CollectionConfig = {
   slug: 'projetos',
   labels: {
-    singular: 'Trabalho',
-    plural: 'Trabalhos',
+    singular: 'Projeto',
+    plural: 'Projetos',
   },
   access: {
     read: () => true,
@@ -18,9 +18,11 @@ export const Projetos: CollectionConfig = {
   admin: {
     useAsTitle: 'titulo',
     defaultColumns: ['titulo', 'local', 'ano', 'publicado'],
-    description: 'Projetos executados, exibidos na página /trabalhos.',
+    description:
+      'Obras entregues pela LM. Aparecem em "Projetos que mostram como trabalhamos", na página Sobre, e cada um ganha a sua própria página.',
   },
-  defaultSort: '-ano',
+  // A mesma ordem da página Sobre, para o painel listar como o site mostra.
+  defaultSort: 'ordem',
   fields: [
     {
       name: 'titulo',
@@ -37,7 +39,7 @@ export const Projetos: CollectionConfig = {
           type: 'text',
           admin: {
             width: '50%',
-            description: 'Bairro, cidade — ex.: Meireles, Fortaleza.',
+            description: 'Bairro, cidade — ex.: Centro, Seabra.',
           },
         },
         {
@@ -106,17 +108,7 @@ export const Projetos: CollectionConfig = {
       defaultValue: 0,
       admin: {
         position: 'sidebar',
-        description: 'Menor aparece primeiro. Empates caem para o ano mais recente.',
-      },
-    },
-    {
-      name: 'destaque',
-      type: 'checkbox',
-      defaultValue: false,
-      index: true,
-      admin: {
-        position: 'sidebar',
-        description: 'Aparece na prévia da home.',
+        description: 'Ordem na página Sobre. Menor aparece primeiro.',
       },
     },
     {
@@ -126,7 +118,7 @@ export const Projetos: CollectionConfig = {
       index: true,
       admin: {
         position: 'sidebar',
-        description: 'Desmarque para tirar de /trabalhos sem apagar o cadastro.',
+        description: 'Desmarque para tirar do site sem apagar o cadastro.',
       },
     },
   ],

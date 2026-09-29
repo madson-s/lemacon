@@ -69,7 +69,6 @@ export interface Config {
   collections: {
     produtos: Produto;
     categorias: Categoria;
-    solucoes: Solucao;
     projetos: Projeto;
     media: Media;
     users: User;
@@ -82,7 +81,6 @@ export interface Config {
   collectionsSelect: {
     produtos: ProdutosSelect<false> | ProdutosSelect<true>;
     categorias: CategoriasSelect<false> | CategoriasSelect<true>;
-    solucoes: SolucoesSelect<false> | SolucoesSelect<true>;
     projetos: ProjetosSelect<false> | ProjetosSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -146,15 +144,15 @@ export interface Produto {
   slug?: string | null;
   categoria: number | Categoria;
   /**
-   * Fabricante da peça. A faixa de marcas da home é uma lista à parte, editada em Home.
+   * Fabricante da peça, como Kingspan ou Wallboard. Aparece na página do produto.
    */
   marca?: string | null;
   /**
-   * Uma ou duas linhas. É o que aparece no card do catálogo.
+   * Um parágrafo curto na página do produto, logo abaixo do nome. Também entra na busca do catálogo.
    */
   descricao?: string | null;
   /**
-   * Em reais. Deixe vazio para exibir "sob consulta".
+   * Em reais. Aparece só na página do produto — o card do catálogo sempre mostra "Sob orçamento". Vazio, a página também mostra "Sob orçamento".
    */
   preco?: number | null;
   /**
@@ -184,7 +182,7 @@ export interface Produto {
     [k: string]: unknown;
   } | null;
   /**
-   * Pares como Material / Madeira maciça. Viram a tabela da página do produto.
+   * Pares como Espessura / 30 mm. Viram a tabela da página do produto.
    */
   especificacoes?:
     | {
@@ -194,7 +192,7 @@ export interface Produto {
       }[]
     | null;
   /**
-   * Termos alternativos que ajudam o cliente a achar o produto na busca.
+   * Aparecem como etiquetas na página do produto e ajudam a achá-lo na busca — vale incluir termos que o cliente usaria.
    */
   tags?:
     | {
@@ -232,15 +230,10 @@ export interface Categoria {
    * A frente da LM a que esta categoria pertence. É o que agrupa a categoria no filtro do catálogo. Sem unidade, os produtos aparecem apenas em "Todas" e no filtro da própria categoria.
    */
   unidade?: ('Esquadrias' | 'Vidros' | 'Construção') | null;
-  descricao?: string | null;
   /**
    * Define a ordem de exibição no catálogo. Menor aparece primeiro.
    */
   ordem?: number | null;
-  /**
-   * A home ganha uma seção para cada categoria marcada aqui.
-   */
-  destacarNaHome?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -285,66 +278,7 @@ export interface Media {
   };
 }
 /**
- * Soluções oferecidas, exibidas na página /solucoes.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "solucoes".
- */
-export interface Solucao {
-  id: number;
-  titulo: string;
-  /**
-   * Gerado a partir de "titulo". Edite apenas se precisar de uma URL específica.
-   */
-  slug?: string | null;
-  /**
-   * Uma ou duas linhas: que problema do ambiente essa solução resolve.
-   */
-  resumo?: string | null;
-  /**
-   * Texto longo: como funciona na prática.
-   */
-  descricao?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Lista objetiva do que o cliente recebe. Aparece ao lado do texto.
-   */
-  entregaveis?:
-    | {
-        item: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Opcional. Sem imagem, o bloco usa só o número e o texto.
-   */
-  imagem?: (number | null) | Media;
-  /**
-   * Define a numeração e a sequência na página. Menor aparece primeiro.
-   */
-  ordem?: number | null;
-  /**
-   * Desmarque para tirar de /solucoes sem apagar o cadastro.
-   */
-  publicado?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Projetos executados, exibidos na página /trabalhos.
+ * Obras entregues pela LM. Aparecem em "Projetos que mostram como trabalhamos", na página Sobre, e cada um ganha a sua própria página.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projetos".
@@ -357,7 +291,7 @@ export interface Projeto {
    */
   slug?: string | null;
   /**
-   * Bairro, cidade — ex.: Meireles, Fortaleza.
+   * Bairro, cidade — ex.: Centro, Seabra.
    */
   local?: string | null;
   ano?: number | null;
@@ -397,15 +331,11 @@ export interface Projeto {
    */
   produtos?: (number | Produto)[] | null;
   /**
-   * Menor aparece primeiro. Empates caem para o ano mais recente.
+   * Ordem na página Sobre. Menor aparece primeiro.
    */
   ordem?: number | null;
   /**
-   * Aparece na prévia da home.
-   */
-  destaque?: boolean | null;
-  /**
-   * Desmarque para tirar de /trabalhos sem apagar o cadastro.
+   * Desmarque para tirar do site sem apagar o cadastro.
    */
   publicado?: boolean | null;
   updatedAt: string;
@@ -468,10 +398,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'categorias';
         value: number | Categoria;
-      } | null)
-    | ({
-        relationTo: 'solucoes';
-        value: number | Solucao;
       } | null)
     | ({
         relationTo: 'projetos';
@@ -568,30 +494,7 @@ export interface CategoriasSelect<T extends boolean = true> {
   nome?: T;
   slug?: T;
   unidade?: T;
-  descricao?: T;
   ordem?: T;
-  destacarNaHome?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "solucoes_select".
- */
-export interface SolucoesSelect<T extends boolean = true> {
-  titulo?: T;
-  slug?: T;
-  resumo?: T;
-  descricao?: T;
-  entregaveis?:
-    | T
-    | {
-        item?: T;
-        id?: T;
-      };
-  imagem?: T;
-  ordem?: T;
-  publicado?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -611,7 +514,6 @@ export interface ProjetosSelect<T extends boolean = true> {
   descricao?: T;
   produtos?: T;
   ordem?: T;
-  destaque?: T;
   publicado?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -728,41 +630,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Home {
   id: number;
   /**
-   * Linha curta acima do título. Posiciona antes de o visitante ler o resto.
-   */
-  chapeu?: string | null;
-  titulo: string;
-  subtitulo?: string | null;
-  ctaTexto: string;
-  ctaLink: string;
-  ctaSecundarioTexto?: string | null;
-  /**
-   * Deixe o texto vazio para esconder o botão.
-   */
-  ctaSecundarioLink?: string | null;
-  /**
-   * Opcional. Sem imagem, o hero usa um fundo sólido.
-   */
-  imagem?: (number | null) | Media;
-  /**
-   * Lista fixa exibida na faixa rolante da home, na ordem em que estiverem aqui. Deixe vazio para esconder a faixa.
-   */
-  marcas?:
-    | {
-        nome: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Bloco da home que leva para /trabalhos. Some se não houver trabalho publicado.
-   */
-  secaoTrabalhos?: {
-    chapeu?: string | null;
-    titulo?: string | null;
-    texto?: string | null;
-    ctaTexto?: string | null;
-  };
-  /**
    * A vitrine logo abaixo do topo. Os produtos vêm do catálogo: marque "Mostrar na home" em cada um. Sem nenhum marcado, aparecem os mais recentes.
    */
   secaoCatalogo?: {
@@ -784,7 +651,7 @@ export interface Home {
          */
         alt: string;
         /**
-         * Para onde o banner leva. Ex.: /catalogo?unidade=Esquadrias ou /#orcamento. Vazio, o banner não vira clicável.
+         * Para onde o banner leva: /catalogo, a página de um produto (/catalogo/telha-residence) ou /#orcamento. Vazio, o banner não vira clicável.
          */
         link?: string | null;
         id?: string | null;
@@ -804,7 +671,7 @@ export interface Home {
          */
         alt: string;
         /**
-         * Para onde o banner leva. Ex.: /catalogo?unidade=Esquadrias ou /#orcamento. Vazio, o banner não vira clicável.
+         * Para onde o banner leva: /catalogo, a página de um produto (/catalogo/telha-residence) ou /#orcamento. Vazio, o banner não vira clicável.
          */
         link?: string | null;
         id?: string | null;
@@ -824,7 +691,7 @@ export interface Home {
          */
         alt: string;
         /**
-         * Para onde o banner leva. Ex.: /catalogo?unidade=Esquadrias ou /#orcamento. Vazio, o banner não vira clicável.
+         * Para onde o banner leva: /catalogo, a página de um produto (/catalogo/telha-residence) ou /#orcamento. Vazio, o banner não vira clicável.
          */
         link?: string | null;
         id?: string | null;
@@ -852,7 +719,7 @@ export interface Sobre {
    */
   imagem?: (number | null) | Media;
   /**
-   * Os dados objetivos da LM, na mesma leitura de uma ficha técnica de produto. Preencha só o que for verdade — linha sem valor não aparece no site.
+   * Os dados objetivos da LM, logo abaixo do título da página. Só as três primeiras linhas preenchidas aparecem — ponha no topo o que mais importa. Preencha só o que for verdade: linha sem valor é pulada.
    */
   ficha?:
     | {
@@ -978,17 +845,6 @@ export interface Localizacao {
       }[]
     | null;
   /**
-   * Cada canal preenchido vira um botão na página. Vazio, o botão não aparece.
-   */
-  contato?: {
-    /**
-     * Só os números, com DDD e o 55 na frente. Ex.: 5575900000000
-     */
-    whatsapp?: string | null;
-    telefone?: string | null;
-    email?: string | null;
-  };
-  /**
    * Opcional, mas ajuda muito: é por ela que o cliente reconhece o lugar na rua.
    */
   imagem?: (number | null) | Media;
@@ -1000,28 +856,6 @@ export interface Localizacao {
  * via the `definition` "home_select".
  */
 export interface HomeSelect<T extends boolean = true> {
-  chapeu?: T;
-  titulo?: T;
-  subtitulo?: T;
-  ctaTexto?: T;
-  ctaLink?: T;
-  ctaSecundarioTexto?: T;
-  ctaSecundarioLink?: T;
-  imagem?: T;
-  marcas?:
-    | T
-    | {
-        nome?: T;
-        id?: T;
-      };
-  secaoTrabalhos?:
-    | T
-    | {
-        chapeu?: T;
-        titulo?: T;
-        texto?: T;
-        ctaTexto?: T;
-      };
   secaoCatalogo?:
     | T
     | {
@@ -1139,13 +973,6 @@ export interface LocalizacaoSelect<T extends boolean = true> {
         dias?: T;
         horario?: T;
         id?: T;
-      };
-  contato?:
-    | T
-    | {
-        whatsapp?: T;
-        telefone?: T;
-        email?: T;
       };
   imagem?: T;
   updatedAt?: T;

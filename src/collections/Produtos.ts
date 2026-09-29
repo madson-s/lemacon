@@ -35,7 +35,8 @@ export const Produtos: CollectionConfig = {
       type: 'text',
       index: true,
       admin: {
-        description: 'Fabricante da peça. A faixa de marcas da home é uma lista à parte, editada em Home.',
+        description:
+          'Fabricante da peça, como Kingspan ou Wallboard. Aparece na página do produto.',
       },
     },
     {
@@ -43,7 +44,8 @@ export const Produtos: CollectionConfig = {
       label: 'Descrição curta',
       type: 'textarea',
       admin: {
-        description: 'Uma ou duas linhas. É o que aparece no card do catálogo.',
+        description:
+          'Um parágrafo curto na página do produto, logo abaixo do nome. Também entra na busca do catálogo.',
       },
     },
     {
@@ -53,7 +55,8 @@ export const Produtos: CollectionConfig = {
       min: 0,
       admin: {
         step: 0.01,
-        description: 'Em reais. Deixe vazio para exibir "sob consulta".',
+        description:
+          'Em reais. Aparece só na página do produto — o card do catálogo sempre mostra "Sob orçamento". Vazio, a página também mostra "Sob orçamento".',
       },
     },
     {
@@ -62,7 +65,8 @@ export const Produtos: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       admin: {
-        description: 'A capa do produto: aparece no card do catálogo e é a primeira foto da galeria.',
+        description:
+          'A capa do produto: aparece no card do catálogo e é a primeira foto da galeria.',
       },
     },
     {
@@ -92,7 +96,7 @@ export const Produtos: CollectionConfig = {
       },
       type: 'array',
       admin: {
-        description: 'Pares como Material / Madeira maciça. Viram a tabela da página do produto.',
+        description: 'Pares como Espessura / 30 mm. Viram a tabela da página do produto.',
       },
       fields: [
         {
@@ -123,7 +127,8 @@ export const Produtos: CollectionConfig = {
         plural: 'Tags',
       },
       admin: {
-        description: 'Termos alternativos que ajudam o cliente a achar o produto na busca.',
+        description:
+          'Aparecem como etiquetas na página do produto e ajudam a achá-lo na busca — vale incluir termos que o cliente usaria.',
       },
       fields: [
         {

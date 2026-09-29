@@ -10,7 +10,6 @@ import { Categorias } from './collections/Categorias'
 import { Media } from './collections/Media'
 import { Produtos } from './collections/Produtos'
 import { Projetos } from './collections/Projetos'
-import { Solucoes } from './collections/Solucoes'
 import { Users } from './collections/Users'
 import { Home } from './globals/Home'
 import { Localizacao } from './globals/Localizacao'
@@ -45,7 +44,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Produtos, Categorias, Solucoes, Projetos, Media, Users],
+  collections: [Produtos, Categorias, Projetos, Media, Users],
   globals: [Home, Sobre, Localizacao],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
