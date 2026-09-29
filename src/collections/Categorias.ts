@@ -13,7 +13,7 @@ export const Categorias: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'nome',
-    defaultColumns: ['nome', 'slug', 'ordem'],
+    defaultColumns: ['nome', 'unidade', 'ordem'],
   },
   defaultSort: 'ordem',
   fields: [
@@ -39,28 +39,12 @@ export const Categorias: CollectionConfig = {
       },
     },
     {
-      name: 'descricao',
-      label: 'Descrição',
-      type: 'textarea',
-    },
-    {
       name: 'ordem',
       type: 'number',
       defaultValue: 0,
       admin: {
         position: 'sidebar',
         description: 'Define a ordem de exibição no catálogo. Menor aparece primeiro.',
-      },
-    },
-    {
-      name: 'destacarNaHome',
-      label: 'Destacar na home',
-      type: 'checkbox',
-      defaultValue: true,
-      index: true,
-      admin: {
-        position: 'sidebar',
-        description: 'A home ganha uma seção para cada categoria marcada aqui.',
       },
     },
   ],

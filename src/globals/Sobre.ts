@@ -57,7 +57,7 @@ export const Sobre: GlobalConfig = {
       type: 'array',
       admin: {
         description:
-          'Os dados objetivos da LM, na mesma leitura de uma ficha técnica de produto. Preencha só o que for verdade — linha sem valor não aparece no site.',
+          'Os dados objetivos da LM, logo abaixo do título da página. Só as três primeiras linhas preenchidas aparecem — ponha no topo o que mais importa. Preencha só o que for verdade: linha sem valor é pulada.',
       },
       defaultValue: [
         { rotulo: 'Atendimento', valor: 'Toda a Chapada Diamantina' },
@@ -109,7 +109,8 @@ export const Sobre: GlobalConfig = {
         },
         {
           titulo: 'Vidros temperados',
-          texto: 'Box, guarda-corpo, espelhos e coberturas de vidro, cortados e temperados para o vão.',
+          texto:
+            'Box, guarda-corpo, espelhos e coberturas de vidro, cortados e temperados para o vão.',
         },
         {
           titulo: 'Tec Construção',

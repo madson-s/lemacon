@@ -16,7 +16,7 @@ export type MidiaDeProduto = {
 }
 
 /**
- * Conteúdo real da LM: marcas, categorias e produtos.
+ * Conteúdo real da LM: categorias e produtos.
  *
  *   pnpm payload run scripts/seed-lm.ts
  *
@@ -24,35 +24,36 @@ export type MidiaDeProduto = {
  * a produção o que hoje só existe no banco de desenvolvimento. Não cria preço,
  * foto nem ficha técnica: esses dados são do cliente e entram pelo painel.
  */
-const CATEGORIAS: { nome: string; unidade: 'Esquadrias' | 'Vidros' | 'Construção'; descricao: string }[] = [
+const CATEGORIAS: { nome: string; unidade: 'Esquadrias' | 'Vidros' | 'Construção' }[] = [
   {
     nome: 'Telhas Térmicas',
     unidade: 'Construção',
-    descricao: 'Telhas com núcleo isolante para conforto térmico e acústico.',
   },
   {
     nome: 'Telhas Metálicas',
     unidade: 'Construção',
-    descricao: 'Telhas em aço e alumínio para cobertura e fechamento.',
   },
   {
     nome: 'Telhas Translúcidas',
     unidade: 'Construção',
-    descricao: 'Telhas que deixam a luz natural entrar sem abrir o vão.',
   },
   {
     nome: 'Madeira Plástica',
     unidade: 'Construção',
-    descricao: 'Perfis e palanques de madeira plástica para cercamento, deck e guarda-corpo.',
   },
   {
     nome: 'Fachadas e Revestimentos',
     unidade: 'Construção',
-    descricao: 'Painéis e revestimentos para fachada ventilada e acabamento.',
   },
 ]
 
-const PRODUTOS: { nome: string; categoria: string; marca: string; descricao: string; tags: string[] }[] = [
+const PRODUTOS: {
+  nome: string
+  categoria: string
+  marca: string
+  descricao: string
+  tags: string[]
+}[] = [
   {
     nome: 'Isotelha® Trapezoidal',
     categoria: 'Telhas Térmicas',
@@ -97,8 +98,7 @@ const PRODUTOS: { nome: string; categoria: string; marca: string; descricao: str
     nome: 'Telha Colonial (Standard - 5 ondas)',
     categoria: 'Telhas Metálicas',
     marca: 'Kingspan',
-    descricao:
-      'Telha de aço indicada para residências ou construções que têm forro.',
+    descricao: 'Telha de aço indicada para residências ou construções que têm forro.',
     tags: ['Colonial', '5 ondas', 'Metálica', 'Kingspan'],
   },
   {
@@ -215,12 +215,14 @@ const PRODUTOS: { nome: string; categoria: string; marca: string; descricao: str
   },
 ]
 
-const MARCAS = ['Kingspan', 'In Brasil']
-
 const payload = await getPayload({ config })
 
 // --- Categorias -----------------------------------------------------------
-const { docs: existentes } = await payload.find({ collection: 'categorias', limit: 500, pagination: false })
+const { docs: existentes } = await payload.find({
+  collection: 'categorias',
+  limit: 500,
+  pagination: false,
+})
 let ordem = Math.max(0, ...existentes.map((c) => c.ordem ?? 0))
 const idPorNome = new Map(existentes.map((c) => [c.nome, c.id]))
 
@@ -228,7 +230,11 @@ for (const cat of CATEGORIAS) {
   const atual = existentes.find((c) => c.nome === cat.nome)
   if (atual) {
     if (atual.unidade !== cat.unidade) {
-      await payload.update({ collection: 'categorias', id: atual.id, data: { unidade: cat.unidade } })
+      await payload.update({
+        collection: 'categorias',
+        id: atual.id,
+        data: { unidade: cat.unidade },
+      })
       console.log('categoria atualizada:', cat.nome, '->', cat.unidade)
     }
     continue
@@ -246,7 +252,11 @@ for (const prod of PRODUTOS) {
     console.warn('categoria ausente, produto ignorado:', prod.nome)
     continue
   }
-  const achado = await payload.find({ collection: 'produtos', where: { nome: { equals: prod.nome } }, limit: 1 })
+  const achado = await payload.find({
+    collection: 'produtos',
+    where: { nome: { equals: prod.nome } },
+    limit: 1,
+  })
   if (achado.docs[0]) {
     // Já existe: sincroniza só o texto, preservando fotos, preço e o que o
     // cliente tenha editado no painel.
@@ -277,25 +287,17 @@ for (const prod of PRODUTOS) {
   console.log('produto criado:', doc.nome, '->', doc.slug)
 }
 
-// --- Faixa de marcas da home ---------------------------------------------
-const home = await payload.findGlobal({ slug: 'home' })
-const atuais = (home.marcas ?? []).map(({ nome }) => nome)
-const faltando = MARCAS.filter((m) => !atuais.includes(m))
-if (faltando.length > 0) {
-  await payload.updateGlobal({
-    slug: 'home',
-    data: { marcas: [...atuais, ...faltando].map((nome) => ({ nome })) },
-  })
-  console.log('marcas adicionadas:', faltando.join(', '))
-}
-
 // --- Fotos dos produtos ---------------------------------------------------
 // Só sobe o que falta: uma foto já associada é deixada como está, para não
 // duplicar mídia nem sobrescrever o que foi trocado pelo painel.
 const PASTA_FOTOS = path.resolve(process.cwd(), 'public/produtos')
 
 const subirFoto = async ([arquivo, alt]: Foto) => {
-  const achado = await payload.find({ collection: 'media', where: { alt: { equals: alt } }, limit: 1 })
+  const achado = await payload.find({
+    collection: 'media',
+    where: { alt: { equals: alt } },
+    limit: 1,
+  })
   if (achado.docs[0]) return achado.docs[0].id
   const doc = await payload.create({
     collection: 'media',
@@ -306,7 +308,11 @@ const subirFoto = async ([arquivo, alt]: Foto) => {
 }
 
 for (const midia of MIDIA_DE_PRODUTOS) {
-  const achado = await payload.find({ collection: 'produtos', where: { nome: { equals: midia.produto } }, limit: 1 })
+  const achado = await payload.find({
+    collection: 'produtos',
+    where: { nome: { equals: midia.produto } },
+    limit: 1,
+  })
   const produto = achado.docs[0]
   if (!produto) {
     console.warn('produto ausente, fotos ignoradas:', midia.produto)
