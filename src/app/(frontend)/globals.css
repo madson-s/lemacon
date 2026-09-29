@@ -280,7 +280,10 @@ a.hero-promotion-card:active { transform: scale(.96); }
 .unit-section .button { margin-top: 28px; }
 .mobile-carousel { min-width: 0; }
 .mobile-carousel__controls { display: none; }
-.unit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+/* As unidades vêm do painel: todas numa linha só, em colunas iguais. Com três o
+   resultado é o de sempre; com quatro ou cinco os cards estreitam em vez de
+   quebrar para uma segunda linha, que a altura fixa da faixa cortaria. */
+.unit-grid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 16px; }
 .unit-card { position: relative; height: 270px; overflow: hidden; border-radius: 16px; background: var(--lm-graphite); outline: 1px solid rgb(255 255 255 / 10%); outline-offset: -1px; box-shadow: 0 12px 30px rgb(0 0 0 / 0%); transition: transform 240ms cubic-bezier(.2,.65,.3,1), box-shadow 240ms ease, outline-color 180ms ease; }
 .unit-card img { object-fit: cover; transition: transform 500ms cubic-bezier(.2,.65,.3,1); }
 .unit-card:hover { z-index: 3; outline-color: rgb(255 255 255 / 24%); box-shadow: 0 20px 45px rgb(0 0 0 / 38%); transform: translateY(-6px) scale(1.025); }
@@ -772,6 +775,9 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
   .unit-section { height: auto; min-height: 350px; padding: 48px 0; }
   .unit-section__inner { grid-template-columns: 240px 1fr; align-items: center; padding-block: 0; }
   .unit-card { height: 220px; }
+  /* A partir de quatro unidades a coluna do título rouba largura demais dos
+     cards; o título sobe e os cards ficam com a linha inteira. */
+  .unit-section__inner:has(.unit-card:nth-of-type(4)) { grid-template-columns: 1fr; align-items: start; gap: 28px; }
   .group-section__grid { grid-template-columns: 1fr 44%; gap: 48px; }
   .group-section__visual { width: 100%; height: 470px; }
   .group-section__image-base { left: 8%; width: 92%; height: 470px; }

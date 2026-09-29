@@ -1,15 +1,16 @@
-import * as migration_20260810_191323_inicial from './20260810_191323_inicial'
-import * as migration_20260811_162645_galeria_detalhes_home from './20260811_162645_galeria_detalhes_home'
-import * as migration_20260812_024221_marcas from './20260812_024221_marcas'
-import * as migration_20260812_031415_projetos from './20260812_031415_projetos'
-import * as migration_20260812_032218_solucoes from './20260812_032218_solucoes'
-import * as migration_20260828_171345_sobre_localizacao from './20260828_171345_sobre_localizacao'
-import * as migration_20260904_041116_banners_home from './20260904_041116_banners_home'
-import * as migration_20260910_135841_banners_hero from './20260910_135841_banners_hero'
-import * as migration_20260910_165539_categoria_unidade from './20260910_165539_categoria_unidade'
-import * as migration_20260914_140510_secao_catalogo_home from './20260914_140510_secao_catalogo_home'
-import * as migration_20260914_150701_produto_promocao from './20260914_150701_produto_promocao'
-import * as migration_20260929_180643_revisao_cms from './20260929_180643_revisao_cms'
+import * as migration_20260810_191323_inicial from './20260810_191323_inicial';
+import * as migration_20260811_162645_galeria_detalhes_home from './20260811_162645_galeria_detalhes_home';
+import * as migration_20260812_024221_marcas from './20260812_024221_marcas';
+import * as migration_20260812_031415_projetos from './20260812_031415_projetos';
+import * as migration_20260812_032218_solucoes from './20260812_032218_solucoes';
+import * as migration_20260828_171345_sobre_localizacao from './20260828_171345_sobre_localizacao';
+import * as migration_20260904_041116_banners_home from './20260904_041116_banners_home';
+import * as migration_20260910_135841_banners_hero from './20260910_135841_banners_hero';
+import * as migration_20260910_165539_categoria_unidade from './20260910_165539_categoria_unidade';
+import * as migration_20260914_140510_secao_catalogo_home from './20260914_140510_secao_catalogo_home';
+import * as migration_20260914_150701_produto_promocao from './20260914_150701_produto_promocao';
+import * as migration_20260929_180643_revisao_cms from './20260929_180643_revisao_cms';
+import * as migration_20260929_203409_unidades from './20260929_203409_unidades';
 
 export const migrations = [
   {
@@ -72,4 +73,9 @@ export const migrations = [
     down: migration_20260929_180643_revisao_cms.down,
     name: '20260929_180643_revisao_cms',
   },
-]
+  {
+    up: migration_20260929_203409_unidades.up,
+    down: migration_20260929_203409_unidades.down,
+    name: '20260929_203409_unidades'
+  },
+];

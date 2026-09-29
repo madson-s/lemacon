@@ -7,7 +7,6 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 
 import {
-  catalogUnits,
   type CatalogCategory,
   type CatalogProduct,
   type CatalogUnit,
@@ -47,6 +46,7 @@ function labelCount(count: number) {
 
 export function CatalogoBusca({
   products,
+  unidades,
   categorias,
   initialTerm = '',
   initialUnit = 'Todas',
@@ -54,6 +54,8 @@ export function CatalogoBusca({
   initialPage = 1,
 }: {
   products: CatalogProduct[]
+  /** Os nomes das unidades cadastradas no painel, na ordem de lá. */
+  unidades: CatalogUnit[]
   categorias: CatalogCategory[]
   initialTerm?: string
   initialUnit?: CatalogUnit
@@ -149,6 +151,7 @@ export function CatalogoBusca({
   ]
   const hasActiveFilters = activeFilterTags.length > 0
 
+  const listaUnidades: CatalogUnit[] = ['Todas', ...unidades]
   const listaCategorias: CatalogCategory[] = ['Todas', ...categorias]
 
   const countForUnit = (candidate: CatalogUnit) => candidate === 'Todas' ? products.length : products.filter((item) => item.unit === candidate).length
@@ -223,7 +226,7 @@ export function CatalogoBusca({
             <FilterState tags={activeFilterTags} hasActiveFilters={hasActiveFilters} onReset={clearFilters} />
 
             <FilterGroup title="Unidades">
-              {catalogUnits.map((candidate) => (
+              {listaUnidades.map((candidate) => (
                 <FilterButton key={candidate} active={unit === candidate} count={countForUnit(candidate)} onClick={() => setUnit(candidate)}>
                   {candidate === 'Todas' ? 'Todas as unidades' : candidate}
                 </FilterButton>
@@ -332,7 +335,7 @@ export function CatalogoBusca({
           <fieldset>
             <legend><i aria-hidden />Unidade</legend>
             <div className="mobile-filter-sheet__chips">
-              {catalogUnits.map((candidate) => {
+              {listaUnidades.map((candidate) => {
                 const total = countForUnit(candidate)
                 return (
                   <button

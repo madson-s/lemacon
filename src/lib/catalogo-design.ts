@@ -1,16 +1,16 @@
 import type { ProdutoItem } from '@/lib/produtos'
 
-export const catalogUnits = ['Todas', 'Esquadrias', 'Vidros', 'Construção'] as const
 export const catalogCategories = ['Todas', 'Portas', 'Janelas', 'Fachadas', 'Coberturas', 'Box', 'Guarda-corpo', 'Espelhos', 'Obra', 'Projeto'] as const
 
-export type CatalogUnit = (typeof catalogUnits)[number]
+/** A unidade também vem do CMS (coleção Unidades). "Todas" é o filtro que não filtra. */
+export type CatalogUnit = string
 /** A categoria vem do CMS, então é texto livre — não uma união fechada. */
 export type CatalogCategory = string
 
 export type CatalogProduct = {
   id: string
   slug: string
-  unit: Exclude<CatalogUnit, 'Todas'> | null
+  unit: CatalogUnit | null
   category: Exclude<CatalogCategory, 'Todas'>
   name: string
   description: string
@@ -60,14 +60,6 @@ export const catalogProducts: CatalogProduct[] = [
   product('ampliacao-area-externa', 'Construção', 'Obra', 'Ampliação e área externa', 'Ampliação e áreas externas com integração de esquadrias e vidros no mesmo projeto.', ['Área externa', 'Integração', 'Acabamento']),
 ]
 
-const inferUnit = (categoria: string | null): CatalogProduct['unit'] | null => {
-  if (!categoria) return null
-  if (/vidro|box|espelho|guarda/i.test(categoria)) return 'Vidros'
-  if (/obra|projeto|constru/i.test(categoria)) return 'Construção'
-  if (/porta|janela|fachada|cobertura|esquadria/i.test(categoria)) return 'Esquadrias'
-  return null
-}
-
 const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR')
 
 export function mergePublishedProducts(published: ProdutoItem[]): CatalogProduct[] {
@@ -76,14 +68,11 @@ export function mergePublishedProducts(published: ProdutoItem[]): CatalogProduct
   return published.map((item) => {
     const designed = catalogProducts.find((candidate) => normalize(candidate.name) === normalize(item.nome))
 
-    // A categoria e a unidade são as cadastradas no painel. Só quando a categoria
-    // não declara unidade é que caímos no palpite pelo nome — e, se nem isso
-    // resolver, o produto fica sem unidade em vez de ser posto na errada.
+    // A categoria e a unidade são as cadastradas no painel. Categoria sem unidade
+    // deixa o produto sem unidade: aparece em "Todas" e no filtro da categoria,
+    // em vez de ser posto numa unidade adivinhada pelo nome.
     const category = item.categoriaNome ?? designed?.category ?? 'Sem categoria'
-    const unit =
-      (item.categoriaUnidade as CatalogProduct['unit'] | null) ??
-      designed?.unit ??
-      inferUnit(item.categoriaNome)
+    const unit = item.categoriaUnidade ?? designed?.unit ?? null
 
     if (designed) {
       return {

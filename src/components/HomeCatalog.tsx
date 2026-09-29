@@ -5,15 +5,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { type FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 
-const filters = ['Todos', 'Esquadrias', 'Vidros', 'Construção'] as const
-
-type CatalogFilter = (typeof filters)[number]
+/** "Todos" é o filtro que não filtra; os demais são as unidades do painel. */
+type CatalogFilter = string
 
 const mobileCategories = ['Todas', 'Portas', 'Janelas', 'Fachadas', 'Coberturas'] as const
 type MobileCategory = (typeof mobileCategories)[number]
 
 export type HomeProduct = {
-  unit: Exclude<CatalogFilter, 'Todos'>
+  unit: string | null
   category: string
   title: string
   description: string
@@ -27,16 +26,20 @@ function Arrow() {
 
 export function HomeCatalog({
   products,
+  unidades,
   chapeu = 'Catálogo',
   titulo = 'Produtos e serviços que a LM entrega',
   texto,
 }: {
   products: HomeProduct[]
+  /** Os nomes das unidades cadastradas no painel, na ordem de lá. */
+  unidades: string[]
   chapeu?: string | null
   titulo?: string | null
   texto?: string | null
 }) {
   const router = useRouter()
+  const filters: CatalogFilter[] = ['Todos', ...unidades]
   const [activeFilter, setActiveFilter] = useState<CatalogFilter>('Todos')
   const [searchTerm, setSearchTerm] = useState('')
   const [sheetOpen, setSheetOpen] = useState(false)

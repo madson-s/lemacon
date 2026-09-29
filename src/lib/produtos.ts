@@ -72,7 +72,11 @@ export const paraProdutoItem = (produto: Produto): ProdutoItem => {
     tags: produto.tags?.map((t) => t.valor) ?? [],
     categoriaId: categoria ? String(categoria.id) : String(produto.categoria),
     categoriaNome: categoria?.nome ?? null,
-    categoriaUnidade: categoria?.unidade ?? null,
+    // A unidade é uma relação: só vem com o nome quando a consulta usa depth 2
+    // (produto -> categoria -> unidade). Com depth menor chega só o id, e aí o
+    // produto fica sem unidade em vez de ganhar um rótulo errado.
+    categoriaUnidade:
+      categoria?.unidade && typeof categoria.unidade === 'object' ? categoria.unidade.nome : null,
     imagemUrl: urlDaMedia(produto.imagem),
     imagemAlt: altDaMedia(produto.imagem) || produto.nome,
     destaque: produto.destaque ?? false,
