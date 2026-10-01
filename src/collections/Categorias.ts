@@ -26,16 +26,12 @@ export const Categorias: CollectionConfig = {
     {
       name: 'unidade',
       label: 'Unidade',
-      type: 'select',
-      options: [
-        { label: 'Esquadrias', value: 'Esquadrias' },
-        { label: 'Vidros', value: 'Vidros' },
-        { label: 'Construção', value: 'Construção' },
-      ],
+      type: 'relationship',
+      relationTo: 'unidades',
       index: true,
       admin: {
         description:
-          'A frente da LM a que esta categoria pertence. É o que agrupa a categoria no filtro do catálogo. Sem unidade, os produtos aparecem apenas em "Todas" e no filtro da própria categoria.',
+          'A frente da LM a que esta categoria pertence — é o que agrupa os produtos no filtro de unidades. Sem unidade, os produtos aparecem só em "Todas" e no filtro da própria categoria. Para criar uma unidade nova, use Unidades.',
       },
     },
     {

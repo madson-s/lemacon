@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     produtos: Produto;
     categorias: Categoria;
+    unidades: Unidade;
     projetos: Projeto;
     media: Media;
     users: User;
@@ -81,6 +82,7 @@ export interface Config {
   collectionsSelect: {
     produtos: ProdutosSelect<false> | ProdutosSelect<true>;
     categorias: CategoriasSelect<false> | CategoriasSelect<true>;
+    unidades: UnidadesSelect<false> | UnidadesSelect<true>;
     projetos: ProjetosSelect<false> | ProjetosSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -227,11 +229,42 @@ export interface Categoria {
    */
   slug?: string | null;
   /**
-   * A frente da LM a que esta categoria pertence. É o que agrupa a categoria no filtro do catálogo. Sem unidade, os produtos aparecem apenas em "Todas" e no filtro da própria categoria.
+   * A frente da LM a que esta categoria pertence — é o que agrupa os produtos no filtro de unidades. Sem unidade, os produtos aparecem só em "Todas" e no filtro da própria categoria. Para criar uma unidade nova, use Unidades.
    */
-  unidade?: ('Esquadrias' | 'Vidros' | 'Construção') | null;
+  unidade?: (number | null) | Unidade;
   /**
    * Define a ordem de exibição no catálogo. Menor aparece primeiro.
+   */
+  ordem?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * As frentes da LM. Cada categoria pertence a uma unidade, e o site usa esta lista nos filtros, nos cards da home, na página do produto, no rodapé e no formulário de orçamento.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "unidades".
+ */
+export interface Unidade {
+  id: number;
+  /**
+   * Curto: é o texto do botão de filtro. Ex.: Esquadrias, Vidros, Construção.
+   */
+  nome: string;
+  /**
+   * Gerado a partir de "nome". Edite apenas se precisar de uma URL específica.
+   */
+  slug?: string | null;
+  /**
+   * Uma linha sobre o que a unidade faz. Aparece no card de "Comece por unidade", na home, e no fim da página de cada produto.
+   */
+  descricao?: string | null;
+  /**
+   * A foto do card. Vertical funciona melhor — o card é mais alto que largo. Sem foto, o card usa uma imagem genérica do catálogo.
+   */
+  imagem?: (number | null) | Media;
+  /**
+   * Ordem em todos os lugares onde as unidades aparecem. Menor vem primeiro.
    */
   ordem?: number | null;
   updatedAt: string;
@@ -400,6 +433,10 @@ export interface PayloadLockedDocument {
         value: number | Categoria;
       } | null)
     | ({
+        relationTo: 'unidades';
+        value: number | Unidade;
+      } | null)
+    | ({
         relationTo: 'projetos';
         value: number | Projeto;
       } | null)
@@ -494,6 +531,19 @@ export interface CategoriasSelect<T extends boolean = true> {
   nome?: T;
   slug?: T;
   unidade?: T;
+  ordem?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "unidades_select".
+ */
+export interface UnidadesSelect<T extends boolean = true> {
+  nome?: T;
+  slug?: T;
+  descricao?: T;
+  imagem?: T;
   ordem?: T;
   updatedAt?: T;
   createdAt?: T;

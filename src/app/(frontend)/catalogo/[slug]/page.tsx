@@ -13,6 +13,7 @@ import {
   type CatalogProduct,
 } from '@/lib/catalogo-design'
 import { altDaMedia, formatarPreco, paraProdutoItem, urlDaMedia } from '@/lib/produtos'
+import { carregarUnidades, linkDaUnidade } from '@/lib/unidades'
 import type { Produto } from '@/payload-types'
 import config from '@/payload.config'
 
@@ -92,23 +93,8 @@ export default async function ProdutoPage({ params }: { params: Promise<{ slug: 
     })
     .slice(0, 4)
 
-  const unitRecommendations = [
-    {
-      name: 'Esquadrias',
-      text: 'Portas, janelas, fachadas e coberturas fabricadas sob medida.',
-      image: '/images/home/category-doors.png',
-    },
-    {
-      name: 'Vidros',
-      text: 'Box, guarda-corpo, espelhos e coberturas com acabamento preciso.',
-      image: '/images/home/category-box.png',
-    },
-    {
-      name: 'Construção',
-      text: 'Projeto, execução, reforma e ampliação com a mesma equipe.',
-      image: '/images/catalog/ampliacao-area-externa.png',
-    },
-  ] as const
+  // As mesmas unidades do painel que aparecem na home e nos filtros.
+  const unitRecommendations = await carregarUnidades(await getPayload({ config: await config }))
 
   return (
     <main className="product-detail">
@@ -120,7 +106,7 @@ export default async function ProdutoPage({ params }: { params: Promise<{ slug: 
               { label: 'Catálogo', href: '/catalogo' },
               // A unidade só entra na trilha quando a categoria declara uma.
               ...(item.unit
-                ? [{ label: item.unit, href: `/catalogo?unidade=${encodeURIComponent(item.unit)}` }]
+                ? [{ label: item.unit, href: linkDaUnidade(item.unit) }]
                 : []),
               {
                 label: item.category,
@@ -228,10 +214,10 @@ export default async function ProdutoPage({ params }: { params: Promise<{ slug: 
           </div>
           <div className="product-detail__unit-grid">
             {unitRecommendations.map((unit) => (
-              <Link href={`/catalogo?unidade=${encodeURIComponent(unit.name)}`} key={unit.name}>
-                <Image src={unit.image} alt="" fill sizes="(max-width: 800px) 100vw, 400px" />
+              <Link href={linkDaUnidade(unit.nome)} key={unit.id}>
+                <Image src={unit.imagem} alt="" fill sizes="(max-width: 800px) 100vw, 400px" />
                 <span aria-hidden className="product-detail__unit-shade" />
-                <span><strong>{unit.name}</strong><small>{unit.text}</small></span>
+                <span><strong>{unit.nome}</strong>{unit.descricao && <small>{unit.descricao}</small>}</span>
                 <i aria-hidden>→</i>
               </Link>
             ))}

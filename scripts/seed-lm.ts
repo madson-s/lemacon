@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import config from '../src/payload.config'
 
 import { limparMarcadorDev } from './limpar-marcador-dev'
+import { semearUnidades } from './semear-unidades'
 import { MIDIA_DE_PRODUTOS } from './seed-midia'
 
 /** Uma foto: nome do arquivo em `public/produtos/` e o texto alternativo. */
@@ -16,7 +17,7 @@ export type MidiaDeProduto = {
 }
 
 /**
- * Conteúdo real da LM: categorias e produtos.
+ * Conteúdo real da LM: unidades, categorias e produtos.
  *
  *   pnpm payload run scripts/seed-lm.ts
  *
@@ -24,7 +25,7 @@ export type MidiaDeProduto = {
  * a produção o que hoje só existe no banco de desenvolvimento. Não cria preço,
  * foto nem ficha técnica: esses dados são do cliente e entram pelo painel.
  */
-const CATEGORIAS: { nome: string; unidade: 'Esquadrias' | 'Vidros' | 'Construção' }[] = [
+const CATEGORIAS: { nome: string; unidade: string }[] = [
   {
     nome: 'Telhas Térmicas',
     unidade: 'Construção',
@@ -217,6 +218,9 @@ const PRODUTOS: {
 
 const payload = await getPayload({ config })
 
+// --- Unidades -------------------------------------------------------------
+const idDaUnidade = await semearUnidades(payload)
+
 // --- Categorias -----------------------------------------------------------
 const { docs: existentes } = await payload.find({
   collection: 'categorias',
@@ -227,20 +231,23 @@ let ordem = Math.max(0, ...existentes.map((c) => c.ordem ?? 0))
 const idPorNome = new Map(existentes.map((c) => [c.nome, c.id]))
 
 for (const cat of CATEGORIAS) {
+  const unidade = idDaUnidade.get(cat.unidade)
+  if (!unidade) throw new Error(`unidade "${cat.unidade}" não está em UNIDADES`)
+
   const atual = existentes.find((c) => c.nome === cat.nome)
   if (atual) {
-    if (atual.unidade !== cat.unidade) {
-      await payload.update({
-        collection: 'categorias',
-        id: atual.id,
-        data: { unidade: cat.unidade },
-      })
+    const unidadeAtual = typeof atual.unidade === 'object' ? atual.unidade?.id : atual.unidade
+    if (unidadeAtual !== unidade) {
+      await payload.update({ collection: 'categorias', id: atual.id, data: { unidade } })
       console.log('categoria atualizada:', cat.nome, '->', cat.unidade)
     }
     continue
   }
   ordem += 1
-  const doc = await payload.create({ collection: 'categorias', data: { ...cat, ordem } })
+  const doc = await payload.create({
+    collection: 'categorias',
+    data: { nome: cat.nome, unidade, ordem },
+  })
   idPorNome.set(doc.nome, doc.id)
   console.log('categoria criada:', doc.nome)
 }

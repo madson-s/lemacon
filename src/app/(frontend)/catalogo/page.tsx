@@ -3,13 +3,9 @@ import Image from 'next/image'
 import { getPayload } from 'payload'
 
 import { CatalogoBusca } from '@/components/CatalogoBusca'
-import {
-  categoriasDosProdutos,
-  catalogUnits,
-  mergePublishedProducts,
-  type CatalogUnit,
-} from '@/lib/catalogo-design'
+import { categoriasDosProdutos, mergePublishedProducts } from '@/lib/catalogo-design'
 import { paraProdutoItem } from '@/lib/produtos'
+import { carregarUnidades } from '@/lib/unidades'
 import config from '@/payload.config'
 
 export const metadata: Metadata = {
@@ -18,8 +14,6 @@ export const metadata: Metadata = {
 }
 
 export const dynamic = 'force-dynamic'
-
-const isUnit = (value: string | undefined): value is CatalogUnit => catalogUnits.includes(value as CatalogUnit)
 
 export default async function CatalogoPage({
   searchParams,
@@ -30,13 +24,16 @@ export default async function CatalogoPage({
   const payload = await getPayload({ config: await config })
   const { docs } = await payload.find({
     collection: 'produtos',
-    depth: 1,
+    // 2 para a categoria chegar com a unidade populada, e não só o id dela.
+    depth: 2,
     limit: 2000,
     pagination: false,
     sort: 'nome',
     where: { ativo: { equals: true } },
   })
   const products = mergePublishedProducts(docs.map(paraProdutoItem))
+  // As unidades do filtro são as cadastradas no painel, como as categorias.
+  const unidades = (await carregarUnidades(payload)).map((u) => u.nome)
   // O filtro de categorias reflete o que existe cadastrado, não uma lista fixa.
   const categorias = categoriasDosProdutos(products)
 
@@ -59,7 +56,8 @@ export default async function CatalogoPage({
       <CatalogoBusca
         products={products}
         initialTerm={q ?? ''}
-        initialUnit={isUnit(unidade) ? unidade : 'Todas'}
+        unidades={unidades}
+        initialUnit={unidade && unidades.includes(unidade) ? unidade : 'Todas'}
         categorias={categorias}
         initialCategory={categoria && categorias.includes(categoria) ? categoria : 'Todas'}
         initialPage={Number.parseInt(pagina ?? '1', 10) || 1}

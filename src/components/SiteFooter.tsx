@@ -1,16 +1,13 @@
 import Link from 'next/link'
 
+import { linkDaUnidade } from '@/lib/unidades'
+
 import { BrandLogo } from './BrandLogo'
 
-const footerGroups: { title: string; links: { label: string; href: string }[] }[] = [
-  {
-    title: 'Unidades',
-    links: [
-      { label: 'Esquadrias de alumínio', href: '/catalogo?unidade=Esquadrias' },
-      { label: 'Vidros temperados', href: '/catalogo?unidade=Vidros' },
-      { label: 'Tec Construção', href: '/catalogo?unidade=Constru%C3%A7%C3%A3o' },
-    ],
-  },
+type Grupo = { title: string; links: { label: string; href: string }[] }
+
+// O grupo "Unidades" vem do painel e é montado no componente; estes são fixos.
+const gruposFixos: Grupo[] = [
   {
     title: 'Catálogo',
     links: [
@@ -30,7 +27,12 @@ const footerGroups: { title: string; links: { label: string; href: string }[] }[
   },
 ]
 
-export function SiteFooter() {
+export function SiteFooter({ unidades }: { unidades: string[] }) {
+  const footerGroups: Grupo[] = [
+    { title: 'Unidades', links: unidades.map((nome) => ({ label: nome, href: linkDaUnidade(nome) })) },
+    ...gruposFixos,
+  ].filter((grupo) => grupo.links.length > 0)
+
   return (
     <footer className="site-footer">
       <div className="lm-container site-footer__grid">

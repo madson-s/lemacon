@@ -7,6 +7,7 @@ import React, { Suspense } from 'react'
 import { Header } from '@/components/Header'
 import { SiteFooter } from '@/components/SiteFooter'
 import type { CategoriaItem } from '@/lib/produtos'
+import { carregarUnidades } from '@/lib/unidades'
 import config from '@/payload.config'
 
 export const metadata = {
@@ -42,6 +43,8 @@ export default async function FrontendLayout({ children }: { children: React.Rea
     sort: 'ordem',
   })
 
+  const unidades = await carregarUnidades(payload)
+
   const categorias: CategoriaItem[] = docs.map((c) => ({
     id: String(c.id),
     nome: c.nome,
@@ -58,7 +61,7 @@ export default async function FrontendLayout({ children }: { children: React.Rea
 
         <main className="flex-1">{children}</main>
 
-        <SiteFooter />
+        <SiteFooter unidades={unidades.map((u) => u.nome)} />
       </body>
     </html>
   )

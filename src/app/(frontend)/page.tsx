@@ -8,27 +8,10 @@ import { HomeCatalog, type HomeProduct } from '@/components/HomeCatalog'
 import { HorizontalCarousel } from '@/components/HorizontalCarousel'
 import { mergePublishedProducts } from '@/lib/catalogo-design'
 import { paraProdutoItem } from '@/lib/produtos'
+import { carregarUnidades, linkDaUnidade } from '@/lib/unidades'
 import config from '@/payload.config'
 
 export const dynamic = 'force-dynamic'
-
-const units = [
-  {
-    title: 'Esquadrias',
-    description: 'Portas, janelas, fachadas e coberturas em alumínio.',
-    image: '/images/home/category-doors.png',
-  },
-  {
-    title: 'Vidros',
-    description: 'Box, guarda-corpo, espelhos e coberturas de vidro.',
-    image: '/images/home/category-box.png',
-  },
-  {
-    title: 'Construção',
-    description: 'Projeto, execução, reforma e ampliação com equipe própria.',
-    image: '/images/catalog/ampliacao-area-externa.png',
-  },
-] as const
 
 const process = [
   { number: '01', title: 'Medição e projeto', text: 'Visitamos o local ou recebemos as suas medidas. Definimos perfil, vidro, ferragens e enviamos o orçamento com prazo fechado.' },
@@ -50,12 +33,14 @@ export default async function HomePage() {
 
   const { docs: produtos } = await payload.find({
     collection: 'produtos',
-    depth: 1,
+    // 2 para a categoria chegar com a unidade populada, e não só o id dela.
+    depth: 2,
     limit: 2000,
     pagination: false,
     where: { ativo: { equals: true } },
   })
   const doCatalogo = mergePublishedProducts(produtos.map(paraProdutoItem))
+  const unidades = await carregarUnidades(payload)
   const porUnidade = doCatalogo.reduce<Record<string, number>>(
     (acc, item) => (item.unit ? { ...acc, [item.unit]: (acc[item.unit] ?? 0) + 1 } : acc),
     {},
@@ -71,7 +56,7 @@ export default async function HomePage() {
   const produtosDaHome: HomeProduct[] = (vitrine.length > 0 ? vitrine : doCatalogo)
     .slice(0, 8)
     .map((item) => ({
-      unit: item.unit ?? 'Construção',
+      unit: item.unit,
       category: item.unit ? `${item.unit} · ${item.category}` : item.category,
       title: item.name,
       description: item.description,
@@ -99,6 +84,7 @@ export default async function HomePage() {
         <div className="lm-container">
           <HomeCatalog
             products={produtosDaHome}
+            unidades={unidades.map((u) => u.nome)}
             chapeu={home.secaoCatalogo?.chapeu}
             titulo={home.secaoCatalogo?.titulo}
             texto={home.secaoCatalogo?.texto}
@@ -117,20 +103,20 @@ export default async function HomePage() {
             <Link href="/catalogo" className="button button--gold">Ver catálogo completo <Arrow /></Link>
           </div>
           <HorizontalCarousel trackClassName="unit-grid" label="Unidades do catálogo">
-            {units.map((unit) => {
-              const total = porUnidade[unit.title] ?? 0
+            {unidades.map((unit) => {
+              const total = porUnidade[unit.nome] ?? 0
 
               return (
                 <Link
-                  href={`/catalogo?unidade=${encodeURIComponent(unit.title)}`}
-                  key={unit.title}
+                  href={linkDaUnidade(unit.nome)}
+                  key={unit.id}
                   className="unit-card"
-                  aria-label={`Ver ${total === 1 ? '1 item' : `${total} itens`} da unidade ${unit.title} no catálogo`}
+                  aria-label={`Ver ${total === 1 ? '1 item' : `${total} itens`} da unidade ${unit.nome} no catálogo`}
                 >
-                  <Image src={unit.image} alt={unit.title} fill sizes="(max-width: 800px) 74vw, 270px" />
+                  <Image src={unit.imagem} alt={unit.imagemAlt || unit.nome} fill sizes="(max-width: 800px) 74vw, 270px" />
                   <span className="unit-card__copy">
-                    <strong>{unit.title}</strong>
-                    <small>{unit.description}</small>
+                    <strong>{unit.nome}</strong>
+                    {unit.descricao && <small>{unit.descricao}</small>}
                     <em className="unit-card__count">{total === 1 ? '1 item' : `${total} itens`}</em>
                   </span>
                   <Arrow />
@@ -203,7 +189,7 @@ export default async function HomePage() {
           <form className="contact-form" action="#orcamento">
             <label>Nome<input name="nome" type="text" placeholder="Como podemos chamar você" /></label>
             <label>Telefone / WhatsApp<input name="telefone" type="tel" placeholder="(00) 0 0000-0000" /></label>
-            <label>Unidade de interesse<select name="unidade" defaultValue="Esquadrias de alumínio"><option>Esquadrias de alumínio</option><option>Vidros temperados</option><option>Tec Construção</option></select></label>
+            <label>Unidade de interesse<select name="unidade">{unidades.map((u) => <option key={u.id}>{u.nome}</option>)}</select></label>
             <label>Mensagem<textarea name="mensagem" placeholder="Descreva o ambiente, as medidas ou o que precisa" /></label>
             <button type="submit" className="button button--dark">Solicitar orçamento</button>
             <small>Seus dados ficam protegidos e não são compartilhados.</small>
