@@ -12,7 +12,6 @@
   FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 */
 
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getPayload } from 'payload'
@@ -28,8 +27,6 @@ export const metadata = {
 }
 
 export const dynamic = 'force-dynamic'
-
-type RichTextData = NonNullable<NonNullable<Awaited<ReturnType<typeof carregar>>['historia']>['texto']>
 
 const carregar = async () => {
   const payload = await getPayload({ config: await config })
@@ -49,36 +46,12 @@ const carregarProjetos = async () => {
   return docs
 }
 
-/** O Lexical devolve um parágrafo vazio quando o editor nunca foi preenchido. */
-const temTexto = (data: RichTextData | null | undefined): boolean => {
-  if (!data?.root?.children) return false
-
-  const contemTexto = (no: Record<string, unknown>): boolean => {
-    if (typeof no.text === 'string' && no.text.trim() !== '') return true
-    const filhos = no.children
-    return Array.isArray(filhos) ? filhos.some((f) => contemTexto(f as Record<string, unknown>)) : false
-  }
-
-  return data.root.children.some((no) => contemTexto(no as unknown as Record<string, unknown>))
-}
-
-const iniciais = (nome: string): string =>
-  nome
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((parte) => parte[0]?.toUpperCase() ?? '')
-    .join('')
-
 export default async function SobrePage() {
   const sobre = await carregar()
   const projetos = await carregarProjetos()
 
   const ficha = (sobre.ficha ?? []).filter((linha) => linha.valor?.trim())
   const capacidades = sobre.capacidades ?? []
-  const equipe = sobre.equipe ?? []
-  const historia = sobre.historia
-  const temHistoria = temTexto(historia?.texto)
   const fechamento = sobre.fechamento
   const secaoProjetos = sobre.projetos
   const metodo = sobre.metodo
@@ -90,7 +63,6 @@ export default async function SobrePage() {
   const aberturaAlt =
     altDaMedia(sobre.imagem) ||
     'Residência com fechamento em alumínio e madeira executado pela LM, com a entrada iluminada'
-  const imagemHistoria = urlDaMedia(historia?.imagem, 'card')
 
   return (
     <>
@@ -190,78 +162,6 @@ export default async function SobrePage() {
           </div>
         </div>
       </section>
-
-      {temHistoria && (
-        <section className="sobre-historia">
-          <div className="lm-container sobre-historia__grid">
-            <div className="sobre-historia__aside">
-              {historia?.desde && (
-                <p className="sobre-historia__ano">
-                  <span>No mercado desde</span>
-                  <strong>{historia.desde}</strong>
-                </p>
-              )}
-              {imagemHistoria && (
-                <div className="sobre-historia__media">
-                  <Image
-                    src={imagemHistoria}
-                    alt={altDaMedia(historia?.imagem) || 'Início da LM'}
-                    fill
-                    sizes="(max-width: 900px) 100vw, 420px"
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="sobre-historia__texto">
-              {historia?.titulo && <h2>{historia.titulo}</h2>}
-              <div className="prose prose-neutral max-w-none">
-                <RichText data={historia!.texto!} />
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {equipe.length > 0 && (
-        <section className="sobre-equipe">
-          <div className="lm-container">
-            <div className="sobre-equipe__intro">
-              {sobre.equipeTitulo && <h2>{sobre.equipeTitulo}</h2>}
-              {sobre.equipeTexto && <p>{sobre.equipeTexto}</p>}
-            </div>
-
-            <ul className="sobre-equipe__grid">
-              {equipe.map((pessoa) => {
-                const foto = urlDaMedia(pessoa.foto, 'thumbnail')
-
-                return (
-                  <li key={pessoa.id ?? pessoa.nome} className="sobre-pessoa">
-                    {foto ? (
-                      <div className="sobre-pessoa__foto">
-                        <Image
-                          src={foto}
-                          alt={altDaMedia(pessoa.foto) || pessoa.nome}
-                          fill
-                          sizes="72px"
-                        />
-                      </div>
-                    ) : (
-                      <span className="sobre-pessoa__iniciais" aria-hidden>
-                        {iniciais(pessoa.nome)}
-                      </span>
-                    )}
-                    <span className="sobre-pessoa__nome">
-                      <strong>{pessoa.nome}</strong>
-                      {pessoa.funcao && <small>{pessoa.funcao}</small>}
-                    </span>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        </section>
-      )}
 
       {passos.length > 0 && (
         <section className="sobre-method">

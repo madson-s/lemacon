@@ -627,31 +627,6 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
 .sobre-project-card:hover img { transform: scale(1.045); }
 .sobre-project-card:active { transform: scale(.96); }
 
-.sobre-historia { padding: 84px 0; color: var(--lm-ink); background: var(--lm-paper-2); }
-.sobre-historia__grid { display: grid; grid-template-columns: minmax(0, 370px) minmax(0, 1fr); align-items: start; gap: 64px; }
-.sobre-historia__ano { display: grid; gap: 8px; }
-.sobre-historia__ano span { color: var(--lm-text-muted); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-.sobre-historia__ano strong { font-family: var(--font-instrument-serif), serif; font-size: clamp(62px, 7vw, 92px); font-weight: 400; letter-spacing: -.03em; line-height: .88; }
-.sobre-historia__media { position: relative; height: clamp(240px, 26vw, 320px); margin-top: 30px; overflow: hidden; border-radius: 20px; background: var(--lm-border); }
-.sobre-historia__media img { object-fit: cover; }
-.sobre-historia__texto h2 { max-width: 17ch; font-size: clamp(30px, 3vw, 40px); font-weight: 600; letter-spacing: -.04em; line-height: 1.08; text-wrap: balance; }
-.sobre-historia__texto .prose { margin-top: 20px; max-width: 68ch; color: var(--lm-text-muted); font-size: 16px; line-height: 1.68; }
-.sobre-historia__texto .prose :where(p, li) { color: var(--lm-text-muted); text-wrap: pretty; }
-.sobre-historia__texto .prose :where(h2, h3, h4, strong) { color: var(--lm-ink); }
-
-.sobre-equipe { padding: 84px 0; color: var(--lm-ink); background: var(--lm-paper); }
-.sobre-equipe__intro h2 { max-width: 17ch; font-size: clamp(30px, 3vw, 40px); font-weight: 600; letter-spacing: -.04em; line-height: 1.08; text-wrap: balance; }
-.sobre-equipe__intro p { max-width: 62ch; margin-top: 16px; color: var(--lm-muted); font-size: 16px; line-height: 1.62; text-wrap: pretty; }
-/* Um filete por pessoa deixaria um toco de régua sobrando sempre que a equipe
-   não fechasse a última linha da grade; a régua fica no topo da lista inteira. */
-.sobre-equipe__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 44px; margin-top: 36px; padding-top: 26px; border-top: 1px solid var(--lm-line); }
-.sobre-pessoa { display: flex; min-width: 0; align-items: center; gap: 16px; padding: 10px 0; }
-.sobre-pessoa__foto { position: relative; width: 56px; height: 56px; flex: 0 0 56px; overflow: hidden; border-radius: 14px; background: var(--lm-border); }
-.sobre-pessoa__foto img { object-fit: cover; }
-.sobre-pessoa__iniciais { display: grid; width: 56px; height: 56px; flex: 0 0 56px; place-items: center; border-radius: 14px; color: var(--lm-red-deep); background: var(--lm-red-wash); font-size: 15px; font-weight: 700; letter-spacing: .04em; }
-.sobre-pessoa__nome { display: grid; min-width: 0; gap: 3px; }
-.sobre-pessoa__nome strong { font-size: 15px; font-weight: 650; letter-spacing: -.012em; }
-.sobre-pessoa__nome small { color: var(--lm-muted); font-size: 12px; }
 
 .sobre-method { padding: 84px 0 90px; color: var(--lm-ink); background: var(--lm-paper-2); }
 .sobre-method h2 { max-width: 18ch; }
@@ -730,7 +705,6 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
 .location-visit__image { position: relative; height: 390px; overflow: hidden; border-radius: 30px; background: var(--lm-border); box-shadow: 0 20px 50px rgb(0 0 0 / 12%); outline: 1px solid rgb(0 0 0 / 10%); outline-offset: -1px; }
 .location-visit__image img { object-fit: cover; }
 
-
 /* O único momento animado de cada página: a ficha se preenchendo linha a linha
    e o roteiro se desenhando de cima para baixo. */
 @keyframes lm-sobe {
@@ -757,8 +731,6 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
   .sobre-hero__visual { height: 500px; }
   .sobre-capabilities__grid { grid-template-columns: minmax(0, 1fr) minmax(330px, .75fr); gap: 36px; }
   .sobre-project-card { height: 290px; }
-  .sobre-historia__grid { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 40px; }
-  .sobre-equipe__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
   .location-coverage__grid { grid-template-columns: minmax(0, .82fr) minmax(400px, 1.18fr); gap: 46px; }
   .site-header__nav { gap: 18px; }
   .home-hero .mobile-carousel { position: static; inset: auto; width: 100%; margin-top: 28px; }
@@ -820,7 +792,7 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
   .sobre-hero__stats > div { min-height: 76px; }
   .sobre-hero__visual { height: min(112vw, 520px); border-radius: 28px; }
   .sobre-hero__visual > span { right: 16px; bottom: 16px; left: 16px; }
-  .sobre-capabilities, .sobre-projects, .sobre-method, .sobre-historia, .sobre-equipe { padding: 56px 0; }
+  .sobre-capabilities, .sobre-projects, .sobre-method { padding: 56px 0; }
   .sobre-capabilities__grid { grid-template-columns: 1fr; gap: 28px; }
   .sobre-capabilities__image { height: min(76vw, 360px); border-radius: 24px; }
   .sobre-capabilities__cards article { border-radius: 20px; }
@@ -831,9 +803,6 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
   .sobre-project-card { height: 330px; flex: 0 0 min(78vw, 310px); scroll-snap-align: start; }
   .sobre-method__grid { grid-template-columns: 1fr; gap: 12px; }
   .sobre-method__grid article { min-height: 210px; }
-  .sobre-historia__grid { grid-template-columns: 1fr; gap: 30px; }
-  .sobre-historia__media { margin-top: 24px; }
-  .sobre-equipe__grid { grid-template-columns: 1fr; gap: 0; }
   .sobre-cta { padding: 56px 0 60px; }
   .sobre-cta__inner { align-items: flex-start; flex-direction: column; gap: 26px; }
   .sobre-cta .button { width: 100%; }
@@ -1037,7 +1006,7 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
   .sobre-hero__copy h1 { font-size: 40px; }
   .sobre-hero__visual { height: 430px; border-radius: 24px; }
   .sobre-hero__visual > span { padding-inline: 13px; font-size: 9px; }
-  .sobre-capabilities__story h2, .sobre-projects h2, .sobre-method h2, .sobre-historia__texto h2, .sobre-equipe__intro h2 { font-size: 32px; }
+  .sobre-capabilities__story h2, .sobre-projects h2, .sobre-method h2 { font-size: 32px; }
   .sobre-capabilities__cards article { grid-template-columns: 32px minmax(0, 1fr); padding: 21px; }
   .sobre-project-card { flex-basis: calc(100vw - 68px); }
   .sobre-method__grid article { min-height: 196px; padding: 24px; }

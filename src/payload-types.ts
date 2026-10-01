@@ -751,7 +751,7 @@ export interface Home {
   createdAt?: string | null;
 }
 /**
- * Página "Sobre" do site. As abas seguem a ordem das seções na página, e o que estiver vazio aqui simplesmente não aparece lá. Ainda faltam História e Equipe: enquanto estiverem vazias, essas duas seções ficam de fora.
+ * Página "Sobre" do site. As abas seguem a ordem das seções na página, e o que estiver vazio aqui simplesmente não aparece lá.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sobre".
@@ -809,48 +809,6 @@ export interface Sobre {
     ctaTexto?: string | null;
     ctaLink?: string | null;
   };
-  /**
-   * PENDENTE — como a LM começou: de onde veio, há quanto tempo está na estrada, o que mudou. Sem texto aqui, a seção inteira não aparece no site.
-   */
-  historia?: {
-    titulo?: string | null;
-    /**
-     * Só o ano. Aparece em destaque ao lado do texto.
-     */
-    desde?: string | null;
-    texto?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    imagem?: (number | null) | Media;
-  };
-  equipeTitulo?: string | null;
-  equipeTexto?: string | null;
-  /**
-   * PENDENTE — cadastre só pessoas reais, com o nome como elas querem ser chamadas. Enquanto estiver vazio, a seção não aparece no site.
-   */
-  equipe?:
-    | {
-        nome: string;
-        funcao?: string | null;
-        /**
-         * Opcional. Sem foto, aparecem as iniciais do nome.
-         */
-        foto?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
   metodo?: {
     chapeu?: string | null;
     titulo?: string | null;
@@ -1011,24 +969,6 @@ export interface SobreSelect<T extends boolean = true> {
         titulo?: T;
         ctaTexto?: T;
         ctaLink?: T;
-      };
-  historia?:
-    | T
-    | {
-        titulo?: T;
-        desde?: T;
-        texto?: T;
-        imagem?: T;
-      };
-  equipeTitulo?: T;
-  equipeTexto?: T;
-  equipe?:
-    | T
-    | {
-        nome?: T;
-        funcao?: T;
-        foto?: T;
-        id?: T;
       };
   metodo?:
     | T

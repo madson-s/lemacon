@@ -4,8 +4,8 @@ import type { GlobalConfig } from 'payload'
  * Conteúdo da página /sobre. É um global porque a página é um documento único.
  *
  * Os campos vêm vazios de propósito onde o dado é da empresa e ninguém pode
- * inventar por ela (ano de fundação, cidade, tamanho e nomes da equipe): a
- * página esconde a seção inteira em vez de mostrar um valor de mentira.
+ * inventar por ela (ano de fundação, cidade): a página esconde a linha em vez
+ * de mostrar um valor de mentira.
  */
 export const Sobre: GlobalConfig = {
   slug: 'sobre',
@@ -15,7 +15,7 @@ export const Sobre: GlobalConfig = {
   },
   admin: {
     description:
-      'Página "Sobre" do site. As abas seguem a ordem das seções na página, e o que estiver vazio aqui simplesmente não aparece lá. Ainda faltam História e Equipe: enquanto estiverem vazias, essas duas seções ficam de fora.',
+      'Página "Sobre" do site. As abas seguem a ordem das seções na página, e o que estiver vazio aqui simplesmente não aparece lá.',
   },
   fields: [
     {
@@ -233,103 +233,6 @@ export const Sobre: GlobalConfig = {
                       admin: { width: '50%' },
                     },
                   ],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          label: 'História',
-          fields: [
-            {
-              name: 'historia',
-              label: 'História e origem',
-              type: 'group',
-              admin: {
-                description:
-                  'PENDENTE — como a LM começou: de onde veio, há quanto tempo está na estrada, o que mudou. Sem texto aqui, a seção inteira não aparece no site.',
-              },
-              fields: [
-                {
-                  name: 'titulo',
-                  label: 'Título',
-                  type: 'text',
-                  defaultValue: 'Como a LM começou',
-                },
-                {
-                  name: 'desde',
-                  label: 'No mercado desde',
-                  type: 'text',
-                  admin: {
-                    placeholder: '2014',
-                    description: 'Só o ano. Aparece em destaque ao lado do texto.',
-                  },
-                },
-                {
-                  name: 'texto',
-                  label: 'Texto',
-                  type: 'richText',
-                },
-                {
-                  name: 'imagem',
-                  label: 'Imagem',
-                  type: 'upload',
-                  relationTo: 'media',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          label: 'Equipe',
-          fields: [
-            {
-              name: 'equipeTitulo',
-              label: 'Título da seção de equipe',
-              type: 'text',
-              defaultValue: 'Quem faz',
-            },
-            {
-              name: 'equipeTexto',
-              label: 'Texto da seção de equipe',
-              type: 'textarea',
-            },
-            {
-              name: 'equipe',
-              label: 'Equipe',
-              labels: { singular: 'Pessoa', plural: 'Pessoas' },
-              type: 'array',
-              admin: {
-                description:
-                  'PENDENTE — cadastre só pessoas reais, com o nome como elas querem ser chamadas. Enquanto estiver vazio, a seção não aparece no site.',
-              },
-              fields: [
-                {
-                  type: 'row',
-                  fields: [
-                    {
-                      name: 'nome',
-                      label: 'Nome',
-                      type: 'text',
-                      required: true,
-                      admin: { width: '50%' },
-                    },
-                    {
-                      name: 'funcao',
-                      label: 'Função',
-                      type: 'text',
-                      admin: { width: '50%', placeholder: 'Instalação' },
-                    },
-                  ],
-                },
-                {
-                  name: 'foto',
-                  label: 'Foto',
-                  type: 'upload',
-                  relationTo: 'media',
-                  admin: {
-                    description: 'Opcional. Sem foto, aparecem as iniciais do nome.',
-                  },
                 },
               ],
             },
