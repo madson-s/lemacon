@@ -70,12 +70,6 @@ const iniciais = (nome: string): string =>
     .map((parte) => parte[0]?.toUpperCase() ?? '')
     .join('')
 
-const metodo = [
-  ['01', 'Projeto conectado à execução', 'Quem mede e especifica acompanha o que será produzido.'],
-  ['02', 'Fabricação própria', 'Perfis, vidros e acabamentos passam pela mesma coordenação.'],
-  ['03', 'Instalação e pós-entrega', 'A equipe instala, ajusta e responde por cada detalhe entregue.'],
-]
-
 export default async function SobrePage() {
   const sobre = await carregar()
   const projetos = await carregarProjetos()
@@ -86,6 +80,9 @@ export default async function SobrePage() {
   const historia = sobre.historia
   const temHistoria = temTexto(historia?.texto)
   const fechamento = sobre.fechamento
+  const secaoProjetos = sobre.projetos
+  const metodo = sobre.metodo
+  const passos = metodo?.passos ?? []
 
   // Sem upload, a faixa cai numa foto do acervo próprio que já está no repositório:
   // a página fica no mesmo material da home em vez de virar uma ilha só de tipografia.
@@ -108,9 +105,11 @@ export default async function SobrePage() {
             )}
             <h1>{sobre.titulo}</h1>
             {sobre.lead && <p className="sobre-hero__lead">{sobre.lead}</p>}
-            <Link className="button button--dark" href="/#orcamento">
-              Conheça o seu projeto com a LM <span aria-hidden>→</span>
-            </Link>
+            {sobre.ctaTexto && (
+              <Link className="button button--dark" href={sobre.ctaLink || '/#orcamento'}>
+                {sobre.ctaTexto} <span aria-hidden>→</span>
+              </Link>
+            )}
 
             {ficha.length > 0 && (
               <dl className="sobre-hero__stats">
@@ -126,7 +125,7 @@ export default async function SobrePage() {
 
           <div className="sobre-hero__visual">
             <Image src={abertura} alt={aberturaAlt} fill priority sizes="(max-width: 800px) calc(100vw - 40px), 580px" />
-            <span>Projeto · fabricação · instalação</span>
+            {sobre.imagemLegenda && <span>{sobre.imagemLegenda}</span>}
           </div>
         </div>
       </section>
@@ -135,9 +134,9 @@ export default async function SobrePage() {
         <section className="sobre-capabilities">
           <div className="lm-container sobre-capabilities__grid">
             <div className="sobre-capabilities__story">
-              <p className="eyebrow"><i aria-hidden /> Estrutura própria</p>
+              {sobre.capacidadesChapeu && <p className="eyebrow"><i aria-hidden /> {sobre.capacidadesChapeu}</p>}
               {sobre.capacidadesTitulo && <h2>{sobre.capacidadesTitulo}</h2>}
-              <p>Da leitura do vão ao acabamento final, as decisões acontecem perto de quem vai fabricar e instalar.</p>
+              {sobre.capacidadesTexto && <p>{sobre.capacidadesTexto}</p>}
               <div className="sobre-capabilities__image">
                 <Image src="/images/home/aluminium-detail.png" alt="Detalhe de uma fachada executada pela LM" fill sizes="(max-width: 800px) calc(100vw - 40px), 690px" />
               </div>
@@ -161,10 +160,14 @@ export default async function SobrePage() {
         <div className="lm-container">
           <div className="sobre-projects__intro">
             <div>
-              <p className="eyebrow"><i aria-hidden /> Portfólio LM</p>
-              <h2>Projetos que mostram como trabalhamos</h2>
+              {secaoProjetos?.chapeu && <p className="eyebrow"><i aria-hidden /> {secaoProjetos.chapeu}</p>}
+              {secaoProjetos?.titulo && <h2>{secaoProjetos.titulo}</h2>}
             </div>
-            <Link className="button button--dark" href="/catalogo">Ver catálogo <span aria-hidden>→</span></Link>
+            {secaoProjetos?.ctaTexto && (
+              <Link className="button button--dark" href={secaoProjetos.ctaLink || '/catalogo'}>
+                {secaoProjetos.ctaTexto} <span aria-hidden>→</span>
+              </Link>
+            )}
           </div>
           <div className="sobre-projects__grid">
             {projetos.map((projeto) => {
@@ -260,21 +263,23 @@ export default async function SobrePage() {
         </section>
       )}
 
-      <section className="sobre-method">
-        <div className="lm-container">
-          <p className="eyebrow"><i aria-hidden /> Nosso método</p>
-          <h2>Uma equipe do primeiro traço à última regulagem</h2>
-          <div className="sobre-method__grid">
-            {metodo.map(([numero, titulo, texto]) => (
-              <article key={numero}>
-                <span>{numero}</span>
-                <h3>{titulo}</h3>
-                <p>{texto}</p>
-              </article>
-            ))}
+      {passos.length > 0 && (
+        <section className="sobre-method">
+          <div className="lm-container">
+            {metodo?.chapeu && <p className="eyebrow"><i aria-hidden /> {metodo.chapeu}</p>}
+            {metodo?.titulo && <h2>{metodo.titulo}</h2>}
+            <div className="sobre-method__grid">
+              {passos.map((passo, index) => (
+                <article key={passo.id ?? passo.titulo}>
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <h3>{passo.titulo}</h3>
+                  {passo.texto && <p>{passo.texto}</p>}
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {fechamento?.titulo && (
         <section className="sobre-cta">

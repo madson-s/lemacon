@@ -751,7 +751,7 @@ export interface Home {
   createdAt?: string | null;
 }
 /**
- * Página "Sobre" do site. O que estiver vazio aqui simplesmente não aparece lá. FALTAM DOIS BLOCOS: "História e origem" e "Equipe" — enquanto não forem preenchidos, a página mostra só o que a LM executa.
+ * Página "Sobre" do site. As abas seguem a ordem das seções na página, e o que estiver vazio aqui simplesmente não aparece lá. Ainda faltam História e Equipe: enquanto estiverem vazias, essas duas seções ficam de fora.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sobre".
@@ -765,9 +765,18 @@ export interface Sobre {
   titulo: string;
   lead?: string | null;
   /**
+   * Botão logo abaixo do texto de abertura.
+   */
+  ctaTexto?: string | null;
+  ctaLink?: string | null;
+  /**
    * Opcional. Uma foto da equipe, do galpão ou de uma obra entregue.
    */
   imagem?: (number | null) | Media;
+  /**
+   * Etiqueta curta sobre a foto de abertura. Deixe vazio para esconder.
+   */
+  imagemLegenda?: string | null;
   /**
    * Os dados objetivos da LM, logo abaixo do título da página. Só as três primeiras linhas preenchidas aparecem — ponha no topo o que mais importa. Preencha só o que for verdade: linha sem valor é pulada.
    */
@@ -778,7 +787,9 @@ export interface Sobre {
         id?: string | null;
       }[]
     | null;
+  capacidadesChapeu?: string | null;
   capacidadesTitulo?: string | null;
+  capacidadesTexto?: string | null;
   /**
    * O que a LM executa de ponta a ponta. Deixe vazio para esconder a seção.
    */
@@ -789,6 +800,15 @@ export interface Sobre {
         id?: string | null;
       }[]
     | null;
+  /**
+   * O cabeçalho da seção. Os projetos em si vêm da coleção Projetos — só os publicados aparecem, na ordem definida lá.
+   */
+  projetos?: {
+    chapeu?: string | null;
+    titulo?: string | null;
+    ctaTexto?: string | null;
+    ctaLink?: string | null;
+  };
   /**
    * PENDENTE — como a LM começou: de onde veio, há quanto tempo está na estrada, o que mudou. Sem texto aqui, a seção inteira não aparece no site.
    */
@@ -831,6 +851,20 @@ export interface Sobre {
         id?: string | null;
       }[]
     | null;
+  metodo?: {
+    chapeu?: string | null;
+    titulo?: string | null;
+    /**
+     * Numerados na ordem em que estiverem aqui — arraste para reordenar. Deixe vazio para esconder a seção.
+     */
+    passos?:
+      | {
+          titulo: string;
+          texto?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   /**
    * Bloco final da página, que leva para o orçamento.
    */
@@ -949,7 +983,10 @@ export interface SobreSelect<T extends boolean = true> {
   chapeu?: T;
   titulo?: T;
   lead?: T;
+  ctaTexto?: T;
+  ctaLink?: T;
   imagem?: T;
+  imagemLegenda?: T;
   ficha?:
     | T
     | {
@@ -957,13 +994,23 @@ export interface SobreSelect<T extends boolean = true> {
         valor?: T;
         id?: T;
       };
+  capacidadesChapeu?: T;
   capacidadesTitulo?: T;
+  capacidadesTexto?: T;
   capacidades?:
     | T
     | {
         titulo?: T;
         texto?: T;
         id?: T;
+      };
+  projetos?:
+    | T
+    | {
+        chapeu?: T;
+        titulo?: T;
+        ctaTexto?: T;
+        ctaLink?: T;
       };
   historia?:
     | T
@@ -982,6 +1029,19 @@ export interface SobreSelect<T extends boolean = true> {
         funcao?: T;
         foto?: T;
         id?: T;
+      };
+  metodo?:
+    | T
+    | {
+        chapeu?: T;
+        titulo?: T;
+        passos?:
+          | T
+          | {
+              titulo?: T;
+              texto?: T;
+              id?: T;
+            };
       };
   fechamento?:
     | T
