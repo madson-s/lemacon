@@ -853,9 +853,13 @@ export interface Localizacao {
    */
   lead?: string | null;
   /**
-   * Primeira etapa do roteiro. Onde a LM atende, mesmo longe da sede.
+   * Onde a LM atende, mesmo longe da sede. Aparece no destaque do topo, no primeiro card da seção "A LM vai até você" e no card do mapa enquanto não houver endereço.
    */
   regiao?: string | null;
+  /**
+   * Linha pequena acima da região, no destaque do topo.
+   */
+  regiaoRotulo?: string | null;
   /**
    * O endereço da sede. Sem logradouro e cidade preenchidos, o mapa e a rota não aparecem no site.
    */
@@ -876,6 +880,49 @@ export interface Localizacao {
    * Opcional. Cole o link do Google Maps da LM se quiser fixar o ponto exato. Vazio, o mapa é montado a partir do endereço acima.
    */
   mapaUrl?: string | null;
+  /**
+   * O card que fica por cima do mapa. Com endereço cadastrado, ele mostra a cidade e o endereço; sem endereço, mostra a região e o texto abaixo.
+   */
+  cartaoMapa?: {
+    chapeu?: string | null;
+    /**
+     * Aparece no lugar do endereço enquanto ele não estiver cadastrado.
+     */
+    semEndereco?: string | null;
+  };
+  /**
+   * A faixa logo abaixo do mapa. Linha sem valor não aparece; deixe a lista vazia para esconder a faixa.
+   */
+  destaques?:
+    | {
+        rotulo: string;
+        valor?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * O texto ao lado dos cards. Cada card só aparece quando o dado dele existe: a região sempre, a base quando houver cidade no endereço, e o ponto de referência quando ele estiver preenchido.
+   */
+  cobertura?: {
+    chapeu?: string | null;
+    titulo?: string | null;
+    texto?: string | null;
+    ctaTexto?: string | null;
+    ctaLink?: string | null;
+    regiaoRotulo?: string | null;
+    regiaoTexto?: string | null;
+    baseRotulo?: string | null;
+    baseTexto?: string | null;
+    referenciaRotulo?: string | null;
+    referenciaTexto?: string | null;
+  };
+  /**
+   * Só aparece quando houver horário ou foto da fachada cadastrados.
+   */
+  visita?: {
+    chapeu?: string | null;
+    titulo?: string | null;
+  };
   /**
    * Deixe vazio se ainda não quiser publicar horário.
    */
@@ -1004,6 +1051,7 @@ export interface LocalizacaoSelect<T extends boolean = true> {
   titulo?: T;
   lead?: T;
   regiao?: T;
+  regiaoRotulo?: T;
   endereco?:
     | T
     | {
@@ -1017,6 +1065,40 @@ export interface LocalizacaoSelect<T extends boolean = true> {
       };
   referencia?: T;
   mapaUrl?: T;
+  cartaoMapa?:
+    | T
+    | {
+        chapeu?: T;
+        semEndereco?: T;
+      };
+  destaques?:
+    | T
+    | {
+        rotulo?: T;
+        valor?: T;
+        id?: T;
+      };
+  cobertura?:
+    | T
+    | {
+        chapeu?: T;
+        titulo?: T;
+        texto?: T;
+        ctaTexto?: T;
+        ctaLink?: T;
+        regiaoRotulo?: T;
+        regiaoTexto?: T;
+        baseRotulo?: T;
+        baseTexto?: T;
+        referenciaRotulo?: T;
+        referenciaTexto?: T;
+      };
+  visita?:
+    | T
+    | {
+        chapeu?: T;
+        titulo?: T;
+      };
   horarios?:
     | T
     | {
