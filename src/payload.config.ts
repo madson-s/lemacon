@@ -58,22 +58,25 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: temS3
-    ? [
-        s3Storage({
-          collections: { media: true },
-          bucket: s3.bucket as string,
-          config: {
-            endpoint: s3.endpoint,
-            region: s3.region || 'us-east-1',
-            // O Supabase Storage expõe o bucket no caminho, e não no subdomínio.
-            forcePathStyle: true,
-            credentials: {
-              accessKeyId: s3.accessKeyId as string,
-              secretAccessKey: s3.secretAccessKey as string,
-            },
-          },
-        }),
-      ]
-    : [],
+  plugins: [
+    // O plugin entra sempre e só liga o storage quando há credenciais. Se ele
+    // ficasse de fora sem S3 (como no desenvolvimento local), o Payload
+    // regeneraria o importMap.js sem o S3ClientUploadHandler — e esse arquivo,
+    // commitado, deixa o admin de produção com a tela preta.
+    s3Storage({
+      enabled: temS3,
+      collections: { media: true },
+      bucket: s3.bucket ?? '',
+      config: {
+        endpoint: s3.endpoint,
+        region: s3.region || 'us-east-1',
+        // O Supabase Storage expõe o bucket no caminho, e não no subdomínio.
+        forcePathStyle: true,
+        credentials: {
+          accessKeyId: s3.accessKeyId ?? '',
+          secretAccessKey: s3.secretAccessKey ?? '',
+        },
+      },
+    }),
+  ],
 })

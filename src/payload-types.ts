@@ -751,7 +751,7 @@ export interface Home {
   createdAt?: string | null;
 }
 /**
- * Página "Sobre" do site. O que estiver vazio aqui simplesmente não aparece lá. FALTAM DOIS BLOCOS: "História e origem" e "Equipe" — enquanto não forem preenchidos, a página mostra só o que a LM executa.
+ * Página "Sobre" do site. As abas seguem a ordem das seções na página, e o que estiver vazio aqui simplesmente não aparece lá.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sobre".
@@ -765,9 +765,18 @@ export interface Sobre {
   titulo: string;
   lead?: string | null;
   /**
+   * Botão logo abaixo do texto de abertura.
+   */
+  ctaTexto?: string | null;
+  ctaLink?: string | null;
+  /**
    * Opcional. Uma foto da equipe, do galpão ou de uma obra entregue.
    */
   imagem?: (number | null) | Media;
+  /**
+   * Etiqueta curta sobre a foto de abertura. Deixe vazio para esconder.
+   */
+  imagemLegenda?: string | null;
   /**
    * Os dados objetivos da LM, logo abaixo do título da página. Só as três primeiras linhas preenchidas aparecem — ponha no topo o que mais importa. Preencha só o que for verdade: linha sem valor é pulada.
    */
@@ -778,7 +787,9 @@ export interface Sobre {
         id?: string | null;
       }[]
     | null;
+  capacidadesChapeu?: string | null;
   capacidadesTitulo?: string | null;
+  capacidadesTexto?: string | null;
   /**
    * O que a LM executa de ponta a ponta. Deixe vazio para esconder a seção.
    */
@@ -790,47 +801,28 @@ export interface Sobre {
       }[]
     | null;
   /**
-   * PENDENTE — como a LM começou: de onde veio, há quanto tempo está na estrada, o que mudou. Sem texto aqui, a seção inteira não aparece no site.
+   * O cabeçalho da seção. Os projetos em si vêm da coleção Projetos — só os publicados aparecem, na ordem definida lá.
    */
-  historia?: {
+  projetos?: {
+    chapeu?: string | null;
+    titulo?: string | null;
+    ctaTexto?: string | null;
+    ctaLink?: string | null;
+  };
+  metodo?: {
+    chapeu?: string | null;
     titulo?: string | null;
     /**
-     * Só o ano. Aparece em destaque ao lado do texto.
+     * Numerados na ordem em que estiverem aqui — arraste para reordenar. Deixe vazio para esconder a seção.
      */
-    desde?: string | null;
-    texto?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    imagem?: (number | null) | Media;
+    passos?:
+      | {
+          titulo: string;
+          texto?: string | null;
+          id?: string | null;
+        }[]
+      | null;
   };
-  equipeTitulo?: string | null;
-  equipeTexto?: string | null;
-  /**
-   * PENDENTE — cadastre só pessoas reais, com o nome como elas querem ser chamadas. Enquanto estiver vazio, a seção não aparece no site.
-   */
-  equipe?:
-    | {
-        nome: string;
-        funcao?: string | null;
-        /**
-         * Opcional. Sem foto, aparecem as iniciais do nome.
-         */
-        foto?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
   /**
    * Bloco final da página, que leva para o orçamento.
    */
@@ -949,7 +941,10 @@ export interface SobreSelect<T extends boolean = true> {
   chapeu?: T;
   titulo?: T;
   lead?: T;
+  ctaTexto?: T;
+  ctaLink?: T;
   imagem?: T;
+  imagemLegenda?: T;
   ficha?:
     | T
     | {
@@ -957,7 +952,9 @@ export interface SobreSelect<T extends boolean = true> {
         valor?: T;
         id?: T;
       };
+  capacidadesChapeu?: T;
   capacidadesTitulo?: T;
+  capacidadesTexto?: T;
   capacidades?:
     | T
     | {
@@ -965,23 +962,26 @@ export interface SobreSelect<T extends boolean = true> {
         texto?: T;
         id?: T;
       };
-  historia?:
+  projetos?:
     | T
     | {
+        chapeu?: T;
         titulo?: T;
-        desde?: T;
-        texto?: T;
-        imagem?: T;
+        ctaTexto?: T;
+        ctaLink?: T;
       };
-  equipeTitulo?: T;
-  equipeTexto?: T;
-  equipe?:
+  metodo?:
     | T
     | {
-        nome?: T;
-        funcao?: T;
-        foto?: T;
-        id?: T;
+        chapeu?: T;
+        titulo?: T;
+        passos?:
+          | T
+          | {
+              titulo?: T;
+              texto?: T;
+              id?: T;
+            };
       };
   fechamento?:
     | T

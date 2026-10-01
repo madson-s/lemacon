@@ -12,7 +12,6 @@
   FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 */
 
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getPayload } from 'payload'
@@ -28,8 +27,6 @@ export const metadata = {
 }
 
 export const dynamic = 'force-dynamic'
-
-type RichTextData = NonNullable<NonNullable<Awaited<ReturnType<typeof carregar>>['historia']>['texto']>
 
 const carregar = async () => {
   const payload = await getPayload({ config: await config })
@@ -49,43 +46,16 @@ const carregarProjetos = async () => {
   return docs
 }
 
-/** O Lexical devolve um parágrafo vazio quando o editor nunca foi preenchido. */
-const temTexto = (data: RichTextData | null | undefined): boolean => {
-  if (!data?.root?.children) return false
-
-  const contemTexto = (no: Record<string, unknown>): boolean => {
-    if (typeof no.text === 'string' && no.text.trim() !== '') return true
-    const filhos = no.children
-    return Array.isArray(filhos) ? filhos.some((f) => contemTexto(f as Record<string, unknown>)) : false
-  }
-
-  return data.root.children.some((no) => contemTexto(no as unknown as Record<string, unknown>))
-}
-
-const iniciais = (nome: string): string =>
-  nome
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((parte) => parte[0]?.toUpperCase() ?? '')
-    .join('')
-
-const metodo = [
-  ['01', 'Projeto conectado à execução', 'Quem mede e especifica acompanha o que será produzido.'],
-  ['02', 'Fabricação própria', 'Perfis, vidros e acabamentos passam pela mesma coordenação.'],
-  ['03', 'Instalação e pós-entrega', 'A equipe instala, ajusta e responde por cada detalhe entregue.'],
-]
-
 export default async function SobrePage() {
   const sobre = await carregar()
   const projetos = await carregarProjetos()
 
   const ficha = (sobre.ficha ?? []).filter((linha) => linha.valor?.trim())
   const capacidades = sobre.capacidades ?? []
-  const equipe = sobre.equipe ?? []
-  const historia = sobre.historia
-  const temHistoria = temTexto(historia?.texto)
   const fechamento = sobre.fechamento
+  const secaoProjetos = sobre.projetos
+  const metodo = sobre.metodo
+  const passos = metodo?.passos ?? []
 
   // Sem upload, a faixa cai numa foto do acervo próprio que já está no repositório:
   // a página fica no mesmo material da home em vez de virar uma ilha só de tipografia.
@@ -93,7 +63,6 @@ export default async function SobrePage() {
   const aberturaAlt =
     altDaMedia(sobre.imagem) ||
     'Residência com fechamento em alumínio e madeira executado pela LM, com a entrada iluminada'
-  const imagemHistoria = urlDaMedia(historia?.imagem, 'card')
 
   return (
     <>
@@ -108,9 +77,11 @@ export default async function SobrePage() {
             )}
             <h1>{sobre.titulo}</h1>
             {sobre.lead && <p className="sobre-hero__lead">{sobre.lead}</p>}
-            <Link className="button button--dark" href="/#orcamento">
-              Conheça o seu projeto com a LM <span aria-hidden>→</span>
-            </Link>
+            {sobre.ctaTexto && (
+              <Link className="button button--dark" href={sobre.ctaLink || '/#orcamento'}>
+                {sobre.ctaTexto} <span aria-hidden>→</span>
+              </Link>
+            )}
 
             {ficha.length > 0 && (
               <dl className="sobre-hero__stats">
@@ -126,7 +97,7 @@ export default async function SobrePage() {
 
           <div className="sobre-hero__visual">
             <Image src={abertura} alt={aberturaAlt} fill priority sizes="(max-width: 800px) calc(100vw - 40px), 580px" />
-            <span>Projeto · fabricação · instalação</span>
+            {sobre.imagemLegenda && <span>{sobre.imagemLegenda}</span>}
           </div>
         </div>
       </section>
@@ -135,9 +106,9 @@ export default async function SobrePage() {
         <section className="sobre-capabilities">
           <div className="lm-container sobre-capabilities__grid">
             <div className="sobre-capabilities__story">
-              <p className="eyebrow"><i aria-hidden /> Estrutura própria</p>
+              {sobre.capacidadesChapeu && <p className="eyebrow"><i aria-hidden /> {sobre.capacidadesChapeu}</p>}
               {sobre.capacidadesTitulo && <h2>{sobre.capacidadesTitulo}</h2>}
-              <p>Da leitura do vão ao acabamento final, as decisões acontecem perto de quem vai fabricar e instalar.</p>
+              {sobre.capacidadesTexto && <p>{sobre.capacidadesTexto}</p>}
               <div className="sobre-capabilities__image">
                 <Image src="/images/home/aluminium-detail.png" alt="Detalhe de uma fachada executada pela LM" fill sizes="(max-width: 800px) calc(100vw - 40px), 690px" />
               </div>
@@ -161,10 +132,14 @@ export default async function SobrePage() {
         <div className="lm-container">
           <div className="sobre-projects__intro">
             <div>
-              <p className="eyebrow"><i aria-hidden /> Portfólio LM</p>
-              <h2>Projetos que mostram como trabalhamos</h2>
+              {secaoProjetos?.chapeu && <p className="eyebrow"><i aria-hidden /> {secaoProjetos.chapeu}</p>}
+              {secaoProjetos?.titulo && <h2>{secaoProjetos.titulo}</h2>}
             </div>
-            <Link className="button button--dark" href="/catalogo">Ver catálogo <span aria-hidden>→</span></Link>
+            {secaoProjetos?.ctaTexto && (
+              <Link className="button button--dark" href={secaoProjetos.ctaLink || '/catalogo'}>
+                {secaoProjetos.ctaTexto} <span aria-hidden>→</span>
+              </Link>
+            )}
           </div>
           <div className="sobre-projects__grid">
             {projetos.map((projeto) => {
@@ -188,93 +163,23 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      {temHistoria && (
-        <section className="sobre-historia">
-          <div className="lm-container sobre-historia__grid">
-            <div className="sobre-historia__aside">
-              {historia?.desde && (
-                <p className="sobre-historia__ano">
-                  <span>No mercado desde</span>
-                  <strong>{historia.desde}</strong>
-                </p>
-              )}
-              {imagemHistoria && (
-                <div className="sobre-historia__media">
-                  <Image
-                    src={imagemHistoria}
-                    alt={altDaMedia(historia?.imagem) || 'Início da LM'}
-                    fill
-                    sizes="(max-width: 900px) 100vw, 420px"
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="sobre-historia__texto">
-              {historia?.titulo && <h2>{historia.titulo}</h2>}
-              <div className="prose prose-neutral max-w-none">
-                <RichText data={historia!.texto!} />
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {equipe.length > 0 && (
-        <section className="sobre-equipe">
+      {passos.length > 0 && (
+        <section className="sobre-method">
           <div className="lm-container">
-            <div className="sobre-equipe__intro">
-              {sobre.equipeTitulo && <h2>{sobre.equipeTitulo}</h2>}
-              {sobre.equipeTexto && <p>{sobre.equipeTexto}</p>}
+            {metodo?.chapeu && <p className="eyebrow"><i aria-hidden /> {metodo.chapeu}</p>}
+            {metodo?.titulo && <h2>{metodo.titulo}</h2>}
+            <div className="sobre-method__grid">
+              {passos.map((passo, index) => (
+                <article key={passo.id ?? passo.titulo}>
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <h3>{passo.titulo}</h3>
+                  {passo.texto && <p>{passo.texto}</p>}
+                </article>
+              ))}
             </div>
-
-            <ul className="sobre-equipe__grid">
-              {equipe.map((pessoa) => {
-                const foto = urlDaMedia(pessoa.foto, 'thumbnail')
-
-                return (
-                  <li key={pessoa.id ?? pessoa.nome} className="sobre-pessoa">
-                    {foto ? (
-                      <div className="sobre-pessoa__foto">
-                        <Image
-                          src={foto}
-                          alt={altDaMedia(pessoa.foto) || pessoa.nome}
-                          fill
-                          sizes="72px"
-                        />
-                      </div>
-                    ) : (
-                      <span className="sobre-pessoa__iniciais" aria-hidden>
-                        {iniciais(pessoa.nome)}
-                      </span>
-                    )}
-                    <span className="sobre-pessoa__nome">
-                      <strong>{pessoa.nome}</strong>
-                      {pessoa.funcao && <small>{pessoa.funcao}</small>}
-                    </span>
-                  </li>
-                )
-              })}
-            </ul>
           </div>
         </section>
       )}
-
-      <section className="sobre-method">
-        <div className="lm-container">
-          <p className="eyebrow"><i aria-hidden /> Nosso método</p>
-          <h2>Uma equipe do primeiro traço à última regulagem</h2>
-          <div className="sobre-method__grid">
-            {metodo.map(([numero, titulo, texto]) => (
-              <article key={numero}>
-                <span>{numero}</span>
-                <h3>{titulo}</h3>
-                <p>{texto}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {fechamento?.titulo && (
         <section className="sobre-cta">
