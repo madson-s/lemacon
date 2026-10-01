@@ -58,21 +58,27 @@ export default async function LocalizacaoPage() {
     route ??
     'https://www.google.com/maps/search/?api=1&query=Chapada%20Diamantina%2C%20Bahia'
 
+  const cobertura = local.cobertura
+  const cartaoMapa = local.cartaoMapa
+  const visita = local.visita
+  const destaques = (local.destaques ?? []).filter((linha) => linha.valor?.trim())
+
+  // Cada card só existe quando o dado dele existe; rótulo e texto vêm do painel.
   const locationCards = [
     {
-      label: 'Região atendida',
+      label: cobertura?.regiaoRotulo ?? '',
       title: region,
-      text: 'Projeto, fabricação e instalação chegam até a sua obra.',
+      text: cobertura?.regiaoTexto ?? '',
     },
     city && {
-      label: 'Base da equipe',
+      label: cobertura?.baseRotulo ?? '',
       title: city,
-      text: 'É daqui que saem as peças produzidas pela LM.',
+      text: cobertura?.baseTexto ?? '',
     },
     local.referencia?.trim() && {
-      label: 'Ponto de referência',
+      label: cobertura?.referenciaRotulo ?? '',
       title: local.referencia.trim(),
-      text: 'Uma orientação simples para reconhecer a chegada.',
+      text: cobertura?.referenciaTexto ?? '',
     },
   ].filter(Boolean) as { label: string; title: string; text: string }[]
 
@@ -86,7 +92,7 @@ export default async function LocalizacaoPage() {
 
           <div className="location-hero__finder">
             <span><PinIcon /></span>
-            <p><small>Área de atendimento</small><strong>{region}</strong></p>
+            <p>{local.regiaoRotulo && <small>{local.regiaoRotulo}</small>}<strong>{region}</strong></p>
           </div>
         </div>
 
@@ -103,9 +109,9 @@ export default async function LocalizacaoPage() {
           <span className="location-map-stage__veil" aria-hidden />
           <article className="location-map-card">
             <span className="location-map-card__icon"><PinIcon /></span>
-            <p className="eyebrow"><i aria-hidden />Ponto de atendimento</p>
+            {cartaoMapa?.chapeu && <p className="eyebrow"><i aria-hidden />{cartaoMapa.chapeu}</p>}
             <h2>{city || region}</h2>
-            <p>{temEndereco(address) ? addressLines.join(' · ') : 'A equipe combina o melhor ponto de encontro com você antes da visita.'}</p>
+            {temEndereco(address) ? <p>{addressLines.join(' · ')}</p> : cartaoMapa?.semEndereco && <p>{cartaoMapa.semEndereco}</p>}
             {route && <a href={route} target="_blank" rel="noreferrer">Abrir no mapa <span aria-hidden>→</span></a>}
           </article>
           <a className="location-map-stage__credit" href={mapLink} target="_blank" rel="noreferrer">
@@ -113,26 +119,30 @@ export default async function LocalizacaoPage() {
           </a>
         </div>
 
-        <dl className="lm-container location-stats">
-          <div><dt>Atendimento</dt><dd>{region}</dd></div>
-          <div><dt>Escopo</dt><dd>Projeto · fabricação · instalação</dd></div>
-          <div><dt>Avaliação</dt><dd>No local e sem compromisso</dd></div>
-        </dl>
+        {destaques.length > 0 && (
+          <dl className="lm-container location-stats">
+            {destaques.map((linha) => (
+              <div key={linha.id ?? linha.rotulo}><dt>{linha.rotulo}</dt><dd>{linha.valor}</dd></div>
+            ))}
+          </dl>
+        )}
       </section>
 
       <section className="location-coverage">
         <div className="lm-container location-coverage__grid">
           <div className="location-coverage__copy">
-            <p className="eyebrow"><i aria-hidden />A LM vai até você</p>
-            <h2>Da primeira medida à instalação no seu endereço</h2>
-            <p>Antes de fabricar, entendemos o ambiente, os acessos e o uso de cada abertura. Assim, a visita já começa com contexto e termina com uma solução possível de executar.</p>
-            <Link href="/catalogo" className="button button--dark">Conhecer o catálogo <span aria-hidden>→</span></Link>
+            {cobertura?.chapeu && <p className="eyebrow"><i aria-hidden />{cobertura.chapeu}</p>}
+            {cobertura?.titulo && <h2>{cobertura.titulo}</h2>}
+            {cobertura?.texto && <p>{cobertura.texto}</p>}
+            {cobertura?.ctaTexto && (
+              <Link href={cobertura.ctaLink || '/catalogo'} className="button button--dark">{cobertura.ctaTexto} <span aria-hidden>→</span></Link>
+            )}
           </div>
           <div className="location-coverage__cards">
             {locationCards.map((card, index) => (
               <article key={card.label}>
                 <span>{String(index + 1).padStart(2, '0')}</span>
-                <div><small>{card.label}</small><h3>{card.title}</h3><p>{card.text}</p></div>
+                <div>{card.label && <small>{card.label}</small>}<h3>{card.title}</h3>{card.text && <p>{card.text}</p>}</div>
               </article>
             ))}
           </div>
@@ -144,8 +154,8 @@ export default async function LocalizacaoPage() {
           <div className={`lm-container location-visit__grid${hours.length && facade ? '' : ' is-solo'}`}>
             {hours.length > 0 && (
               <div className="location-hours">
-                <p className="eyebrow"><i aria-hidden />Planeje a visita</p>
-                <h2><ClockIcon /> Horário de atendimento</h2>
+                {visita?.chapeu && <p className="eyebrow"><i aria-hidden />{visita.chapeu}</p>}
+                <h2><ClockIcon /> {visita?.titulo || 'Horário de atendimento'}</h2>
                 <dl>
                   {hours.map((range) => (
                     <div key={range.id ?? range.dias}><dt>{range.dias}</dt><dd>{range.horario}</dd></div>
