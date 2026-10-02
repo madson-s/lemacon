@@ -751,7 +751,7 @@ export interface Home {
   createdAt?: string | null;
 }
 /**
- * Página "Sobre" do site. O que estiver vazio aqui simplesmente não aparece lá. FALTAM DOIS BLOCOS: "História e origem" e "Equipe" — enquanto não forem preenchidos, a página mostra só o que a LM executa.
+ * Página "Sobre" do site. As abas seguem a ordem das seções na página, e o que estiver vazio aqui simplesmente não aparece lá.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sobre".
@@ -765,9 +765,18 @@ export interface Sobre {
   titulo: string;
   lead?: string | null;
   /**
+   * Botão logo abaixo do texto de abertura.
+   */
+  ctaTexto?: string | null;
+  ctaLink?: string | null;
+  /**
    * Opcional. Uma foto da equipe, do galpão ou de uma obra entregue.
    */
   imagem?: (number | null) | Media;
+  /**
+   * Etiqueta curta sobre a foto de abertura. Deixe vazio para esconder.
+   */
+  imagemLegenda?: string | null;
   /**
    * Os dados objetivos da LM, logo abaixo do título da página. Só as três primeiras linhas preenchidas aparecem — ponha no topo o que mais importa. Preencha só o que for verdade: linha sem valor é pulada.
    */
@@ -778,7 +787,9 @@ export interface Sobre {
         id?: string | null;
       }[]
     | null;
+  capacidadesChapeu?: string | null;
   capacidadesTitulo?: string | null;
+  capacidadesTexto?: string | null;
   /**
    * O que a LM executa de ponta a ponta. Deixe vazio para esconder a seção.
    */
@@ -790,47 +801,28 @@ export interface Sobre {
       }[]
     | null;
   /**
-   * PENDENTE — como a LM começou: de onde veio, há quanto tempo está na estrada, o que mudou. Sem texto aqui, a seção inteira não aparece no site.
+   * O cabeçalho da seção. Os projetos em si vêm da coleção Projetos — só os publicados aparecem, na ordem definida lá.
    */
-  historia?: {
+  projetos?: {
+    chapeu?: string | null;
+    titulo?: string | null;
+    ctaTexto?: string | null;
+    ctaLink?: string | null;
+  };
+  metodo?: {
+    chapeu?: string | null;
     titulo?: string | null;
     /**
-     * Só o ano. Aparece em destaque ao lado do texto.
+     * Numerados na ordem em que estiverem aqui — arraste para reordenar. Deixe vazio para esconder a seção.
      */
-    desde?: string | null;
-    texto?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    imagem?: (number | null) | Media;
+    passos?:
+      | {
+          titulo: string;
+          texto?: string | null;
+          id?: string | null;
+        }[]
+      | null;
   };
-  equipeTitulo?: string | null;
-  equipeTexto?: string | null;
-  /**
-   * PENDENTE — cadastre só pessoas reais, com o nome como elas querem ser chamadas. Enquanto estiver vazio, a seção não aparece no site.
-   */
-  equipe?:
-    | {
-        nome: string;
-        funcao?: string | null;
-        /**
-         * Opcional. Sem foto, aparecem as iniciais do nome.
-         */
-        foto?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
   /**
    * Bloco final da página, que leva para o orçamento.
    */
@@ -861,9 +853,13 @@ export interface Localizacao {
    */
   lead?: string | null;
   /**
-   * Primeira etapa do roteiro. Onde a LM atende, mesmo longe da sede.
+   * Onde a LM atende, mesmo longe da sede. Aparece no destaque do topo, no primeiro card da seção "A LM vai até você" e no card do mapa enquanto não houver endereço.
    */
   regiao?: string | null;
+  /**
+   * Linha pequena acima da região, no destaque do topo.
+   */
+  regiaoRotulo?: string | null;
   /**
    * O endereço da sede. Sem logradouro e cidade preenchidos, o mapa e a rota não aparecem no site.
    */
@@ -884,6 +880,49 @@ export interface Localizacao {
    * Opcional. Cole o link do Google Maps da LM se quiser fixar o ponto exato. Vazio, o mapa é montado a partir do endereço acima.
    */
   mapaUrl?: string | null;
+  /**
+   * O card que fica por cima do mapa. Com endereço cadastrado, ele mostra a cidade e o endereço; sem endereço, mostra a região e o texto abaixo.
+   */
+  cartaoMapa?: {
+    chapeu?: string | null;
+    /**
+     * Aparece no lugar do endereço enquanto ele não estiver cadastrado.
+     */
+    semEndereco?: string | null;
+  };
+  /**
+   * A faixa logo abaixo do mapa. Linha sem valor não aparece; deixe a lista vazia para esconder a faixa.
+   */
+  destaques?:
+    | {
+        rotulo: string;
+        valor?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * O texto ao lado dos cards. Cada card só aparece quando o dado dele existe: a região sempre, a base quando houver cidade no endereço, e o ponto de referência quando ele estiver preenchido.
+   */
+  cobertura?: {
+    chapeu?: string | null;
+    titulo?: string | null;
+    texto?: string | null;
+    ctaTexto?: string | null;
+    ctaLink?: string | null;
+    regiaoRotulo?: string | null;
+    regiaoTexto?: string | null;
+    baseRotulo?: string | null;
+    baseTexto?: string | null;
+    referenciaRotulo?: string | null;
+    referenciaTexto?: string | null;
+  };
+  /**
+   * Só aparece quando houver horário ou foto da fachada cadastrados.
+   */
+  visita?: {
+    chapeu?: string | null;
+    titulo?: string | null;
+  };
   /**
    * Deixe vazio se ainda não quiser publicar horário.
    */
@@ -949,7 +988,10 @@ export interface SobreSelect<T extends boolean = true> {
   chapeu?: T;
   titulo?: T;
   lead?: T;
+  ctaTexto?: T;
+  ctaLink?: T;
   imagem?: T;
+  imagemLegenda?: T;
   ficha?:
     | T
     | {
@@ -957,7 +999,9 @@ export interface SobreSelect<T extends boolean = true> {
         valor?: T;
         id?: T;
       };
+  capacidadesChapeu?: T;
   capacidadesTitulo?: T;
+  capacidadesTexto?: T;
   capacidades?:
     | T
     | {
@@ -965,23 +1009,26 @@ export interface SobreSelect<T extends boolean = true> {
         texto?: T;
         id?: T;
       };
-  historia?:
+  projetos?:
     | T
     | {
+        chapeu?: T;
         titulo?: T;
-        desde?: T;
-        texto?: T;
-        imagem?: T;
+        ctaTexto?: T;
+        ctaLink?: T;
       };
-  equipeTitulo?: T;
-  equipeTexto?: T;
-  equipe?:
+  metodo?:
     | T
     | {
-        nome?: T;
-        funcao?: T;
-        foto?: T;
-        id?: T;
+        chapeu?: T;
+        titulo?: T;
+        passos?:
+          | T
+          | {
+              titulo?: T;
+              texto?: T;
+              id?: T;
+            };
       };
   fechamento?:
     | T
@@ -1004,6 +1051,7 @@ export interface LocalizacaoSelect<T extends boolean = true> {
   titulo?: T;
   lead?: T;
   regiao?: T;
+  regiaoRotulo?: T;
   endereco?:
     | T
     | {
@@ -1017,6 +1065,40 @@ export interface LocalizacaoSelect<T extends boolean = true> {
       };
   referencia?: T;
   mapaUrl?: T;
+  cartaoMapa?:
+    | T
+    | {
+        chapeu?: T;
+        semEndereco?: T;
+      };
+  destaques?:
+    | T
+    | {
+        rotulo?: T;
+        valor?: T;
+        id?: T;
+      };
+  cobertura?:
+    | T
+    | {
+        chapeu?: T;
+        titulo?: T;
+        texto?: T;
+        ctaTexto?: T;
+        ctaLink?: T;
+        regiaoRotulo?: T;
+        regiaoTexto?: T;
+        baseRotulo?: T;
+        baseTexto?: T;
+        referenciaRotulo?: T;
+        referenciaTexto?: T;
+      };
+  visita?:
+    | T
+    | {
+        chapeu?: T;
+        titulo?: T;
+      };
   horarios?:
     | T
     | {

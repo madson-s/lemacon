@@ -11,6 +11,8 @@ import * as migration_20260914_140510_secao_catalogo_home from './20260914_14051
 import * as migration_20260914_150701_produto_promocao from './20260914_150701_produto_promocao';
 import * as migration_20260929_180643_revisao_cms from './20260929_180643_revisao_cms';
 import * as migration_20260929_203409_unidades from './20260929_203409_unidades';
+import * as migration_20261001_181143_sobre_textos from './20261001_181143_sobre_textos';
+import * as migration_20261001_184111_localizacao_textos from './20261001_184111_localizacao_textos';
 
 export const migrations = [
   {
@@ -76,6 +78,16 @@ export const migrations = [
   {
     up: migration_20260929_203409_unidades.up,
     down: migration_20260929_203409_unidades.down,
-    name: '20260929_203409_unidades'
+    name: '20260929_203409_unidades',
+  },
+  {
+    up: migration_20261001_181143_sobre_textos.up,
+    down: migration_20261001_181143_sobre_textos.down,
+    name: '20261001_181143_sobre_textos',
+  },
+  {
+    up: migration_20261001_184111_localizacao_textos.up,
+    down: migration_20261001_184111_localizacao_textos.down,
+    name: '20261001_184111_localizacao_textos'
   },
 ];
