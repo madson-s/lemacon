@@ -13,6 +13,7 @@ import * as migration_20260929_180643_revisao_cms from './20260929_180643_revisa
 import * as migration_20260929_203409_unidades from './20260929_203409_unidades';
 import * as migration_20261001_181143_sobre_textos from './20261001_181143_sobre_textos';
 import * as migration_20261001_184111_localizacao_textos from './20261001_184111_localizacao_textos';
+import * as migration_20261002_183229_limpeza_colunas_sem_uso from './20261002_183229_limpeza_colunas_sem_uso';
 
 export const migrations = [
   {
@@ -88,6 +89,11 @@ export const migrations = [
   {
     up: migration_20261001_184111_localizacao_textos.up,
     down: migration_20261001_184111_localizacao_textos.down,
-    name: '20261001_184111_localizacao_textos'
+    name: '20261001_184111_localizacao_textos',
+  },
+  {
+    up: migration_20261002_183229_limpeza_colunas_sem_uso.up,
+    down: migration_20261002_183229_limpeza_colunas_sem_uso.down,
+    name: '20261002_183229_limpeza_colunas_sem_uso'
   },
 ];
