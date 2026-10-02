@@ -778,7 +778,7 @@ export interface Sobre {
    */
   imagemLegenda?: string | null;
   /**
-   * Os dados objetivos da LM, logo abaixo do título da página. Só as três primeiras linhas preenchidas aparecem — ponha no topo o que mais importa. Preencha só o que for verdade: linha sem valor é pulada.
+   * Os três dados objetivos logo abaixo do título da página. Preencha só o que for verdade: linha sem valor não aparece.
    */
   ficha?:
     | {
@@ -844,16 +844,10 @@ export interface Sobre {
 export interface Localizacao {
   id: number;
   chapeu?: string | null;
-  /**
-   * Depois de preencher o endereço, vale reescrever este título falando da visita — algo como "Do asfalto da BR até a nossa porta".
-   */
   titulo: string;
-  /**
-   * Com o endereço e os horários publicados, troque por um texto que convide o cliente a vir até a base.
-   */
   lead?: string | null;
   /**
-   * Onde a LM atende, mesmo longe da sede. Aparece no destaque do topo, no primeiro card da seção "A LM vai até você" e no card do mapa enquanto não houver endereço.
+   * Onde a LM atende. Aparece no destaque do topo, no título do card sobre o mapa e no card da seção "A LM vai até você".
    */
   regiao?: string | null;
   /**
@@ -861,33 +855,10 @@ export interface Localizacao {
    */
   regiaoRotulo?: string | null;
   /**
-   * O endereço da sede. Sem logradouro e cidade preenchidos, o mapa e a rota não aparecem no site.
-   */
-  endereco?: {
-    logradouro?: string | null;
-    numero?: string | null;
-    complemento?: string | null;
-    bairro?: string | null;
-    cidade?: string | null;
-    estado?: string | null;
-    cep?: string | null;
-  };
-  /**
-   * Como quem nunca veio reconhece o lugar: o que tem na esquina, de que lado da pista, o que aparece antes.
-   */
-  referencia?: string | null;
-  /**
-   * Opcional. Cole o link do Google Maps da LM se quiser fixar o ponto exato. Vazio, o mapa é montado a partir do endereço acima.
-   */
-  mapaUrl?: string | null;
-  /**
-   * O card que fica por cima do mapa. Com endereço cadastrado, ele mostra a cidade e o endereço; sem endereço, mostra a região e o texto abaixo.
+   * O título do card é a região atendida (aba Abertura); aqui ficam o chapéu e o texto.
    */
   cartaoMapa?: {
     chapeu?: string | null;
-    /**
-     * Aparece no lugar do endereço enquanto ele não estiver cadastrado.
-     */
     semEndereco?: string | null;
   };
   /**
@@ -901,7 +872,7 @@ export interface Localizacao {
       }[]
     | null;
   /**
-   * O texto ao lado dos cards. Cada card só aparece quando o dado dele existe: a região sempre, a base quando houver cidade no endereço, e o ponto de referência quando ele estiver preenchido.
+   * O texto ao lado do card da região atendida, e o rótulo e o texto desse card.
    */
   cobertura?: {
     chapeu?: string | null;
@@ -911,32 +882,7 @@ export interface Localizacao {
     ctaLink?: string | null;
     regiaoRotulo?: string | null;
     regiaoTexto?: string | null;
-    baseRotulo?: string | null;
-    baseTexto?: string | null;
-    referenciaRotulo?: string | null;
-    referenciaTexto?: string | null;
   };
-  /**
-   * Só aparece quando houver horário ou foto da fachada cadastrados.
-   */
-  visita?: {
-    chapeu?: string | null;
-    titulo?: string | null;
-  };
-  /**
-   * Deixe vazio se ainda não quiser publicar horário.
-   */
-  horarios?:
-    | {
-        dias: string;
-        horario: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Opcional, mas ajuda muito: é por ela que o cliente reconhece o lugar na rua.
-   */
-  imagem?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1052,19 +998,6 @@ export interface LocalizacaoSelect<T extends boolean = true> {
   lead?: T;
   regiao?: T;
   regiaoRotulo?: T;
-  endereco?:
-    | T
-    | {
-        logradouro?: T;
-        numero?: T;
-        complemento?: T;
-        bairro?: T;
-        cidade?: T;
-        estado?: T;
-        cep?: T;
-      };
-  referencia?: T;
-  mapaUrl?: T;
   cartaoMapa?:
     | T
     | {
@@ -1088,25 +1021,7 @@ export interface LocalizacaoSelect<T extends boolean = true> {
         ctaLink?: T;
         regiaoRotulo?: T;
         regiaoTexto?: T;
-        baseRotulo?: T;
-        baseTexto?: T;
-        referenciaRotulo?: T;
-        referenciaTexto?: T;
       };
-  visita?:
-    | T
-    | {
-        chapeu?: T;
-        titulo?: T;
-      };
-  horarios?:
-    | T
-    | {
-        dias?: T;
-        horario?: T;
-        id?: T;
-      };
-  imagem?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

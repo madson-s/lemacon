@@ -128,40 +128,44 @@ export default async function SobrePage() {
         </section>
       )}
 
-      <section className="sobre-projects">
-        <div className="lm-container">
-          <div className="sobre-projects__intro">
-            <div>
-              {secaoProjetos?.chapeu && <p className="eyebrow"><i aria-hidden /> {secaoProjetos.chapeu}</p>}
-              {secaoProjetos?.titulo && <h2>{secaoProjetos.titulo}</h2>}
-            </div>
-            {secaoProjetos?.ctaTexto && (
-              <Link className="button button--dark" href={secaoProjetos.ctaLink || '/catalogo'}>
-                {secaoProjetos.ctaTexto} <span aria-hidden>→</span>
-              </Link>
-            )}
-          </div>
-          <div className="sobre-projects__grid">
-            {projetos.map((projeto) => {
-              const capa = urlDaMedia(projeto.capa, 'card')
-              return (
-                <Link
-                  href={`/projetos/${projeto.slug ?? projeto.id}`}
-                  key={projeto.id}
-                  className="sobre-project-card"
-                >
-                  {capa && <Image src={capa} alt="" fill sizes="(max-width: 800px) 76vw, 290px" />}
-                  <span aria-hidden />
-                  <p>
-                    <small>{projeto.tipo ?? projeto.local ?? 'Projeto'}</small>
-                    <strong>{projeto.titulo}</strong>
-                  </p>
+      {/* Sem projeto publicado a seção some inteira, cabeçalho junto: um título
+          sobre uma grade vazia promete obras que a página não mostra. */}
+      {projetos.length > 0 && (
+        <section className="sobre-projects">
+          <div className="lm-container">
+            <div className="sobre-projects__intro">
+              <div>
+                {secaoProjetos?.chapeu && <p className="eyebrow"><i aria-hidden /> {secaoProjetos.chapeu}</p>}
+                {secaoProjetos?.titulo && <h2>{secaoProjetos.titulo}</h2>}
+              </div>
+              {secaoProjetos?.ctaTexto && (
+                <Link className="button button--dark" href={secaoProjetos.ctaLink || '/catalogo'}>
+                  {secaoProjetos.ctaTexto} <span aria-hidden>→</span>
                 </Link>
-              )
-            })}
+              )}
+            </div>
+            <div className="sobre-projects__grid">
+              {projetos.map((projeto) => {
+                const capa = urlDaMedia(projeto.capa, 'card')
+                return (
+                  <Link
+                    href={`/projetos/${projeto.slug ?? projeto.id}`}
+                    key={projeto.id}
+                    className="sobre-project-card"
+                  >
+                    {capa && <Image src={capa} alt="" fill sizes="(max-width: 800px) 76vw, 290px" />}
+                    <span aria-hidden />
+                    <p>
+                      <small>{projeto.tipo ?? projeto.local ?? 'Projeto'}</small>
+                      <strong>{projeto.titulo}</strong>
+                    </p>
+                  </Link>
+                )
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {passos.length > 0 && (
         <section className="sobre-method">
