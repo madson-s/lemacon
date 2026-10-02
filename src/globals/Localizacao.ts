@@ -1,5 +1,23 @@
 import type { GlobalConfig } from 'payload'
 
+type Dados = {
+  endereco?: { logradouro?: string | null; cidade?: string | null } | null
+  referencia?: string | null
+  horarios?: unknown[] | null
+  imagem?: unknown
+}
+
+const preenchido = (valor: string | null | undefined) => Boolean(valor?.trim())
+
+// As mesmas regras que a página usa para mostrar cada bloco. O formulário só
+// exibe o texto de um bloco quando o bloco vai aparecer no site — senão o campo
+// fica lá, editável e sem efeito, e parece que o painel não bate com a página.
+const temEndereco = (d: Dados) =>
+  preenchido(d?.endereco?.logradouro) && preenchido(d?.endereco?.cidade)
+const temCidade = (d: Dados) => preenchido(d?.endereco?.cidade)
+const temReferencia = (d: Dados) => preenchido(d?.referencia)
+const temVisita = (d: Dados) => (d?.horarios?.length ?? 0) > 0 || Boolean(d?.imagem)
+
 /**
  * Conteúdo da página /localizacao.
  *
@@ -192,7 +210,8 @@ export const Localizacao: GlobalConfig = {
                     'A equipe combina o melhor ponto de encontro com você antes da visita.',
                   admin: {
                     description:
-                      'Aparece no lugar do endereço enquanto ele não estiver cadastrado.',
+                      'Aparece no lugar do endereço enquanto ele não estiver cadastrado. Some daqui quando a rua e a cidade forem preenchidas.',
+                    condition: (data) => !temEndereco(data as Dados),
                   },
                 },
               ],
@@ -316,14 +335,14 @@ export const Localizacao: GlobalConfig = {
                       label: 'Card da base — rótulo',
                       type: 'text',
                       defaultValue: 'Base da equipe',
-                      admin: { width: '40%' },
+                      admin: { width: '40%', condition: (data) => temCidade(data as Dados) },
                     },
                     {
                       name: 'baseTexto',
                       label: 'Card da base — texto',
                       type: 'text',
                       defaultValue: 'É daqui que saem as peças produzidas pela LM.',
-                      admin: { width: '60%' },
+                      admin: { width: '60%', condition: (data) => temCidade(data as Dados) },
                     },
                   ],
                 },
@@ -335,14 +354,14 @@ export const Localizacao: GlobalConfig = {
                       label: 'Card da referência — rótulo',
                       type: 'text',
                       defaultValue: 'Ponto de referência',
-                      admin: { width: '40%' },
+                      admin: { width: '40%', condition: (data) => temReferencia(data as Dados) },
                     },
                     {
                       name: 'referenciaTexto',
                       label: 'Card da referência — texto',
                       type: 'text',
                       defaultValue: 'Uma orientação simples para reconhecer a chegada.',
-                      admin: { width: '60%' },
+                      admin: { width: '60%', condition: (data) => temReferencia(data as Dados) },
                     },
                   ],
                 },
@@ -358,7 +377,9 @@ export const Localizacao: GlobalConfig = {
               label: 'Seção "Planeje a visita"',
               type: 'group',
               admin: {
-                description: 'Só aparece quando houver horário ou foto da fachada cadastrados.',
+                description:
+                  'Os textos da seção. Ela só aparece no site com horário ou foto da fachada.',
+                condition: (data) => temVisita(data as Dados),
               },
               fields: [
                 {

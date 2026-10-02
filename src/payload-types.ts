@@ -886,7 +886,7 @@ export interface Localizacao {
   cartaoMapa?: {
     chapeu?: string | null;
     /**
-     * Aparece no lugar do endereço enquanto ele não estiver cadastrado.
+     * Aparece no lugar do endereço enquanto ele não estiver cadastrado. Some daqui quando a rua e a cidade forem preenchidas.
      */
     semEndereco?: string | null;
   };
@@ -917,7 +917,7 @@ export interface Localizacao {
     referenciaTexto?: string | null;
   };
   /**
-   * Só aparece quando houver horário ou foto da fachada cadastrados.
+   * Os textos da seção. Ela só aparece no site com horário ou foto da fachada.
    */
   visita?: {
     chapeu?: string | null;
