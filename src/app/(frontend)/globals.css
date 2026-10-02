@@ -627,7 +627,6 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
 .sobre-project-card:hover img { transform: scale(1.045); }
 .sobre-project-card:active { transform: scale(.96); }
 
-
 .sobre-method { padding: 84px 0 90px; color: var(--lm-ink); background: var(--lm-paper-2); }
 .sobre-method h2 { max-width: 18ch; }
 .sobre-method__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 40px; }
@@ -693,17 +692,6 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
 .location-coverage__cards h3 { margin-top: 8px; font-size: 20px; font-weight: 650; line-height: 1.18; text-wrap: balance; }
 .location-coverage__cards p { margin-top: 8px; color: var(--lm-muted); font-size: 13px; line-height: 1.48; text-wrap: pretty; }
 .location-coverage__cards article:first-child p { color: rgb(255 255 255 / 64%); }
-.location-visit { padding: 76px 0; background: var(--lm-paper); }
-.location-visit__grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: 48px; }
-.location-visit__grid.is-solo { grid-template-columns: 1fr; }
-.location-hours h2 { display: flex; max-width: 15ch; align-items: flex-start; gap: 12px; margin-top: 18px; font-size: clamp(28px, 3vw, 40px); font-weight: 600; letter-spacing: -.04em; line-height: 1.08; text-wrap: balance; }
-.location-hours h2 svg { width: 27px; height: 27px; flex: 0 0 27px; margin-top: 5px; color: var(--lm-red); }
-.location-hours dl { margin-top: 26px; }
-.location-hours dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; padding: 15px 0; border-top: 1px solid var(--lm-line); }
-.location-hours dt { color: var(--lm-muted); font-size: 14px; }
-.location-hours dd { font-size: 14px; font-weight: 650; font-variant-numeric: tabular-nums; }
-.location-visit__image { position: relative; height: 390px; overflow: hidden; border-radius: 30px; background: var(--lm-border); box-shadow: 0 20px 50px rgb(0 0 0 / 12%); outline: 1px solid rgb(0 0 0 / 10%); outline-offset: -1px; }
-.location-visit__image img { object-fit: cover; }
 
 /* O único momento animado de cada página: a ficha se preenchendo linha a linha
    e o roteiro se desenhando de cima para baixo. */
@@ -812,11 +800,10 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
   .location-stats { grid-template-columns: 1fr; padding-block: 16px; }
   .location-stats > div { min-height: 82px; border-top: 1px solid var(--lm-line); border-left: 0; padding: 18px 0; }
   .location-stats > div:first-child { border-top: 0; }
-  .location-coverage, .location-visit { padding: 56px 0; }
-  .location-coverage__grid, .location-visit__grid { grid-template-columns: 1fr; gap: 32px; }
+  .location-coverage { padding: 56px 0; }
+  .location-coverage__grid { grid-template-columns: 1fr; gap: 32px; }
   .location-coverage__copy { position: static; }
   .location-coverage__cards article { min-height: 132px; padding: 22px; }
-  .location-visit__image { height: min(82vw, 390px); border-radius: 24px; }
   .lm-container { width: min(calc(100% - (var(--lm-mobile-gutter) * 2)), var(--lm-grid-width)); }
   section[id] { scroll-margin-top: 72px; }
   .site-header { height: 64px; }
@@ -1016,7 +1003,6 @@ a.promotion-card:focus-visible { outline: 3px solid var(--lm-red); outline-offse
   .location-map-stage__credit { top: 12px; right: 12px; bottom: auto; max-width: calc(100% - 24px); min-height: 36px; font-size: 8px; }
   .location-coverage__copy .button { width: 100%; }
   .location-coverage__cards article { grid-template-columns: 38px minmax(0, 1fr); gap: 10px; padding: 20px; }
-  .location-hours dl div { align-items: flex-start; flex-direction: column; gap: 4px; }
   .brand-logo { width: 180px; height: 32px; flex-basis: 180px; }
   .home-hero { min-height: 580px; }
   .home-hero__content { padding-top: 112px; }

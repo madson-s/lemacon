@@ -3,9 +3,8 @@ import type { GlobalConfig } from 'payload'
 /**
  * Conteúdo da página /sobre. É um global porque a página é um documento único.
  *
- * Os campos vêm vazios de propósito onde o dado é da empresa e ninguém pode
- * inventar por ela (ano de fundação, cidade): a página esconde a linha em vez
- * de mostrar um valor de mentira.
+ * O painel só tem o que a página mostra. A seção de projetos vem da coleção
+ * Projetos e só aparece quando houver algum publicado.
  */
 export const Sobre: GlobalConfig = {
   slug: 'sobre',
@@ -94,15 +93,14 @@ export const Sobre: GlobalConfig = {
               type: 'array',
               admin: {
                 description:
-                  'Os dados objetivos da LM, logo abaixo do título da página. Só as três primeiras linhas preenchidas aparecem — ponha no topo o que mais importa. Preencha só o que for verdade: linha sem valor é pulada.',
+                  'Os três dados objetivos logo abaixo do título da página. Preencha só o que for verdade: linha sem valor não aparece.',
               },
+              // No máximo três: é o que cabe na faixa abaixo do título.
+              maxRows: 3,
               defaultValue: [
                 { rotulo: 'Atendimento', valor: 'Toda a Chapada Diamantina' },
                 { rotulo: 'Escopo', valor: 'Projeto · fabricação · instalação' },
                 { rotulo: 'Frentes', valor: 'Esquadrias · Vidros · Construção' },
-                { rotulo: 'Fabricação', valor: 'Galpão próprio, equipe própria' },
-                { rotulo: 'Fundação', valor: '' },
-                { rotulo: 'Sede', valor: '' },
               ],
               fields: [
                 {

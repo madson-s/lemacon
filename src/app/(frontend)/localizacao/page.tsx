@@ -1,14 +1,11 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 
-import { enderecoEmLinhas, linkDaRota, mapaIncorporado, temEndereco } from '@/lib/localizacao'
-import { altDaMedia, urlDaMedia } from '@/lib/produtos'
 import config from '@/payload.config'
 
 export const metadata = {
   title: 'Localização',
-  description: 'Onde fica a LM, a região atendida e os canais para planejar uma visita ou avaliação.',
+  description: 'A região que a LM atende e como a equipe chega até a sua obra na Chapada Diamantina.',
 }
 
 export const dynamic = 'force-dynamic'
@@ -28,59 +25,19 @@ const PinIcon = () => (
   </svg>
 )
 
-const ClockIcon = () => (
-  <svg viewBox="0 0 24 24" aria-hidden {...stroke}>
-    <circle cx="12" cy="12" r="8.5" />
-    <path d="M12 7.4V12l3.1 2" />
-  </svg>
-)
+
+// A página fala da região atendida, não de um endereço: o mapa mostra a Chapada
+// Diamantina inteira e o ponto de encontro é combinado antes da visita.
+const MAPA_DA_CHAPADA = 'https://www.google.com/maps?q=Chapada%20Diamantina%2C%20Bahia&z=8&output=embed'
+const LINK_DA_CHAPADA = 'https://www.google.com/maps/search/?api=1&query=Chapada%20Diamantina%2C%20Bahia'
 
 export default async function LocalizacaoPage() {
   const payload = await getPayload({ config: await config })
   const local = await payload.findGlobal({ slug: 'localizacao', depth: 1 })
-  const address = local.endereco
-  const addressLines = enderecoEmLinhas(address)
-  const route = linkDaRota(local.mapaUrl, address)
-  const hours = local.horarios ?? []
-  const facade = urlDaMedia(local.imagem, 'card')
-  const city = address?.cidade?.trim()
-    ? [address.cidade.trim(), address.estado?.trim()].filter(Boolean).join(' — ')
-    : ''
   const region = local.regiao?.trim() || 'Toda a Chapada Diamantina'
-  // Com endereço cadastrado o mapa aponta para a base; sem ele, mostra a região
-  // atendida, que é o que a página tem de verdade para dizer.
-  const chapadaGoogleMap = 'https://www.google.com/maps?q=Chapada%20Diamantina%2C%20Bahia&z=8&output=embed'
-  const mapEmbed = mapaIncorporado(local.mapaUrl, address) ?? chapadaGoogleMap
-  const mapTitle = temEndereco(address)
-    ? `Mapa do Google Maps com a localização da LM em ${city || region}`
-    : 'Mapa do Google Maps centralizado na Chapada Diamantina'
-  const mapLink =
-    route ??
-    'https://www.google.com/maps/search/?api=1&query=Chapada%20Diamantina%2C%20Bahia'
-
   const cobertura = local.cobertura
   const cartaoMapa = local.cartaoMapa
-  const visita = local.visita
   const destaques = (local.destaques ?? []).filter((linha) => linha.valor?.trim())
-
-  // Cada card só existe quando o dado dele existe; rótulo e texto vêm do painel.
-  const locationCards = [
-    {
-      label: cobertura?.regiaoRotulo ?? '',
-      title: region,
-      text: cobertura?.regiaoTexto ?? '',
-    },
-    city && {
-      label: cobertura?.baseRotulo ?? '',
-      title: city,
-      text: cobertura?.baseTexto ?? '',
-    },
-    local.referencia?.trim() && {
-      label: cobertura?.referenciaRotulo ?? '',
-      title: local.referencia.trim(),
-      text: cobertura?.referenciaTexto ?? '',
-    },
-  ].filter(Boolean) as { label: string; title: string; text: string }[]
 
   return (
     <main className="location-page">
@@ -99,8 +56,8 @@ export default async function LocalizacaoPage() {
         <div className="lm-container location-map-stage">
           <div className="location-map-stage__media">
             <iframe
-              src={mapEmbed}
-              title={mapTitle}
+              src={MAPA_DA_CHAPADA}
+              title="Mapa do Google Maps centralizado na Chapada Diamantina"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
@@ -110,11 +67,10 @@ export default async function LocalizacaoPage() {
           <article className="location-map-card">
             <span className="location-map-card__icon"><PinIcon /></span>
             {cartaoMapa?.chapeu && <p className="eyebrow"><i aria-hidden />{cartaoMapa.chapeu}</p>}
-            <h2>{city || region}</h2>
-            {temEndereco(address) ? <p>{addressLines.join(' · ')}</p> : cartaoMapa?.semEndereco && <p>{cartaoMapa.semEndereco}</p>}
-            {route && <a href={route} target="_blank" rel="noreferrer">Abrir no mapa <span aria-hidden>→</span></a>}
+            <h2>{region}</h2>
+            {cartaoMapa?.semEndereco && <p>{cartaoMapa.semEndereco}</p>}
           </article>
-          <a className="location-map-stage__credit" href={mapLink} target="_blank" rel="noreferrer">
+          <a className="location-map-stage__credit" href={LINK_DA_CHAPADA} target="_blank" rel="noreferrer">
             Abrir no Google Maps
           </a>
         </div>
@@ -139,39 +95,17 @@ export default async function LocalizacaoPage() {
             )}
           </div>
           <div className="location-coverage__cards">
-            {locationCards.map((card, index) => (
-              <article key={card.label}>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <div>{card.label && <small>{card.label}</small>}<h3>{card.title}</h3>{card.text && <p>{card.text}</p>}</div>
-              </article>
-            ))}
+            <article>
+              <span>01</span>
+              <div>
+                {cobertura?.regiaoRotulo && <small>{cobertura.regiaoRotulo}</small>}
+                <h3>{region}</h3>
+                {cobertura?.regiaoTexto && <p>{cobertura.regiaoTexto}</p>}
+              </div>
+            </article>
           </div>
         </div>
       </section>
-
-      {(hours.length > 0 || facade) && (
-        <section className="location-visit">
-          <div className={`lm-container location-visit__grid${hours.length && facade ? '' : ' is-solo'}`}>
-            {hours.length > 0 && (
-              <div className="location-hours">
-                {visita?.chapeu && <p className="eyebrow"><i aria-hidden />{visita.chapeu}</p>}
-                <h2><ClockIcon /> {visita?.titulo || 'Horário de atendimento'}</h2>
-                <dl>
-                  {hours.map((range) => (
-                    <div key={range.id ?? range.dias}><dt>{range.dias}</dt><dd>{range.horario}</dd></div>
-                  ))}
-                </dl>
-              </div>
-            )}
-            {facade && (
-              <div className="location-visit__image">
-                <Image src={facade} alt={altDaMedia(local.imagem) || 'Fachada da LM'} fill sizes="(max-width: 800px) 100vw, 50vw" />
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
     </main>
   )
 }
