@@ -4,9 +4,11 @@ import { getPayload } from 'payload'
 
 import { BannerFaixa } from '@/components/BannerFaixa'
 import { BannerHero } from '@/components/BannerHero'
+import { FormularioOrcamento } from '@/components/FormularioOrcamento'
 import { HomeCatalog, type HomeProduct } from '@/components/HomeCatalog'
 import { HorizontalCarousel } from '@/components/HorizontalCarousel'
 import { mergePublishedProducts } from '@/lib/catalogo-design'
+import { linkDoWhatsApp } from '@/lib/contato'
 import { paraProdutoItem } from '@/lib/produtos'
 import { carregarUnidades, linkDaUnidade } from '@/lib/unidades'
 import config from '@/payload.config'
@@ -41,6 +43,8 @@ export default async function HomePage() {
   })
   const doCatalogo = mergePublishedProducts(produtos.map(paraProdutoItem))
   const unidades = await carregarUnidades(payload)
+  const whatsapp = home.contato?.whatsapp ?? ''
+  const linkWhatsApp = linkDoWhatsApp(whatsapp, 'Olá! Gostaria de um orçamento.')
   const porUnidade = doCatalogo.reduce<Record<string, number>>(
     (acc, item) => (item.unit ? { ...acc, [item.unit]: (acc[item.unit] ?? 0) + 1 } : acc),
     {},
@@ -183,17 +187,10 @@ export default async function HomePage() {
             <Eyebrow>Orçamento</Eyebrow>
             <h2>Conte o seu<br />projeto</h2>
             <p>Envie as medidas ou peça uma avaliação no local. Retornamos com a especificação e o orçamento pelo WhatsApp.</p>
-            <a className="button button--gold" href="https://wa.me/" target="_blank" rel="noreferrer">Falar no WhatsApp <Arrow /></a>
+            {linkWhatsApp && <a className="button button--gold" href={linkWhatsApp} target="_blank" rel="noreferrer">Falar no WhatsApp <Arrow /></a>}
             <dl><div><dt>Atendimento</dt><dd>Toda a Chapada Diamantina</dd></div><div><dt>Escopo</dt><dd>Projeto · fabricação · instalação</dd></div><div><dt>Avaliação</dt><dd>Sem compromisso</dd></div></dl>
           </div>
-          <form className="contact-form" action="#orcamento">
-            <label>Nome<input name="nome" type="text" placeholder="Como podemos chamar você" /></label>
-            <label>Telefone / WhatsApp<input name="telefone" type="tel" placeholder="(00) 0 0000-0000" /></label>
-            <label>Unidade de interesse<select name="unidade">{unidades.map((u) => <option key={u.id}>{u.nome}</option>)}</select></label>
-            <label>Mensagem<textarea name="mensagem" placeholder="Descreva o ambiente, as medidas ou o que precisa" /></label>
-            <button type="submit" className="button button--dark">Solicitar orçamento</button>
-            <small>Seus dados ficam protegidos e não são compartilhados.</small>
-          </form>
+          <FormularioOrcamento whatsapp={whatsapp} unidades={unidades.map((u) => u.nome)} />
         </div>
       </section>
     </>

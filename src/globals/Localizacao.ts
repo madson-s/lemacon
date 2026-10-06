@@ -1,12 +1,17 @@
 import type { GlobalConfig } from 'payload'
 
+// Mesma regra da página: o endereço só conta com rua e cidade preenchidas.
+type Dados = { endereco?: { logradouro?: string | null; cidade?: string | null } | null }
+
+const temEndereco = (d: Dados) =>
+  Boolean(d?.endereco?.logradouro?.trim() && d?.endereco?.cidade?.trim())
+
 /**
  * Conteúdo da página /localizacao.
  *
- * A página fala da região que a LM atende, não de um endereço: o mapa mostra
- * a Chapada Diamantina inteira e o card diz que o ponto de encontro é combinado
- * antes da visita. Endereço, horário e fachada saíram do painel porque a página
- * não os mostra — voltar a exibi-los exige código.
+ * Com o endereço preenchido, o mapa aponta para a sede e o card sobre ele
+ * mostra o endereço e o botão "Abrir no mapa". Sem endereço, o mapa mostra a
+ * Chapada Diamantina inteira e o card usa o texto de "ponto de encontro".
  */
 export const Localizacao: GlobalConfig = {
   slug: 'localizacao',
@@ -69,15 +74,65 @@ export const Localizacao: GlobalConfig = {
         },
         {
           label: 'Mapa',
-          description: 'O card que fica por cima do mapa da Chapada Diamantina.',
+          description:
+            'O endereço da sede — é ele que posiciona o mapa — e o card por cima do mapa.',
           fields: [
+            {
+              name: 'endereco',
+              label: 'Endereço',
+              type: 'group',
+              admin: {
+                description:
+                  'Aparece no card sobre o mapa e posiciona o mapa na sede. Sem rua e cidade, o mapa mostra a Chapada Diamantina inteira.',
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'logradouro',
+                      label: 'Rua / avenida',
+                      type: 'text',
+                      defaultValue: 'Rua Castro Alves',
+                      admin: { width: '70%' },
+                    },
+                    {
+                      name: 'numero',
+                      label: 'Número',
+                      type: 'text',
+                      defaultValue: '01',
+                      admin: { width: '30%' },
+                    },
+                  ],
+                },
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'cidade',
+                      label: 'Cidade',
+                      type: 'text',
+                      defaultValue: 'Seabra',
+                      admin: { width: '70%' },
+                    },
+                    {
+                      name: 'estado',
+                      label: 'Estado',
+                      type: 'text',
+                      defaultValue: 'BA',
+                      admin: { width: '30%' },
+                    },
+                  ],
+                },
+              ],
+            },
             {
               name: 'cartaoMapa',
               label: 'Card sobre o mapa',
               type: 'group',
               admin: {
                 description:
-                  'O título do card é a região atendida (aba Abertura); aqui ficam o chapéu e o texto.',
+                  'Com endereço, o título do card é a cidade e o texto é o endereço. Sem endereço, o título é a região atendida e o texto é o de baixo.',
               },
               fields: [
                 {
@@ -88,10 +143,14 @@ export const Localizacao: GlobalConfig = {
                 },
                 {
                   name: 'semEndereco',
-                  label: 'Texto do card',
+                  label: 'Texto sem endereço',
                   type: 'textarea',
                   defaultValue:
                     'A equipe combina o melhor ponto de encontro com você antes da visita.',
+                  admin: {
+                    description: 'Só aparece enquanto o endereço não estiver preenchido.',
+                    condition: (data) => !temEndereco(data as Dados),
+                  },
                 },
               ],
             },

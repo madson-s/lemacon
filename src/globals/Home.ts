@@ -81,6 +81,34 @@ export const Home: GlobalConfig = {
       ],
     },
     {
+      name: 'contato',
+      label: 'Contato',
+      type: 'group',
+      admin: {
+        description:
+          'Usado na seção "Conte o seu projeto": o botão "Falar no WhatsApp" e o formulário de orçamento, que abre o WhatsApp com a mensagem já escrita.',
+      },
+      fields: [
+        {
+          name: 'whatsapp',
+          label: 'WhatsApp',
+          type: 'text',
+          required: true,
+          defaultValue: '75993364665',
+          admin: {
+            description: 'Só os números, com DDD e sem o 55. Ex.: 75993364665',
+            placeholder: '75993364665',
+          },
+          // DDD + celular (9 dígitos começando com 9) ou fixo (8 dígitos, de 2 a 5).
+          // Barra o número com um dígito a mais ou sem DDD, que viraria um link
+          // de WhatsApp para outra pessoa.
+          validate: (valor: string | null | undefined) =>
+            /^[1-9]{2}(9\d{8}|[2-5]\d{7})$/.test(String(valor ?? '').replace(/\D/g, '')) ||
+            'Confira o número: DDD + celular com 9 dígitos (ex.: 75993364665).',
+        },
+      ],
+    },
+    {
       name: 'bannersHero',
       label: 'Banners do topo',
       labels: { singular: 'Banner', plural: 'Banners' },
