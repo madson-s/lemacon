@@ -5,7 +5,7 @@ import config from '@/payload.config'
 
 export const metadata = {
   title: 'Localização',
-  description: 'A região que a LM atende e como a equipe chega até a sua obra na Chapada Diamantina.',
+  description: 'Onde fica a LM, em Seabra, e a região da Chapada Diamantina que a equipe atende.',
 }
 
 export const dynamic = 'force-dynamic'
@@ -26,10 +26,11 @@ const PinIcon = () => (
 )
 
 
-// A página fala da região atendida, não de um endereço: o mapa mostra a Chapada
-// Diamantina inteira e o ponto de encontro é combinado antes da visita.
+// Sem endereço cadastrado, o mapa mostra a Chapada Diamantina inteira.
 const MAPA_DA_CHAPADA = 'https://www.google.com/maps?q=Chapada%20Diamantina%2C%20Bahia&z=8&output=embed'
 const LINK_DA_CHAPADA = 'https://www.google.com/maps/search/?api=1&query=Chapada%20Diamantina%2C%20Bahia'
+
+const limpo = (valor: string | null | undefined) => valor?.trim() ?? ''
 
 export default async function LocalizacaoPage() {
   const payload = await getPayload({ config: await config })
@@ -37,6 +38,16 @@ export default async function LocalizacaoPage() {
   const region = local.regiao?.trim() || 'Toda a Chapada Diamantina'
   const cobertura = local.cobertura
   const cartaoMapa = local.cartaoMapa
+
+  // Endereço só conta com rua e cidade — a mesma regra do painel, que esconde
+  // o "texto sem endereço" quando as duas estão preenchidas.
+  const endereco = local.endereco
+  const rua = [limpo(endereco?.logradouro), limpo(endereco?.numero)].filter(Boolean).join(', ')
+  const cidade = [limpo(endereco?.cidade), limpo(endereco?.estado)].filter(Boolean).join(' — ')
+  const temEndereco = Boolean(limpo(endereco?.logradouro) && limpo(endereco?.cidade))
+  const consulta = [rua, limpo(endereco?.cidade), limpo(endereco?.estado)].filter(Boolean).join(', ')
+  const mapa = temEndereco ? `https://www.google.com/maps?q=${encodeURIComponent(consulta)}&z=16&output=embed` : MAPA_DA_CHAPADA
+  const linkMapa = temEndereco ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(consulta)}` : LINK_DA_CHAPADA
   const destaques = (local.destaques ?? []).filter((linha) => linha.valor?.trim())
 
   return (
@@ -56,8 +67,8 @@ export default async function LocalizacaoPage() {
         <div className="lm-container location-map-stage">
           <div className="location-map-stage__media">
             <iframe
-              src={MAPA_DA_CHAPADA}
-              title="Mapa do Google Maps centralizado na Chapada Diamantina"
+              src={mapa}
+              title={temEndereco ? `Mapa do Google Maps com a localização da LM em ${cidade}` : 'Mapa do Google Maps centralizado na Chapada Diamantina'}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
@@ -67,10 +78,11 @@ export default async function LocalizacaoPage() {
           <article className="location-map-card">
             <span className="location-map-card__icon"><PinIcon /></span>
             {cartaoMapa?.chapeu && <p className="eyebrow"><i aria-hidden />{cartaoMapa.chapeu}</p>}
-            <h2>{region}</h2>
-            {cartaoMapa?.semEndereco && <p>{cartaoMapa.semEndereco}</p>}
+            <h2>{temEndereco ? cidade : region}</h2>
+            {temEndereco ? <p>{rua} · {cidade}</p> : cartaoMapa?.semEndereco && <p>{cartaoMapa.semEndereco}</p>}
+            {temEndereco && <a href={linkMapa} target="_blank" rel="noreferrer">Abrir no mapa <span aria-hidden>→</span></a>}
           </article>
-          <a className="location-map-stage__credit" href={LINK_DA_CHAPADA} target="_blank" rel="noreferrer">
+          <a className="location-map-stage__credit" href={linkMapa} target="_blank" rel="noreferrer">
             Abrir no Google Maps
           </a>
         </div>

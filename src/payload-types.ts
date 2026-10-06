@@ -688,6 +688,15 @@ export interface Home {
     texto?: string | null;
   };
   /**
+   * Usado na seção "Conte o seu projeto": o botão "Falar no WhatsApp" e o formulário de orçamento, que abre o WhatsApp com a mensagem já escrita.
+   */
+  contato: {
+    /**
+     * Só os números, com DDD e sem o 55. Ex.: 75993364665
+     */
+    whatsapp: string;
+  };
+  /**
    * Aparecem sobre a foto do topo: empilhados à direita no computador, e como um slide que desliza no celular. Todos com o mesmo tamanho. Deixe vazio para esconder.
    */
   bannersHero?:
@@ -855,10 +864,22 @@ export interface Localizacao {
    */
   regiaoRotulo?: string | null;
   /**
-   * O título do card é a região atendida (aba Abertura); aqui ficam o chapéu e o texto.
+   * Aparece no card sobre o mapa e posiciona o mapa na sede. Sem rua e cidade, o mapa mostra a Chapada Diamantina inteira.
+   */
+  endereco?: {
+    logradouro?: string | null;
+    numero?: string | null;
+    cidade?: string | null;
+    estado?: string | null;
+  };
+  /**
+   * Com endereço, o título do card é a cidade e o texto é o endereço. Sem endereço, o título é a região atendida e o texto é o de baixo.
    */
   cartaoMapa?: {
     chapeu?: string | null;
+    /**
+     * Só aparece enquanto o endereço não estiver preenchido.
+     */
     semEndereco?: string | null;
   };
   /**
@@ -897,6 +918,11 @@ export interface HomeSelect<T extends boolean = true> {
         chapeu?: T;
         titulo?: T;
         texto?: T;
+      };
+  contato?:
+    | T
+    | {
+        whatsapp?: T;
       };
   bannersHero?:
     | T
@@ -998,6 +1024,14 @@ export interface LocalizacaoSelect<T extends boolean = true> {
   lead?: T;
   regiao?: T;
   regiaoRotulo?: T;
+  endereco?:
+    | T
+    | {
+        logradouro?: T;
+        numero?: T;
+        cidade?: T;
+        estado?: T;
+      };
   cartaoMapa?:
     | T
     | {
